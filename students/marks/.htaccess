@@ -1,8 +1,0 @@
-
-  AuthName " Protected area, need authorization "
-  AuthType Basic
-   AuthUserFile /www/khdavid/david.wf/www/passwords/.authfile
-  require valid-user
-  
-  
-  
