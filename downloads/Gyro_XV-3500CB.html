@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>David Khudaverdyan. Homepage</title>
+<base target="_top">
+ <link rel="shortcut icon" href="http://david.wf/favicon.ico" type="image/x-icon" />
+ <link rel="icon" href="http://david.wf/favicon.ico" type="image/x-icon" />
+ 
+ <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-27665935-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<body>
+
+<a href='http://david.wf'>main cite</a>
+<pre>
+#include &lt;Wire.h&gt;
+#include &lt;Servo.h&gt; 
+#define GYRO_ADDRESS (0xD &lt;&lt; 3) //  I2C device address is 1 1 0 1 0 0 0
+
+unsigned long time_1=0;
+unsigned long time_2=0;
+Servo myservo; 
+float angle=.0;
+float integral;
+void setup() 
+{
+  myservo.attach(12); 
+  Serial.begin(115200);
+  Wire.begin();
+}
+
+float i2cread () 
+{
+  int data;// non collibrated angular rate
+  float w;// angular rate
+  time_1=time_2;
+  time_2 = micros();
+  Wire.requestFrom(GYRO_ADDRESS, 2);  //Connect to device and request two bytes
+  if (Wire.available()) 
+  {
+     data = Wire.receive();
+  }
+  if (Wire.available()) 
+  {
+     data |= Wire.receive() &lt;&lt; 8;
+  }
+  w=data-17413;// here 17413 collibration constant that differs from gyro to gyro. When the real angular rate is zero then data=17413
+  angle=angle+0.59*w*((float)time_2-(float)time_1)/100000000;
+  return angle;
+}
+
+void loop() 
+{
+  integral=i2cread();
+  Serial.println(integral);
+  int pos=90-integral;
+  myservo.write(pos);
+} 
+</pre>
+</body>

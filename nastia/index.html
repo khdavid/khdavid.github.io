@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+  	body {
+	position:absolute;
+	top: 0px;
+	left:0px;
+	}
+	#heart1 {
+	position:absolute;
+	top: 100px;
+	left:0px;
+	}
+
+	#we {
+	position:absolute;
+	}
+
+	#heart1 {
+	position:absolute;
+	}
+	#heart2 {
+	position:absolute;
+	}
+
+    </style>
+  </head>
+  <body>
+	<img src="we.jpg"id = "we">	
+	<img src="heart1.png" id = "heart1">	
+	<img src="heart2.png" id = "heart2">	
+	<script>
+       var myVar=setInterval(function () {myTimer()}, 20);
+       var t=0;
+       var weWidth=1000;
+	   var weTop=10;
+	   var weLeft=100;
+
+	   var heart1Width=weWidth/20;
+	   var heart1Left=760;
+	   var heart1Top=520;
+
+	   var heart2Width=weWidth/20;
+	   var heart2Left=620;
+	   var heart2Top=450;
+	   
+      document.getElementById("we").style.width = weWidth.toString()+"px";
+      document.getElementById("we").style.top = weTop.toString()+"px";
+      document.getElementById("we").style.left = weLeft.toString()+"px";
+
+      document.getElementById("heart1").style.width = heart1Width.toString()+"px";
+      document.getElementById("heart1").style.left = heart1Left.toString()+"px";
+      document.getElementById("heart1").style.top = heart1Top.toString()+"px";
+
+      document.getElementById("heart2").style.width = heart2Width.toString()+"px";
+      document.getElementById("heart2").style.left = heart2Left.toString()+"px";
+      document.getElementById("heart2").style.top = heart2Top.toString()+"px";
+
+	  function myTimer() 
+	   {
+	      t+=0.2;
+		  heart1Width_=heart1Width*(1+0.5*Math.sin(t)+0.1*Math.sin(3*t));
+		  heart1Left_=heart1Left-heart1Width_*0.5;
+		  heart1Top_=heart1Top-heart1Width_*0.5;
+
+		  heart2Width_=heart2Width*(1+0.5*Math.sin(1.5*t)+0.1*Math.sin(3*t));
+		  heart2Left_=heart2Left-heart2Width_*0.5;
+		  heart2Top_=heart2Top-heart2Width_*0.5;
+		  
+		  document.getElementById("heart1").style.width = heart1Width_.toString()+"px";
+		  document.getElementById("heart1").style.left = heart1Left_.toString()+"px";
+		  document.getElementById("heart1").style.top = heart1Top_.toString()+"px";
+
+		  document.getElementById("heart2").style.width = heart2Width_.toString()+"px";
+		  document.getElementById("heart2").style.left = heart2Left_.toString()+"px";
+		  document.getElementById("heart2").style.top = heart2Top_.toString()+"px";
+	  }	
+    </script>
+  </body>
+</html>      

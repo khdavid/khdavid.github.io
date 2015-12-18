@@ -1,0 +1,5 @@
+ErrorDocument 404 http://david.wf/index.html
+ErrorDocument 403 http://david.wf/index.html
+ErrorDocument 401 http://david.wf/index.html
+ErrorDocument 400 http://david.wf/index.html
+ErrorDocument 500 http://david.wf/index.html

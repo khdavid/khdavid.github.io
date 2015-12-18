@@ -1,0 +1,116 @@
+IMG.table { 
+display: block; 
+}
+
+A.header:link { 
+display: block;
+color: #FFFFFF;
+padding: 5px 20px 5px 20px;
+ font-size: 17pt;
+
+ }
+
+A.header:visited { 
+display: block;
+color: #FFFFFF;
+padding: 5px 20px 5px 20px;
+ font-size: 17pt;
+
+}
+
+TD.header:hover {
+    background: #888888; 
+}
+
+
+
+DIV.header{
+}	
+
+BODY{
+font-family:Calibri, 
+sans-serif;
+}
+
+A.black {
+color: #000000;
+}
+
+
+DIV.menu{
+padding: 10px;
+font-size: 14pt;
+}	
+
+TABLE.menu{
+ background-color: #88CCEE;
+  font-size: 14pt;    
+
+}
+
+TD.menu:hover {
+    background-color: #888888; 
+    font-size: 14pt;    
+}
+
+TD.menuOn{
+    background-color: #888888; 
+    font-size: 14pt;    
+}
+
+
+TR.menu{
+text-align: center;
+}
+
+A.menu:link { 
+display: block;
+color: #FFFFFF;
+padding: 10px 10px 10px 10px;
+width: 100px;
+}
+
+A.menu:visited { 
+color: #FFFFFF;
+display: block;
+padding: 10px 10px 10px 10px;
+width: 100px;
+}
+A.menu:hover { 
+display: block;
+color: #FFFFFF;
+padding: 10px 10px 10px 10px;
+width: 100px;
+}
+
+
+A.menuOn:link { 
+display: block;
+color: #FFFFFF;
+padding: 10px 10px 10px 10px;
+}
+
+A.menuOn:visited { 
+color: #FFFFFF;
+display: block;
+padding: 10px 10px 10px 10px;
+}
+
+.spoiler-head
+{
+    cursor: pointer ;
+    color: DarkCyan   ;
+	text-decoration: underline;
+}
+.spoiler-head:before {
+    content: "\2799";
+	margin-right: 0px;
+}
+
+.spoiler-body
+{
+padding: 10px 10px 10px 10px;
+background-color: LightCyan ;
+}
+
+	

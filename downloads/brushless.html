@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>David Khudaverdyan. Homepage</title>
+<base target="_top">
+ <link rel="shortcut icon" href="http://david.wf/favicon.ico" type="image/x-icon" />
+ <link rel="icon" href="http://david.wf/favicon.ico" type="image/x-icon" />
+ 
+ <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-27665935-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<body>
+
+<a href='http://david.wf'>main cite</a>
+<pre>
+#include &lt;Servo.h&gt;
+Servo myservo;
+void setup()
+{
+myservo.attach(5);
+  /* When you switch on your controller(TowerPro H40A) 
+  for the first time, you should give him a high signal (let say 160) and after that a low signal (let say 10) to initialize it.
+  But this procedure you do only once per life. Next time you just start from low signal. 
+  This is a reason why next two lines are commented. Uncomment them only during the first test.*/
+
+  //myservo.write(160); 
+  //delay(5000);
+  myservo.write(10); // initialization of speed controller
+  delay(5000);
+  myservo.write(150); //almost the highest possible speed
+}
+void loop(){}
+</pre>
+</body>

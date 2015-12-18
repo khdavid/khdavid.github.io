@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>David Khudaverdyan. Homepage</title>
+<base target="_top">
+ <link rel="shortcut icon" href="http://david.wf/favicon.ico" type="image/x-icon" />
+ <link rel="icon" href="http://david.wf/favicon.ico" type="image/x-icon" />
+ 
+ <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-27665935-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<body>
+
+<a href='http://david.wf'>main cite</a>
+<pre>
+#include &lt;Wire.h&gt;
+#include &lt;ITG3200.h&gt;
+#include &lt;Servo.h&gt; 
+ITG3200 gyro = ITG3200();
+float  x,y,z;
+float angle=0;
+int ix, iy, iz;
+unsigned long time_1=0;
+unsigned long time_2=0;
+Servo myservo; 
+int ServoPosition;
+void setup(void) 
+{
+  Serial.begin(9600);
+  myservo.attach(4);
+  Wire.begin();      
+  delay(100);
+  gyro.init(ITG3200_ADDR_AD0_HIGH); 
+  Serial.print("zeroCalibrating...");
+  gyro.zeroCalibrate(2500, 2);//(number of mesaurments, milliseconds between them)
+  Serial.println("done.");
+}
+
+void loop(void) 
+{
+  while (gyro.isRawDataReady()) 
+  {
+    //Reads calibrated values in deg/sec    
+    gyro.readGyro(&x,&y,&z); 
+    time_1=time_2;
+    time_2 = micros();
+    if (time_1!=0)
+	{
+      angle=angle+2*x*((float)time_2-(float)time_1)/100000;  
+    }
+    // Serial.println(angle);  
+    ServoPosition=90-angle;
+    myservo.write(ServoPosition);
+  } 
+}
+</pre>
+</body>
