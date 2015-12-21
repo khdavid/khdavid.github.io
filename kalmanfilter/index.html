@@ -142,10 +142,14 @@ Now it comes a time to discuss, what does it mean the expression “to minimize 
 $$E(e^2_{k+1})\rightarrow min$$
 Let us rewrite the last expression:
 $$E(e^2_{k+1})=(1-K)^2(E_k^2+\sigma^2_\xi)+K^2\sigma^2_\eta$$
-Proof:
-From the fact that all random variables from the equation for $e_{k+1}$ don’t depend on each other, follows the fact that all cross terms are zeros:
-$$E(\xi_k\eta_{k+1})=E(e_k\xi_k)=E(e_k\eta_{k+1})=0$$
-Also we have used the fact that $E\eta_{k+1}=E\eta_k=0$, then the formulas for the variance looks much simpler: $\sigma^2_\eta = E\eta^2_k$ and $\sigma^2_\eta = E\eta^2_{k+1}$
+<div class="spoiler-head">Key to the proof
+</div>
+<div class="spoiler-body">
+From the fact that all random variables in the equation for $e_{k+1}$ don’t depend on each other and the mean values $E\eta_{k+1}=E\xi_k=0$, follows that all cross terms in $E(e^2_{k+1})$ become zeros:
+$$E(\xi_k\eta_{k+1})=E(e_k\xi_k)=E(e_k\eta_{k+1})=0.$$ 
+Indeed for instance $E(e_k\xi_k) = E(e_k)E(\xi_k)=0.$<br>
+Also note that formulas for the variances looks much simpler: $\sigma^2_\eta = E\eta^2_k$ and $\sigma^2_\eta = E\eta^2_{k+1}$ (since $E\eta_{k+1}=E\xi_k=0$)
+</div>
 
 The last expression takes its minimal value, when its derivation is zero. So when:
 $$\displaystyle K_{k+1} = \frac{Ee^2_k + \sigma^2_\eta}{Ee^2_k+\sigma^2_\xi+\sigma^2_\eta}$$
