@@ -650,7 +650,6 @@ function onTouchStart(evt)
   var touches = evt.changedTouches;
   if (touches.length > 0)
   {
-      alert("I am going to click");
       onClick(touches[0]);
   }
 }
@@ -789,7 +788,6 @@ canvas.removeEventListener('mouseup',drop,false);
 function resize(e)
 {
 var wheelSpeed=wheelDetail(e);
-//alert(wheelSpeed);
 if (((scaleDesire>0.07)||(wheelSpeed>0))&&((scaleDesire<1000)||(wheelSpeed<0)))
 {
 var signWheelSpeed=Math.abs(wheelSpeed)/wheelSpeed;
@@ -821,7 +819,6 @@ return value;
 
 
 function animation(){
-//  if (time==Math.PI/speed){ alert(2);contextBackground.translate(10,10);}
 var date = new Date();
 var time1 = date.getTime(); 
  time+=deltaTime;
