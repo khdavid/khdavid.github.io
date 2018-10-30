@@ -644,10 +644,10 @@ function onTouchStart(evt)
     alert("touch");
 
     evt.preventDefault();
-    console.log("touchstart.");
-    var el = document.getElementsByTagName("canvas")[0];
-    var ctx = el.getContext("2d");
+    alert("touch 2");
     var touches = evt.changedTouches;
+    alert("touch length:" + touches.length);
+
 
     for (var i = 0; i < touches.length; i++)
     {
