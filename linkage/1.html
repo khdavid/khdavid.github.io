@@ -324,7 +324,8 @@ contextLinkage.strokeStyle="black";
 //_____________________________________________________________________
 
 
-canvas.addEventListener('mousedown',onClick,false);
+ canvas.addEventListener('mousedown', onClick, false);
+ canvas.addEventListener("touchstart", onTouchStart, false);
 }
 function shifterDeclick(e){
 clearInterval(sIntervalPress);
@@ -636,6 +637,29 @@ pathDataY.push(y);
 canvas.addEventListener('mousemove',getCoordinates,false);
 sInterval=setInterval(drawPath,1);
 sIntervalOp=setInterval(textOpacity,dt);
+}
+
+function onTouchStart(evt)
+{
+    alert("touch");
+
+    evt.preventDefault();
+    console.log("touchstart.");
+    var el = document.getElementsByTagName("canvas")[0];
+    var ctx = el.getContext("2d");
+    var touches = evt.changedTouches;
+
+    for (var i = 0; i < touches.length; i++)
+    {
+        console.log("touchstart:" + i + "...");
+        ongoingTouches.push(copyTouch(touches[i]));
+        var color = colorForTouch(touches[i]);
+        ctx.beginPath();
+        ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false);  // a circle at the start
+        ctx.fillStyle = color;
+        ctx.fill();
+        console.log("touchstart:" + i + ".");
+    }
 }
 
 function getCoordinates(e){
