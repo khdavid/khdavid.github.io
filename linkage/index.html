@@ -84,7 +84,6 @@ var yCos=new Array();
 var xSin=new Array();
 var ySin=new Array();
 
-
 var pathDataX=new Array();
 var pathDataY=new Array();
 var invPar=new Array();
@@ -100,7 +99,6 @@ var sInterval;
 var sIntervalOp;
 var sIntervalAn;
 var sIntervalPress;
-
 
 var screenx,screeny;
 var xDesire=0;
@@ -326,7 +324,8 @@ contextLinkage.strokeStyle="black";
 //_____________________________________________________________________
 
 
-canvas.addEventListener('mousedown',onClick,false);
+ canvas.addEventListener('mousedown', onClick, false);
+ canvas.addEventListener("touchstart", onTouchStart, false);
 }
 function shifterDeclick(e){
 clearInterval(sIntervalPress);
@@ -628,33 +627,62 @@ this.draw=function(){
 function onClick(e){
 canvasMenuBack.style.zIndex=-1;
 canvas.removeEventListener('mousedown',onClick,false);
-canvas.addEventListener('mouseup',onDeclick,false);
-var x=e.pageX-xShift-screenWidth/2;
+canvas.removeEventListener('touchstart', onTouchStart, false);
+canvas.addEventListener('mouseup', onDeclick, false);
+canvas.addEventListener('touchend', onTouchEnd, false);
+
+var x = e.pageX - xShift - screenWidth / 2;
 var y=-(e.pageY-yShift-screenHeight/2);
 context.beginPath();
 context.moveTo((x+screenWidth/2)*scale+xMoved,(-y+screenHeight/2)*scale+yMoved);
 pathDataX.push(x);
 pathDataY.push(y);
-canvas.addEventListener('mousemove',getCoordinates,false);
+canvas.addEventListener('mousemove', getCoordinates, false);
+canvas.addEventListener('touchmove', onTouchMove, false);
+
 sInterval=setInterval(drawPath,1);
 sIntervalOp=setInterval(textOpacity,dt);
 }
 
-function getCoordinates(e){
+function onTouchStart(evt)
+{
+  evt.preventDefault();
+  var touches = evt.changedTouches;
+  if (touches.length > 0)
+  {
+      onClick(touches[0]);
+  }
+}
+
+function getCoordinates(e)
+{
 var x=e.pageX-xShift-screenWidth/2;
 var y=-(e.pageY-yShift-screenHeight/2);
 pathDataX.push(x);
 pathDataY.push(y);
 }
-function drawPath(){
+
+function onTouchMove(evt)
+{
+  var touches = evt.changedTouches;
+  if (touches.length > 0)
+  {
+      getCoordinates(touches[0]);
+  }
+}
+
+function drawPath() {
 var l=pathDataX.length;
 context.lineTo((pathDataX[l-1]+screenWidth/2)*scale+xMoved,(-pathDataY[l-1]+screenHeight/2)*scale+yMoved);
 context.stroke();
 }
-function onDeclick(){
+
+function onDeclick() {
 canvas.removeEventListener('mousemove',getCoordinates,false);
 canvas.removeEventListener('mouseup',onDeclick,false);
-canvasMenuBack.style.zIndex=-2;
+canvas.removeEventListener('touchemove', onTouchMove, false);
+canvas.removeEventListener('touchend', onTouchEnd, false);
+canvasMenuBack.style.zIndex = -2;
 canvasMenu.style.zIndex=-1;
 clearInterval(sInterval);
 clearInterval(sIntervalOp);
@@ -670,6 +698,12 @@ turboLink.innerHTML="Faster";
 context.clearRect(0,0,screenWidth,screenHeight);
 sIntervalAn=setInterval(animation,dt);
 }
+
+function onTouchEnd(e)
+{
+  onDeclick();
+}
+
 function textOpacity(){
 opacity=opacity/1.1;
 contextText.clearRect(0,0,screenWidth,screenHeight);
@@ -754,7 +788,6 @@ canvas.removeEventListener('mouseup',drop,false);
 function resize(e)
 {
 var wheelSpeed=wheelDetail(e);
-//alert(wheelSpeed);
 if (((scaleDesire>0.07)||(wheelSpeed>0))&&((scaleDesire<1000)||(wheelSpeed<0)))
 {
 var signWheelSpeed=Math.abs(wheelSpeed)/wheelSpeed;
@@ -786,7 +819,6 @@ return value;
 
 
 function animation(){
-//  if (time==Math.PI/speed){ alert(2);contextBackground.translate(10,10);}
 var date = new Date();
 var time1 = date.getTime(); 
  time+=deltaTime;
