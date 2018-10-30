@@ -662,12 +662,11 @@ pathDataX.push(x);
 pathDataY.push(y);
 }
 
-function onTouchMove(e)
+function onTouchMove(evt)
 {
   var touches = evt.changedTouches;
   if (touches.length > 0)
   {
-      alert("I am moving");
       getCoordinates(touches[0]);
   }
 }
