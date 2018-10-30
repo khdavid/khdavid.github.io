@@ -627,16 +627,19 @@ this.draw=function(){
 function onClick(e){
 canvasMenuBack.style.zIndex=-1;
 canvas.removeEventListener('mousedown',onClick,false);
-canvas.addEventListener('mouseup',onDeclick,false);
-var x=e.pageX-xShift-screenWidth/2;
+canvas.removeEventListener('touchstart', onTouchStart, false);
+canvas.addEventListener('mouseup', onDeclick, false);
+canvas.addEventListener('touchend', onTouchEnd, false);
+
+var x = e.pageX - xShift - screenWidth / 2;
 var y=-(e.pageY-yShift-screenHeight/2);
-alert(x);
-alert(y);
 context.beginPath();
 context.moveTo((x+screenWidth/2)*scale+xMoved,(-y+screenHeight/2)*scale+yMoved);
 pathDataX.push(x);
 pathDataY.push(y);
-canvas.addEventListener('mousemove',getCoordinates,false);
+canvas.addEventListener('mousemove', getCoordinates, false);
+canvas.addEventListener('touchmove', onTouchMove, false);
+
 sInterval=setInterval(drawPath,1);
 sIntervalOp=setInterval(textOpacity,dt);
 }
@@ -652,21 +655,35 @@ function onTouchStart(evt)
   }
 }
 
-function getCoordinates(e){
+function getCoordinates(e)
+{
 var x=e.pageX-xShift-screenWidth/2;
 var y=-(e.pageY-yShift-screenHeight/2);
 pathDataX.push(x);
 pathDataY.push(y);
 }
-function drawPath(){
+
+function onTouchMove(e)
+{
+  var touches = evt.changedTouches;
+  if (touches.length > 0)
+  {
+      getCoordinates(touches[0]);
+  }
+}
+
+function drawPath() {
 var l=pathDataX.length;
 context.lineTo((pathDataX[l-1]+screenWidth/2)*scale+xMoved,(-pathDataY[l-1]+screenHeight/2)*scale+yMoved);
 context.stroke();
 }
-function onDeclick(){
+
+function onDeclick() {
 canvas.removeEventListener('mousemove',getCoordinates,false);
 canvas.removeEventListener('mouseup',onDeclick,false);
-canvasMenuBack.style.zIndex=-2;
+canvas.removeEventListener('touchemove', onTouchMove, false);
+canvas.removeEventListener('touchend', onTouchEnd, false);
+canvasMenuBack.style.zIndex = -2;
 canvasMenu.style.zIndex=-1;
 clearInterval(sInterval);
 clearInterval(sIntervalOp);
@@ -682,6 +699,12 @@ turboLink.innerHTML="Faster";
 context.clearRect(0,0,screenWidth,screenHeight);
 sIntervalAn=setInterval(animation,dt);
 }
+
+function onTouchEnd(e)
+{
+  onDeclick();
+}
+
 function textOpacity(){
 opacity=opacity/1.1;
 contextText.clearRect(0,0,screenWidth,screenHeight);
