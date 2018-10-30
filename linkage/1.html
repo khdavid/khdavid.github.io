@@ -641,25 +641,13 @@ sIntervalOp=setInterval(textOpacity,dt);
 
 function onTouchStart(evt)
 {
-    alert("touch");
-
-    evt.preventDefault();
-    alert("touch 2");
-    var touches = evt.changedTouches;
-    alert("touch length:" + touches.length);
-
-
-    for (var i = 0; i < touches.length; i++)
-    {
-        console.log("touchstart:" + i + "...");
-        ongoingTouches.push(copyTouch(touches[i]));
-        var color = colorForTouch(touches[i]);
-        ctx.beginPath();
-        ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false);  // a circle at the start
-        ctx.fillStyle = color;
-        ctx.fill();
-        alert("touchstart:" + i + ".");
-    }
+  evt.preventDefault();
+  var touches = evt.changedTouches;
+  if (touches.length > 0)
+  {
+      alert("I am going to click");
+      onClick(touch[0]);
+  }
 }
 
 function getCoordinates(e){
