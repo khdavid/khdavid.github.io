@@ -801,9 +801,13 @@ function dragMoving(e)
 function dragMovingTouch(evt)
 {
   var touches = evt.changedTouches;
-  if (touches.length > 0)
+  if (touches.length == 1)
   {
       dragMoving(touches[0]);
+  }
+  if (touches.length > 1)
+  {
+      resize(10, evt.pageX, evt.pageY);
   }
 
 }
@@ -822,20 +826,26 @@ function dropTouch()
     drop();
 }
 
+resize(wheelSpeed, x, y)
+{
+  if (((scaleDesire > 0.07) || (wheelSpeed > 0)) && ((scaleDesire < 1000) || (wheelSpeed < 0)))
+  {
+      var signWheelSpeed = Math.abs(wheelSpeed) / wheelSpeed;
+      scaleDesire = scaleDesire * (1 + signWheelSpeed * scaleFactor);
+      offsetXDuringResize = x;
+      offsetYDuringResize = y;
+      flagForScale = Math.log(1 / 10000) / Math.log(1 - frictionScaleCoef);
+  }
+}
+
 function resize(e)
 {
-var wheelSpeed=wheelDetail(e);
-if (((scaleDesire>0.07)||(wheelSpeed>0))&&((scaleDesire<1000)||(wheelSpeed<0)))
-{
-var signWheelSpeed=Math.abs(wheelSpeed)/wheelSpeed;
-scaleDesire=scaleDesire*(1+signWheelSpeed*scaleFactor);
-offsetXDuringResize=e.pageX;
-offsetYDuringResize=e.pageY;
-flagForScale=Math.log(1/10000)/Math.log(1-frictionScaleCoef);
+    var wheelSpeed = wheelDetail(e);
+    resize(wheelSpeed, e.pageX, e.pageY);
+    e.preventDefault();
 }
-e.preventDefault();
-}
-function wheelDetail(e){
+
+function wheelDetail(e) {
 return (e.detail ? -e.detail/3 : e.wheelDelta/120);
 }
 function f(x,pathData){  //x\in[-1,1]
