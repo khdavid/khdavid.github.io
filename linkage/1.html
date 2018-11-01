@@ -778,13 +778,12 @@ screenx = e.screenX;
 screeny=e.screenY;
 }
 
-function dragTouch(e)
+function dragTouch(evt)
 {
   evt.preventDefault();
   var touches = evt.changedTouches;
   if (touches.length > 0)
   {
-      alert("dragtouch_2")
       drag(touches[0]);
   }
 
@@ -799,13 +798,11 @@ function dragMoving(e)
  screeny=e.screenY;
 }
 
-function dragMovingTouch(e)
+function dragMovingTouch(evt)
 {
-  alert("dragMovingTouch_1");
   var touches = evt.changedTouches;
   if (touches.length > 0)
   {
-      alert("dragMovingTouch_2");
       dragMoving(touches[0]);
   }
 
