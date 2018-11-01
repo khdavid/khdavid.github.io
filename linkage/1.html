@@ -691,6 +691,7 @@ fourierTransformation();
 canvas.addEventListener('DOMMouseScroll', resize, false); //scrolling 
 canvas.addEventListener('mousewheel', resize, false);     //scrolling for firefox
 canvas.addEventListener('mousedown',drag,false)
+canvas.addEventListener('touchstart', dragTouch, false)
 
 canvasMenu.addEventListener('mousedown',onMenuClick,false);
 canvasMenu.style.zIndex=1;
@@ -770,9 +771,24 @@ for (var t=0;t<=nApp;t+=1/(nApp)/2){
 function drag(e){
 canvas.addEventListener('mousemove',dragMoving,false);
 canvas.addEventListener('mouseup',drop,false);
-screenx=e.screenX;
+canvas.addEventListener('touchmove', dragMovingTouch, false);
+canvas.addEventListener('touchend', dropTouch, false);
+
+screenx = e.screenX;
 screeny=e.screenY;
 }
+
+function dragTouch(e)
+{
+  evt.preventDefault();
+  var touches = evt.changedTouches;
+  if (touches.length > 0)
+  {
+      drag(touches[0]);
+  }
+
+}
+
 function dragMoving(e)
 {
 
@@ -781,10 +797,31 @@ function dragMoving(e)
  screenx=e.screenX;
  screeny=e.screenY;
 }
-function drop(){
+
+function dragMovingTouch(e)
+{
+  var touches = evt.changedTouches;
+  if (touches.length > 0)
+  {
+      dragMoving(touches[0]);
+  }
+
+}
+
+function drop()
+{
 canvas.removeEventListener('mousemove',dragMoving,false);
 canvas.removeEventListener('mouseup',drop,false);
+canvas.removeEventListener('touchmove', dragMovingTouch, false);
+canvas.removeEventListener('touchend', dropTouch, false);
+
 }
+
+function dropTouch()
+{
+    drop();
+}
+
 function resize(e)
 {
 var wheelSpeed=wheelDetail(e);
