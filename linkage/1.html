@@ -801,7 +801,7 @@ function dragMoving(e)
 function dragMovingTouch(evt)
 {
   var touches = evt.changedTouches;
-  if (touches.length > 0)
+  if (touches.length == 1)
   {
       dragMoving(touches[0]);
   }
@@ -842,7 +842,7 @@ function resize(e)
 }
 
 function wheelDetail(e) {
-   return (e.detail ? -e.detail / 3 : e.wheelDelta / 120);
+  return (e.detail ? -e.detail / 3 : e.wheelDelta / 120);
 }
 
 function f(x,pathData){  //x\in[-1,1]
