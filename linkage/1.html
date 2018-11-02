@@ -664,8 +664,8 @@ pathDataY.push(y);
 
 function onTouchMove(evt)
 {
-  var touches = evt.changedTouches;
-  if (touches.length > 0)
+  var touches = evt.touches;
+  if (touches.length == 1)
   {
       getCoordinates(touches[0]);
   }
@@ -800,7 +800,7 @@ function dragMoving(e)
 
 function dragMovingTouch(evt)
 {
-  var touches = evt.changedTouches;
+  var touches = evt.touches;
   if (touches.length == 1)
   {
       dragMoving(touches[0]);
