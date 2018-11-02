@@ -801,13 +801,9 @@ function dragMoving(e)
 function dragMovingTouch(evt)
 {
   var touches = evt.changedTouches;
-  if (touches.length == 1)
+  if (touches.length > 0)
   {
       dragMoving(touches[0]);
-  }
-  if (touches.length > 1)
-  {
-      resize(10, evt.pageX, evt.pageY);
   }
 
 }
