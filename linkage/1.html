@@ -680,7 +680,7 @@ context.stroke();
 function onDeclick() {
 canvas.removeEventListener('mousemove',getCoordinates,false);
 canvas.removeEventListener('mouseup',onDeclick,false);
-canvas.removeEventListener('touchemove', onTouchMove, false);
+canvas.removeEventListener('touchmove', onTouchMove, false);
 canvas.removeEventListener('touchend', onTouchEnd, false);
 canvasMenuBack.style.zIndex = -2;
 canvasMenu.style.zIndex=-1;
