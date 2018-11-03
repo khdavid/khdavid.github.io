@@ -106,6 +106,8 @@ var yDesire=0;
 var offsetXDuringResize=0;
 var offsetYDuringResize=0;
 var pattern;
+var gStartDistanceBetweenFingers = 0;
+
 document.addEventListener("DOMContentLoaded", initCanvases(), false);
 //initCanvases();
 function initCanvases(){
@@ -772,22 +774,56 @@ for (var t=0;t<=nApp;t+=1/(nApp)/2){
 function drag(e){
 canvas.addEventListener('mousemove',dragMoving,false);
 canvas.addEventListener('mouseup',drop,false);
-canvas.addEventListener('touchmove', dragMovingTouch, false);
-canvas.addEventListener('touchend', dropTouch, false);
 
 screenx = e.screenX;
 screeny=e.screenY;
 }
 
-function dragTouch(evt)
+
+function getDistanceFromTouch(touchEvt1, touchEvt2)
 {
+  var dist = Math.sqrt(Math.pow(touchEvt1.pageX - touchEvt2.pageX, 2) +
+  Math.pow(touchEvt1.pageY - touchEvt1.pageY, 2));
+  return dist;
+}
+
+function onTwoFingersTouchStart(touchEvt1, touchEvt2) {
+
+  var dist = getDistanceFromTouch(touchEvt1, touchEvt2);
+  scaleDesire = dist / gStartDistanceBetweenFingers;
+
+  if ((scaleDesire > 0.07) && (scaleDesire < 1000)) {
+    offsetXDuringResize = (touchEvt1.pageX + touchEvt2.pageX) / 2;
+    offsetYDuringResize = (touchEvt1.pageY + touchEvt2.pageY) / 2;
+  }
+}
+
+function onTwoFingersTouchMove(evt) {
+  var touches = evt.touches;
+  if (touches.length == 2)
+  {
+    onTwoFingersTouchStart(touches[0], touches[1]);
+  }
+}
+
+function onTwoFingersTouchStart(touchEvt1, touchEvt2) {
+  gStartDistanceBetweenFingers = getDistanceFromTouch(touchEvt1, touchEvt2);
+  canvas.addEventListener('touchmove', onTwoFingersTouchMove, false);
+}
+
+
+function dragTouch(evt) {
   evt.preventDefault();
   var touches = evt.changedTouches;
-  if (touches.length > 0)
-  {
-      drag(touches[0]);
+  if (touches.length == 1) {
+    canvas.addEventListener('touchmove', dragMovingTouch, false);
+    drag(touches[0]);
+  }
+  else if (touches.length == 2) {
+    onTwoFingersTouchStart(touches[0], touches[1]);
   }
 
+  canvas.addEventListener('touchend', dropTouch, false);
 }
 
 function dragMoving(e)
@@ -813,14 +849,14 @@ function drop()
 {
 canvas.removeEventListener('mousemove',dragMoving,false);
 canvas.removeEventListener('mouseup',drop,false);
-canvas.removeEventListener('touchmove', dragMovingTouch, false);
-canvas.removeEventListener('touchend', dropTouch, false);
-
 }
 
 function dropTouch()
 {
-    drop();
+  canvas.removeEventListener('touchmove', dragMovingTouch, false);
+  canvas.removeEventListener('touchmove', onTwoFingersTouchMove, false);
+  canvas.removeEventListener('touchend', dropTouch, false);
+  drop();
 }
 
 resize(wheelSpeed, x, y)
