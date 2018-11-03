@@ -787,7 +787,7 @@ function getDistanceFromTouch(touchEvt1, touchEvt2)
   return dist;
 }
 
-function onTwoFingersTouchStart(touchEvt1, touchEvt2) {
+function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
 
   var dist = getDistanceFromTouch(touchEvt1, touchEvt2);
   turboLink.innerHTML = dist;
@@ -805,7 +805,7 @@ function onTwoFingersTouchMove(evt) {
   var touches = evt.touches;
   if (touches.length == 2)
   {
-    onTwoFingersTouchStart(touches[0], touches[1]);
+    onTwoFingersTouchMove(touches[0], touches[1]);
   }
 }
 
