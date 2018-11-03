@@ -650,6 +650,7 @@ function onTouchStart(evt)
   var touches = evt.changedTouches;
   if (touches.length > 0)
   {
+      turboLink.innerHTML = touches[0].pageX;
       onClick(touches[0]);
   }
 }
@@ -667,7 +668,6 @@ function onTouchMove(evt)
   var touches = evt.touches;
   if (touches.length == 1)
   {
-      turboLink.innerHTML = touches[0].pageX;
       getCoordinates(touches[0]);
   }
 }
