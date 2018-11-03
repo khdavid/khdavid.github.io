@@ -638,8 +638,6 @@ context.moveTo((x+screenWidth/2)*scale+xMoved,(-y+screenHeight/2)*scale+yMoved);
 pathDataX.push(x);
 pathDataY.push(y);
 canvas.addEventListener('mousemove', getCoordinates, false);
-turboLink.innerHTML = "onTuchoMove: register in OnClick";
-canvas.addEventListener('touchmove', onTouchMove, false);
 
 sInterval=setInterval(drawPath,1);
 sIntervalOp=setInterval(textOpacity,dt);
@@ -651,6 +649,8 @@ function onTouchStart(evt)
   var touches = evt.changedTouches;
   if (touches.length > 0)
   {
+      turboLink.innerHTML = "onTuchoMove: register in OnClick";
+      canvas.addEventListener('touchmove', onTouchMove, false);
       onClick(touches[0]);
   }
 }
@@ -681,9 +681,6 @@ context.stroke();
 function onDeclick() {
 canvas.removeEventListener('mousemove',getCoordinates,false);
 canvas.removeEventListener('mouseup',onDeclick,false);
-turboLink.innerHTML = "onTuchoMove: unregister in OnDeclick";
-canvas.removeEventListener('touchemove', onTouchMove, false);
-canvas.removeEventListener('touchend', onTouchEnd, false);
 canvasMenuBack.style.zIndex = -2;
 canvasMenu.style.zIndex=-1;
 clearInterval(sInterval);
@@ -704,7 +701,10 @@ sIntervalAn=setInterval(animation,dt);
 
 function onTouchEnd(e)
 {
-  onDeclick();
+   turboLink.innerHTML = "onTuchoMove: unregister in OnDeclick";
+   canvas.removeEventListener('touchemove', onTouchMove, false);
+   canvas.removeEventListener('touchend', onTouchEnd, false);
+   onDeclick();
 }
 
 function textOpacity(){
