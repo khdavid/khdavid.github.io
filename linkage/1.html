@@ -698,7 +698,7 @@ canvas.addEventListener('touchstart', dragTouch, false)
 
 canvasMenu.addEventListener('mousedown',onMenuClick,false);
 canvasMenu.style.zIndex=1;
-turboLink.innerHTML="Faster";
+//turboLink.innerHTML="Faster";
 context.clearRect(0,0,screenWidth,screenHeight);
 sIntervalAn=setInterval(animation,dt);
 }
@@ -790,6 +790,8 @@ function getDistanceFromTouch(touchEvt1, touchEvt2)
 function onTwoFingersTouchStart(touchEvt1, touchEvt2) {
 
   var dist = getDistanceFromTouch(touchEvt1, touchEvt2);
+  turboLink.innerHTML = dist;
+
   scaleDesire = dist / gStartDistanceBetweenFingers;
 
   if ((scaleDesire > 0.07) && (scaleDesire < 1000)) {
@@ -799,6 +801,7 @@ function onTwoFingersTouchStart(touchEvt1, touchEvt2) {
 }
 
 function onTwoFingersTouchMove(evt) {
+  turboLink.innerHTML = "onTwoFingersTouchMove " + evt.touches.length;
   var touches = evt.touches;
   if (touches.length == 2)
   {
