@@ -204,14 +204,14 @@ contextBackground.fill();
   contextMenuBack.clearRect(0,0,menuWidth,screenHeight);
   contextMenuBack.fillRect(0,0,menuWidth,screenHeight);
 }
-
+  
   }
 circleCenter=[screenWidth/2+10,screenHeight/2-10];
 circleImage.onload = function(){
    if (!turboOn){
      contextCircle.translate(circleCenter[0],circleCenter[1]);
      contextCircle.drawImage(circleImage,-195,-195);
-     contextCircle.fill();
+     contextCircle.fill(); 
    }
    else{
     contextCircle.fillStyle="#8ED6FF"
@@ -219,7 +219,7 @@ circleImage.onload = function(){
     contextCircle.clearRect(0,0,screenWidth,screenHeight);
     contextCircle.fill();
 }
-
+   
   }
 contextMenuBack.globalAlpha=0.75;
 contextMenuBack.fillRect(0,0,menuWidth,screenHeight);
@@ -638,7 +638,6 @@ context.moveTo((x+screenWidth/2)*scale+xMoved,(-y+screenHeight/2)*scale+yMoved);
 pathDataX.push(x);
 pathDataY.push(y);
 canvas.addEventListener('mousemove', getCoordinates, false);
-turboLink.innerHTML = "onTuchoMove: register in OnClick";
 canvas.addEventListener('touchmove', onTouchMove, false);
 
 sInterval=setInterval(drawPath,1);
@@ -681,7 +680,6 @@ context.stroke();
 function onDeclick() {
 canvas.removeEventListener('mousemove',getCoordinates,false);
 canvas.removeEventListener('mouseup',onDeclick,false);
-turboLink.innerHTML = "onTuchoMove: unregister in OnDeclick";
 canvas.removeEventListener('touchemove', onTouchMove, false);
 canvas.removeEventListener('touchend', onTouchEnd, false);
 canvasMenuBack.style.zIndex = -2;
@@ -690,14 +688,14 @@ clearInterval(sInterval);
 clearInterval(sIntervalOp);
 contextText.clearRect(0,0,screenWidth,screenHeight);
 fourierTransformation();
-canvas.addEventListener('DOMMouseScroll', resize, false); //scrolling
+canvas.addEventListener('DOMMouseScroll', resize, false); //scrolling 
 canvas.addEventListener('mousewheel', resize, false);     //scrolling for firefox
 canvas.addEventListener('mousedown',drag,false)
 canvas.addEventListener('touchstart', dragTouch, false)
 
 canvasMenu.addEventListener('mousedown',onMenuClick,false);
 canvasMenu.style.zIndex=1;
-//turboLink.innerHTML="Faster";
+turboLink.innerHTML="Faster";
 context.clearRect(0,0,screenWidth,screenHeight);
 sIntervalAn=setInterval(animation,dt);
 }
@@ -732,7 +730,7 @@ function fourierTransformation(){
   else{
     xSumMod.push(xSumMod[i-1]+Math.abs(xFourier[i]));
     ySumMod.push(ySumMod[i-1]+Math.abs(yFourier[i]));
-  }
+  }  
  }
 for (var t=0;t<=nApp;t+=1/(nApp)/2){
   for(var i=0;i<=nApp;i++){
@@ -747,7 +745,7 @@ for (var t=0;t<=nApp;t+=1/(nApp)/2){
 	  yCos[i]=yCos[i-1]+yFourier[i]*Math.cos(i*Math.PI*t/nApp);
 	  xSin[i]=xSin[i-1]+xFourier[i]*Math.sin(i*Math.PI*t/nApp);
 	  ySin[i]=ySin[i-1]+yFourier[i]*Math.sin(i*Math.PI*t/nApp);
-      }
+      }	
 
 	  if (t==0){
       xMaxModCos[i]=Math.abs(xCos[i]);
@@ -765,7 +763,7 @@ for (var t=0;t<=nApp;t+=1/(nApp)/2){
       if(Math.sqrt(Math.pow(xCos[i],2)+Math.pow(xSin[i],2))>xMaxMod[i]) {xMaxMod[i]=Math.sqrt(Math.pow(xCos[i],2)+Math.pow(xSin[i],2));}
       if(Math.sqrt(Math.pow(yCos[i],2)+Math.pow(ySin[i],2))>yMaxMod[i]) {yMaxMod[i]=Math.sqrt(Math.pow(yCos[i],2)+Math.pow(ySin[i],2));}
      }
-
+ 
 	 }
   }
 }
@@ -860,13 +858,13 @@ value=pathData[nl]+((x+1)*(l-1)/2-nl)*(pathData[nl+1]-pathData[nl]);
 }
 
 return value;
-}
+}	
 
 
 
 function animation(){
 var date = new Date();
-var time1 = date.getTime();
+var time1 = date.getTime(); 
  time+=deltaTime;
   contextGreen.lineWidth=lineWidth*scale;
   contextRed.lineWidth=lineWidth*scale*2;
@@ -880,7 +878,7 @@ var time1 = date.getTime();
   xMoved+=xMovedDelta;
   yMoved+=yMovedDelta;
   if (flagForScale>0){xDesire=xMoved;yDesire=yMoved;flagForScale--}
-
+  
 if (!turboOn){
   contextBackground.setTransform(1, 0, 0, 1,0,0);
   contextBackground.scale(scale,scale);
@@ -905,12 +903,11 @@ contextCircle.clearRect(0,0,screenWidth,screenHeight);
 contextCircle.fill();
 */
 }
-
-  //_____________________________________________________________________________
-
-
-
-    //____________linkage______________________________________________
+  
+  //_____________________________________________________________________________  
+  
+  
+  //____________linkage______________________________________________
 
   contextLinkage.beginPath();
   contextLinkage.clearRect(0,0,screenWidth,screenHeight);
@@ -920,7 +917,7 @@ contextCircle.fill();
   var invParSize=200;
   var mainVehicleSize=150;
   var trSh=30;
-
+  
   for (var i=0;i<=limitDesire;i++){
      if (i==0){
 	   xAttachX[i]=xFourier[i]*Math.cos(speed*time*i);
@@ -933,7 +930,7 @@ contextCircle.fill();
 	   yAttachX[i]=yAttachX[i-1]+xFourier[i]*Math.sin(speed*time*i);
 	   xAttachY[i]=xAttachY[i-1]-yFourier[i]*Math.sin(speed*time*i);
 	   yAttachY[i]=yAttachY[i-1]+yFourier[i]*Math.cos(speed*time*i);
-       }
+       }	 
     }
 //_________________________________driver_linkage___________________________________________________
   contextLinkage.save();
@@ -945,7 +942,7 @@ contextCircle.fill();
   drawLine([10+invParSize*eps*Math.cos(speed*time),10+invParSize*eps*Math.sin(speed*time)],[10-invParSize*eps*Math.sin(speed*time),10+invParSize*eps*Math.cos(speed*time)],contextLinkage)
   contextLinkage.stroke();
   contextLinkage.restore();
-//______________________________________________________________________________________________________________
+//______________________________________________________________________________________________________________  
   drawLine([10+invParSize*eps*Math.cos(speed*time),10+invParSize*eps*Math.sin(speed*time)],[10-invParSize*eps*Math.sin(speed*time),10+invParSize*eps*Math.cos(speed*time)],contextLinkage)
 
   //____________X_________________________
@@ -953,62 +950,62 @@ contextCircle.fill();
   for(var i=0;i<=limitDesire;i++){
     if (i>0){
 	  invPar[i]=new inversePar(0,-yAttachX[limitDesire]+yAttachY[limitDesire],invParSize*Math.pow(eps,i-1),invParSize*Math.pow(eps,i),time*speed,speed*time*(i-1));
-      invPar[i].draw();
+      invPar[i].draw();  
 	}
     drawLine([0,-yAttachX[limitDesire]+yAttachY[limitDesire]],[xFourier[i]*Math.cos(speed*time*(i)),-yAttachX[limitDesire]+yAttachY[limitDesire]+xFourier[i]*Math.sin(speed*time*(i))],contextLinkage)
-
+    
   }
-
-
+ 
+ 
   trans[0]=new translator([10,10],invParSize,0,[0,-yAttachX[limitDesire]+yAttachY[limitDesire]],(xMaxMod[limitDesire]+yMaxMod[limitDesire])/2+trSh);
   trans[0].draw();
   trans[0]=new translator([10,10],invParSize*eps,speed*time,[0,-yAttachX[limitDesire]+yAttachY[limitDesire]],(xMaxMod[limitDesire]+yMaxMod[limitDesire])/2+trSh);
   trans[0].draw();
-
+  
   for(var i=1;i<=limitDesire;i++){
 	trans[i]=new translator([0,-yAttachX[limitDesire]+yAttachY[limitDesire]],xFourier[i],speed*time*i,[xAttachX[i-1],yAttachX[i-1]-yAttachX[limitDesire]+yAttachY[limitDesire]],xMaxMod[i-1]/2+trSh);
-	trans[i].draw();
+	trans[i].draw();  
   }
-
+  
   //______________________________________
-
+  
   //____________Y_________________________
-
+  
 
 
   for(var i=0;i<=limitDesire;i++){
     if (i>0){
 	  invPar[i]=new inversePar(-xAttachY[limitDesire]+xAttachX[limitDesire],0,invParSize*Math.pow(eps,i-1),invParSize*Math.pow(eps,i),time*speed,speed*time*(i-1)+Math.PI/2);
-      invPar[i].draw();
+      invPar[i].draw();  
 	}
     drawLine([-xAttachY[limitDesire]+xAttachX[limitDesire],0],[-yFourier[i]*Math.sin(speed*time*(i))-xAttachY[limitDesire]+xAttachX[limitDesire],yFourier[i]*Math.cos(speed*time*(i))],contextLinkage)
   }
-
+ 
   trans[0]=new translator([10,10],invParSize,Math.PI/2,[-xAttachY[limitDesire]+xAttachX[limitDesire],0],(xSumMod[limitDesire]+ySumMod[limitDesire])/2+trSh);
   trans[0].draw();
   trans[0]=new translator([10,10],invParSize*eps,Math.PI/2+speed*time,[-xAttachY[limitDesire]+xAttachX[limitDesire],0],(xSumMod[limitDesire]+ySumMod[limitDesire])/2+trSh);
   trans[0].draw();
-
+  
   for(var i=1;i<=limitDesire;i++){
 	trans[i]=new translator([-xAttachY[limitDesire]+xAttachX[limitDesire],0],yFourier[i],Math.PI/2+speed*time*i,[xAttachY[i-1]-xAttachY[limitDesire]+xAttachX[limitDesire],yAttachY[i-1]],yMaxMod[i]/2+trSh);
-	trans[i].draw();
+	trans[i].draw();  
   }
-
+  
   //______________________________________
-
-
-
+  
+  
+  
   //__________________________________________________________________
-
-
+  
+  
 //________________this.vStraightLine=function(x,y,delta,a,b,phi)______________
 var vStrLine= new vStraightLine(0,0,-yAttachX[limitDesire]+yAttachY[limitDesire],(xMaxModSin[limitDesire]+yMaxModCos[limitDesire])/2,1.5*(xMaxModSin[limitDesire]+yMaxModCos[limitDesire]),Math.PI/3)
 vStrLine.draw(contextLinkage);
-//___________________________________________________________________________________
+//___________________________________________________________________________________  
 //________________this.hStraightLine=function(x,y,delta,a,b,phi)______________
 var hStrLine= new hStraightLine(0,0,-xAttachY[limitDesire]+xAttachX[limitDesire],(yMaxModSin[limitDesire]+xMaxModCos[limitDesire])/2,1.5*(yMaxModSin[limitDesire]+xMaxModCos[limitDesire]),Math.PI/3)
 hStrLine.draw();
-//___________________________________________________________________________________
+//___________________________________________________________________________________  
 
   contextLinkage.stroke();
 
@@ -1040,7 +1037,7 @@ var step=0.5/pathDataX.length;
 if (pathDataX.length<40){step=0.5/40;}
 if (time*speed>=2*Math.PI){flagForRedFinish=0;}
 if (flagForRedPath==1){contextRed.clearRect(0,0,screenWidth,screenHeight);}
-for(var shiftFlag=0;shiftFlag<=1;shiftFlag++){
+for(var shiftFlag=0;shiftFlag<=1;shiftFlag++){ 
   var x=0;
   var y=0;
   var flagForStartDraw=0;
@@ -1072,7 +1069,7 @@ for(var shiftFlag=0;shiftFlag<=1;shiftFlag++){
 	flagForStartDraw++;
 
 
-	  }
+	  }  
   }
 }
 	      contextRed.stroke();
@@ -1107,17 +1104,17 @@ if (!isChrome){ctx.stroke();}
 function viewPortSizes(){
  var viewportwidth;
  var viewportheight;
-
+  
  // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
-
+  
  if (typeof window.innerWidth != 'undefined')
  {
       viewportwidth = window.innerWidth,
       viewportheight = window.innerHeight
  }
-
+  
 // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
-
+ 
  else if (typeof document.documentElement != 'undefined'
      && typeof document.documentElement.clientWidth !=
      'undefined' && document.documentElement.clientWidth != 0)
@@ -1125,9 +1122,9 @@ function viewPortSizes(){
        viewportwidth = document.documentElement.clientWidth,
        viewportheight = document.documentElement.clientHeight
  }
-
+  
  // older versions of IE
-
+  
  else
  {
        viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
@@ -1140,12 +1137,12 @@ function browserDetect(){
         if(val.indexOf("chrome") > -1)
        {
 		   isChrome=true;
-       }
+       } 
 
   /*   if(val.indexOf("firefox") > -1)
      {
          alert("firefox");
-     }
+     } 
 
        else if(val.indexOf("opera") > -1)
        {
@@ -1154,12 +1151,12 @@ function browserDetect(){
        else if(val.indexOf("msie") > -1)
        {
            alert("internet explorer")
-       }
+       } 
        else if(val.indexOf("safari") > -1)
        {
            alert("safari")
        } */
-}
+} 
 function changeTurboMode(){
 turboOn=!turboOn;
 if (turboOn){
@@ -1181,23 +1178,23 @@ else{
   contextMenuBack.globalAlpha=0.75;
   contextMenuBack.clearRect(0,0,menuWidth,screenHeight);
   contextMenuBack.fillRect(0,0,menuWidth,screenHeight);
-
+    
 	contextBackground.rect(0, 0, screenWidth, screenHeight);
     contextBackground.translate(patternShift[0],patternShift[1]);
     contextBackground.fillStyle = pattern;
     contextBackground.fill();
-
+	 
    contextCircle.translate(circleCenter[0],circleCenter[1]);
    contextCircle.drawImage(circleImage,-195,-195);
-   contextCircle.fill();
+   contextCircle.fill(); 
 
-  }
+  }    
 return false
 }
 
 function refresh(){
 clearInterval(sIntervalAn);
-canvas.removeEventListener('DOMMouseScroll', resize, false); //scrolling
+canvas.removeEventListener('DOMMouseScroll', resize, false); //scrolling 
 canvas.removeEventListener('mousewheel', resize, false);     //scrolling for firefox
 canvas.removeEventListener('mousedown', drag, false);
 canvas.removeEventListener('mouseup', drop, false);
@@ -1218,7 +1215,7 @@ canvasMenuBack.style.zIndex=-1;
  opacity=0.3;
  limitDesire=limitDesireInitial;
  lineWidthLinkage=lineWidthInitial;
-
+ 
  time=Math.PI/speed;
  xFourier=new Array();
  yFourier=new Array();
@@ -1251,7 +1248,7 @@ canvasMenuBack.style.zIndex=-1;
  initCanvases();
 }
 
-</script>
+ </script>
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-27665935-1']);
