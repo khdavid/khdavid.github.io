@@ -664,8 +664,9 @@ pathDataY.push(y);
 
 function onTouchMove(evt)
 {
-  var touches = evt.changedTouches;
-  if (touches.length > 0)
+  var touches = evt.touches;
+
+  if (touches.length == 1)
   {
       getCoordinates(touches[0]);
   }
@@ -680,7 +681,7 @@ context.stroke();
 function onDeclick() {
 canvas.removeEventListener('mousemove',getCoordinates,false);
 canvas.removeEventListener('mouseup',onDeclick,false);
-canvas.removeEventListener('touchemove', onTouchMove, false);
+canvas.removeEventListener('touchmove', onTouchMove, false);
 canvas.removeEventListener('touchend', onTouchEnd, false);
 canvasMenuBack.style.zIndex = -2;
 canvasMenu.style.zIndex=-1;
@@ -691,6 +692,7 @@ fourierTransformation();
 canvas.addEventListener('DOMMouseScroll', resize, false); //scrolling 
 canvas.addEventListener('mousewheel', resize, false);     //scrolling for firefox
 canvas.addEventListener('mousedown',drag,false)
+canvas.addEventListener('touchstart', dragTouch, false)
 
 canvasMenu.addEventListener('mousedown',onMenuClick,false);
 canvasMenu.style.zIndex=1;
@@ -770,9 +772,24 @@ for (var t=0;t<=nApp;t+=1/(nApp)/2){
 function drag(e){
 canvas.addEventListener('mousemove',dragMoving,false);
 canvas.addEventListener('mouseup',drop,false);
-screenx=e.screenX;
+canvas.addEventListener('touchmove', dragMovingTouch, false);
+canvas.addEventListener('touchend', dropTouch, false);
+
+screenx = e.screenX;
 screeny=e.screenY;
 }
+
+function dragTouch(evt)
+{
+  evt.preventDefault();
+  var touches = evt.changedTouches;
+  if (touches.length > 0)
+  {
+      drag(touches[0]);
+  }
+
+}
+
 function dragMoving(e)
 {
 
@@ -781,26 +798,54 @@ function dragMoving(e)
  screenx=e.screenX;
  screeny=e.screenY;
 }
-function drop(){
+
+function dragMovingTouch(evt)
+{
+  var touches = evt.touches;
+  if (touches.length == 1)
+  {
+      dragMoving(touches[0]);
+  }
+
+}
+
+function drop()
+{
 canvas.removeEventListener('mousemove',dragMoving,false);
 canvas.removeEventListener('mouseup',drop,false);
+canvas.removeEventListener('touchmove', dragMovingTouch, false);
+canvas.removeEventListener('touchend', dropTouch, false);
+
 }
+
+function dropTouch()
+{
+    drop();
+}
+
+resize(wheelSpeed, x, y)
+{
+  if (((scaleDesire > 0.07) || (wheelSpeed > 0)) && ((scaleDesire < 1000) || (wheelSpeed < 0)))
+  {
+      var signWheelSpeed = Math.abs(wheelSpeed) / wheelSpeed;
+      scaleDesire = scaleDesire * (1 + signWheelSpeed * scaleFactor);
+      offsetXDuringResize = x;
+      offsetYDuringResize = y;
+      flagForScale = Math.log(1 / 10000) / Math.log(1 - frictionScaleCoef);
+  }
+}
+
 function resize(e)
 {
-var wheelSpeed=wheelDetail(e);
-if (((scaleDesire>0.07)||(wheelSpeed>0))&&((scaleDesire<1000)||(wheelSpeed<0)))
-{
-var signWheelSpeed=Math.abs(wheelSpeed)/wheelSpeed;
-scaleDesire=scaleDesire*(1+signWheelSpeed*scaleFactor);
-offsetXDuringResize=e.pageX;
-offsetYDuringResize=e.pageY;
-flagForScale=Math.log(1/10000)/Math.log(1-frictionScaleCoef);
+    var wheelSpeed = wheelDetail(e);
+    resize(wheelSpeed, e.pageX, e.pageY);
+    e.preventDefault();
 }
-e.preventDefault();
+
+function wheelDetail(e) {
+  return (e.detail ? -e.detail / 3 : e.wheelDelta / 120);
 }
-function wheelDetail(e){
-return (e.detail ? -e.detail/3 : e.wheelDelta/120);
-}
+
 function f(x,pathData){  //x\in[-1,1]
 var value;
 var l=pathData.length;
@@ -1152,9 +1197,11 @@ function refresh(){
 clearInterval(sIntervalAn);
 canvas.removeEventListener('DOMMouseScroll', resize, false); //scrolling 
 canvas.removeEventListener('mousewheel', resize, false);     //scrolling for firefox
-canvas.removeEventListener('mousedown',drag,false)
-canvas.removeEventListener('mouseup',drop,false)
-canvasMenu.removeEventListener('mousedown',onMenuClick,false);
+canvas.removeEventListener('mousedown', drag, false);
+canvas.removeEventListener('mouseup', drop, false);
+canvas.removeEventListener('touchstart', dragTouch, false);
+canvas.removeEventListener('touchend', dropTouch, false);
+canvasMenu.removeEventListener('mousedown', onMenuClick, false);
 canvasMenu.style.zIndex=-2;
 canvasMenuBack.style.zIndex=-1;
  scale=1;
