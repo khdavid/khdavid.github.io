@@ -803,6 +803,7 @@ function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
     offsetXDuringResize = (touchEvt1.pageX + touchEvt2.pageX) / 2;
     offsetYDuringResize = (touchEvt1.pageY + touchEvt2.pageY) / 2;
   }
+  gPrevDistanceBetweenFingers = dist;
 }
 
 function dragTouch(evt) {
