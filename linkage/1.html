@@ -106,7 +106,7 @@ var yDesire=0;
 var offsetXDuringResize=0;
 var offsetYDuringResize=0;
 var pattern;
-var gStartDistanceBetweenFingers = 0;
+var gPrevDistanceBetweenFingers = 0;
 
 document.addEventListener("DOMContentLoaded", initCanvases(), false);
 //initCanvases();
@@ -792,28 +792,18 @@ function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
   var dist = getDistanceFromTouch(touchEvt1, touchEvt2);
   turboLink.innerHTML = dist;
 
-  scaleDesire = dist / gStartDistanceBetweenFingers;
 
+  if (gPrevDistanceBetweenFingers == 0)
+  {
+    gPrevDistanceBetweenFingers = dist;
+    return;
+  }
+  scaleDesire = dist / gStartDistanceBetweenFingers;
   if ((scaleDesire > 0.07) && (scaleDesire < 1000)) {
     offsetXDuringResize = (touchEvt1.pageX + touchEvt2.pageX) / 2;
     offsetYDuringResize = (touchEvt1.pageY + touchEvt2.pageY) / 2;
   }
 }
-
-function onTwoFingersTouchMove(evt) {
-  turboLink.innerHTML = "onTwoFingersTouchMove " + evt.touches.length;
-  var touches = evt.touches;
-  if (touches.length == 2)
-  {
-    onTwoFingersTouchMove(touches[0], touches[1]);
-  }
-}
-
-function onTwoFingersTouchStart(touchEvt1, touchEvt2) {
-  gStartDistanceBetweenFingers = getDistanceFromTouch(touchEvt1, touchEvt2);
-  canvas.addEventListener('touchmove', onTwoFingersTouchMove, false);
-}
-
 
 function dragTouch(evt) {
   evt.preventDefault();
@@ -821,9 +811,6 @@ function dragTouch(evt) {
   if (touches.length == 1) {
     canvas.addEventListener('touchmove', dragMovingTouch, false);
     drag(touches[0]);
-  }
-  else if (touches.length == 2) {
-    onTwoFingersTouchStart(touches[0], touches[1]);
   }
 
   canvas.addEventListener('touchend', dropTouch, false);
@@ -845,7 +832,10 @@ function dragMovingTouch(evt)
   {
       dragMoving(touches[0]);
   }
-
+  else if (touches.length == 2)
+  {
+    onTwoFingersTouchMove(touches[0], touches[1]);
+   }   
 }
 
 function drop()
@@ -857,8 +847,8 @@ canvas.removeEventListener('mouseup',drop,false);
 function dropTouch()
 {
   canvas.removeEventListener('touchmove', dragMovingTouch, false);
-  canvas.removeEventListener('touchmove', onTwoFingersTouchMove, false);
   canvas.removeEventListener('touchend', dropTouch, false);
+  gPrevDistanceBetweenFingers = 0;
   drop();
 }
 
