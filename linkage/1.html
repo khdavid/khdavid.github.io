@@ -783,15 +783,14 @@ screeny=e.screenY;
 function getDistanceFromTouch(touchEvt1, touchEvt2)
 {
   var dist = Math.sqrt(Math.pow(touchEvt1.pageX - touchEvt2.pageX, 2) +
-  Math.pow(touchEvt1.pageY - touchEvt1.pageY, 2));
-  alert(dist);
+  Math.pow(touchEvt1.pageY - touchEvt2.pageY, 2));
   return dist;
 }
 
 function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
 
   var dist = getDistanceFromTouch(touchEvt1, touchEvt2);
-  turboLink.innerHTML = dist + " "+ + " " + dist * 1000;
+  turboLink.innerHTML = dist + " " + gPrevDistanceBetweenFingers;
 
 
   if (gPrevDistanceBetweenFingers == 0) 
