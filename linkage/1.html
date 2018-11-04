@@ -799,7 +799,8 @@ function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
     return;
   }
   scaleDesire = scaleDesire * dist / gStartDistanceBetweenFingers;
-  //if ((scaleDesire > 0.07) && (scaleDesire < 1000)) {
+  //if ((scaleDesire > 0.07) && (scaleDesire < 1000))
+  {
     offsetXDuringResize = (touchEvt1.pageX + touchEvt2.pageX) / 2;
     offsetYDuringResize = (touchEvt1.pageY + touchEvt2.pageY) / 2;
   }
