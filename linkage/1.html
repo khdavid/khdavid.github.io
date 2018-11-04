@@ -698,7 +698,7 @@ canvas.addEventListener('touchstart', dragTouch, false)
 
 canvasMenu.addEventListener('mousedown',onMenuClick,false);
 canvasMenu.style.zIndex=1;
-//turboLink.innerHTML="Faster";
+turboLink.innerHTML="Faster";
 context.clearRect(0,0,screenWidth,screenHeight);
 sIntervalAn=setInterval(animation,dt);
 }
@@ -798,7 +798,7 @@ function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
     return;
   }
   scaleDesire = scaleDesire * dist / gPrevDistanceBetweenFingers;
-  turboLink.innerHTML = offsetXDuringResize + " " + offsetYDuringResize ;
+
 
   //if ((scaleDesire > 0.07) && (scaleDesire < 1000))
   {
