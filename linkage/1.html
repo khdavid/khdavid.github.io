@@ -106,7 +106,7 @@ var yDesire=0;
 var offsetXDuringResize=0;
 var offsetYDuringResize=0;
 var pattern;
-var gPrevDistanceBetweenFingers = 0;
+var gPrevDistanceBetweenFingers = 0.0;
 
 document.addEventListener("DOMContentLoaded", initCanvases(), false);
 //initCanvases();
@@ -784,6 +784,7 @@ function getDistanceFromTouch(touchEvt1, touchEvt2)
 {
   var dist = Math.sqrt(Math.pow(touchEvt1.pageX - touchEvt2.pageX, 2) +
   Math.pow(touchEvt1.pageY - touchEvt1.pageY, 2));
+  alert(dist);
   return dist;
 }
 
@@ -793,7 +794,7 @@ function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
   turboLink.innerHTML = dist + " "+ + " " + dist * 1000;
 
 
-  if (gPrevDistanceBetweenFingers == 0)
+  if (gPrevDistanceBetweenFingers == 0) 
   {
     gPrevDistanceBetweenFingers = dist;
     return;
