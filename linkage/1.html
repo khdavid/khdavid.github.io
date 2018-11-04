@@ -798,7 +798,7 @@ function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
     return;
   }
   scaleDesire = scaleDesire * dist / gPrevDistanceBetweenFingers;
-  turboLink.innerHTML = dist + " " + gPrevDistanceBetweenFingers + " " + scaleDesire;
+  turboLink.innerHTML = offsetXDuringResize + " " + offsetYDuringResize ;
 
   //if ((scaleDesire > 0.07) && (scaleDesire < 1000))
   {
