@@ -795,6 +795,7 @@ function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
 
   if (gPrevDistanceBetweenFingers == 0) 
   {
+    turboLink.innerHTML = dist + "brbr" + gPrevDistanceBetweenFingers + "brbr" + scaleDesire;
     gPrevDistanceBetweenFingers = dist;
     return;
   }
