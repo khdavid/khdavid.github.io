@@ -790,7 +790,7 @@ function getDistanceFromTouch(touchEvt1, touchEvt2)
 function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
 
   var dist = getDistanceFromTouch(touchEvt1, touchEvt2);
-  turboLink.innerHTML = dist + " "+ scaleDesire;
+  turboLink.innerHTML = dist + " "+ + " " + dist * 1000;
 
 
   if (gPrevDistanceBetweenFingers == 0)
