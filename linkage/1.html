@@ -813,10 +813,9 @@ function dragTouch(evt) {
   evt.preventDefault();
   var touches = evt.changedTouches;
   if (touches.length == 1) {
-    canvas.addEventListener('touchmove', dragMovingTouch, false);
     drag(touches[0]);
   }
-
+  canvas.addEventListener('touchmove', dragMovingTouch, false);
   canvas.addEventListener('touchend', dropTouch, false);
 }
 
