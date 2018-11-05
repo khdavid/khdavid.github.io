@@ -855,7 +855,7 @@ function dropTouch()
   drop();
 }
 
-function resize(wheelSpeed, x, y)
+function resizeWithWheel(wheelSpeed, x, y)
 {
   if (((scaleDesire > 0.07) || (wheelSpeed > 0)) && ((scaleDesire < 1000) || (wheelSpeed < 0)))
   {
@@ -870,7 +870,7 @@ function resize(wheelSpeed, x, y)
 function resize(e)
 {
     var wheelSpeed = wheelDetail(e);
-    resize(wheelSpeed, e.pageX, e.pageY);
+    resizeWithWheel(wheelSpeed, e.pageX, e.pageY);
     e.preventDefault();
 }
 
