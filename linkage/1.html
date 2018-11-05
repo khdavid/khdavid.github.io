@@ -2,1292 +2,1266 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="../main.css">
+  <link rel="stylesheet" type="text/css" href="../main.css">
 
-<meta property="og:title" content="Linkage"/>
- <meta property="og:description"
-          content="Draw your signature and the program will construct a linkage that imitates your signature"/>
+  <meta property="og:title" content="Linkage" />
+  <meta property="og:description"
+        content="Draw your signature and the program will construct a linkage that imitates your signature" />
 </head>
 
 <body leftmargin="0" topmargin="0" bottommargin="0" rightmargin="0" marginwidth="0" marginheight="0">
-<table style="position: absolute;left: 0; top: 0;z-index: 2" width="100%" bgcolor="#FFFFFF" cellspacing="0" border="0">
-<tr>
-<td class="header" bgcolor="#000000" align="center" width="1"><div class="header"><a class="header" href="../">News</a></div></td>
-<td class="header" bgcolor="#000000" align="center" width="1"><div class="header"><a class="header" href="../funscience"> Fun&nbsp;science </a></div></td>
-<td class="header" bgcolor="#888888" align="center" width="1"><div><a class="header" href=""> Linkage </a></div></td>
-<td class="header" bgcolor="#000000" align="center" width="1"><div class="header"><a class="header" href="../kalmanfilter"> Kalman&nbsp;filter </a></div></td>
-<td class="header" bgcolor="#000000" align="center" width="1"><div class="header"><a class="header" href="../aboutme"> About&nbsp;me </a></div></td>
-<td bgcolor="#000000"></td>
-</tr>
-</table>
-<h3><a id="turbo" style="position:absolute; left:200px;top: 60px;color:black;z-index: 1;"  href="" onClick="return changeTurboMode()">Faster</a></hr>
-<canvas id="myCanvas" style="position: absolute;left: 0; top: 0;border:0px solid black;z-index: 0;">Your browser does not support HTML5.</canvas>
-<canvas id="canvasMenu" style="position: absolute; left: 0; top: 0; z-index: -2;"></canvas>
-<canvas id="canvasMenuBack" style="position: absolute; left: 0; top: 0; z-index: -1;"></canvas>
-<canvas id="canvasLinkage" style="position: absolute; left: 0; top: 0; z-index: -3;"></canvas>
-<canvas id="canvasRed" style="position: absolute; left: 0; top: 0; z-index: -4;"></canvas>
-<canvas id="canvasGreen" style="position: absolute; left: 0; top: 0; z-index: -5;"></canvas>
-<canvas id="canvasText" style="border:1px solid black;position: absolute; left: 0; top: 0; z-index: -6;"></canvas>
-<canvas id="canvasCircle" style="position: absolute; left: 0; top: 0; z-index: -7;"></canvas>
-<canvas id="canvasBackground" style="position: absolute; left: 0; top: 0; z-index: -8;"></canvas>
-<div id="theory" style="position:absolute; left:0px;top: 40px;z-index: 1;">
-<a href="theory.html">Theory</a>
-</div>
-</div>
+  <table style="position: absolute;left: 0; top: 0;z-index: 2" width="100%" bgcolor="#FFFFFF" cellspacing="0" border="0">
+    <tr>
+      <td class="header" bgcolor="#000000" align="center" width="1"><div class="header"><a class="header" href="../">News</a></div></td>
+      <td class="header" bgcolor="#000000" align="center" width="1"><div class="header"><a class="header" href="../funscience"> Fun&nbsp;science </a></div></td>
+      <td class="header" bgcolor="#888888" align="center" width="1"><div><a class="header" href=""> Linkage </a></div></td>
+      <td class="header" bgcolor="#000000" align="center" width="1"><div class="header"><a class="header" href="../kalmanfilter"> Kalman&nbsp;filter </a></div></td>
+      <td class="header" bgcolor="#000000" align="center" width="1"><div class="header"><a class="header" href="../aboutme"> About&nbsp;me </a></div></td>
+      <td bgcolor="#000000"></td>
+    </tr>
+  </table>
+  <h3>
+    <a id="turbo" style="position:absolute; left:200px;top: 60px;color:black;z-index: 1;" href="" onclick="return changeTurboMode()">Faster</a></hr>
+    <canvas id="myCanvas" style="position: absolute;left: 0; top: 0;border:0px solid black;z-index: 0;">Your browser does not support HTML5.</canvas>
+    <canvas id="canvasMenu" style="position: absolute; left: 0; top: 0; z-index: -2;"></canvas>
+    <canvas id="canvasMenuBack" style="position: absolute; left: 0; top: 0; z-index: -1;"></canvas>
+    <canvas id="canvasLinkage" style="position: absolute; left: 0; top: 0; z-index: -3;"></canvas>
+    <canvas id="canvasRed" style="position: absolute; left: 0; top: 0; z-index: -4;"></canvas>
+    <canvas id="canvasGreen" style="position: absolute; left: 0; top: 0; z-index: -5;"></canvas>
+    <canvas id="canvasText" style="border:1px solid black;position: absolute; left: 0; top: 0; z-index: -6;"></canvas>
+    <canvas id="canvasCircle" style="position: absolute; left: 0; top: 0; z-index: -7;"></canvas>
+    <canvas id="canvasBackground" style="position: absolute; left: 0; top: 0; z-index: -8;"></canvas>
+    <div id="theory" style="position:absolute; left:0px;top: 40px;z-index: 1;">
+      <a href="theory.html">Theory</a>
+    </div>
+    </div>
 </body>
 </html>
 <script type="text/javascript">
-var isChrome=false;
-var turboOn=false;
-var scale=1;
-var scaleDesire=scale;
-var scaleOld;
-var flagForRedFinish=1;
-var flagForRedPath=0;
-var flagForScale=0;
-var scaleFactor=0.2;
-var opacity=0.3;
-var xShift=0;
-var yShift=0;
-var lineWidthInitial=3;
-var lineWidth=lineWidthInitial;
-var lineWidthLinkage=lineWidthInitial;
-var frictionScaleCoef=0.3;
-var frictionMoveCoef=0.7;
-var limitDesireInitial=20;
-var limitDesire=limitDesireInitial;
-var limitApp=limitDesire;
-browserDetect();
-var nApp=60+40*isChrome;
-var nP=5*nApp+1;//step of integration 
-var dt=20;
-var step=0.02;//step of walking during drawing
-var xMoved=0;
-var yMoved=0;
-var speed=0.01;
-var time=Math.PI/speed;
-var deltaTime=1;
-var xFourier=new Array();
-var yFourier=new Array();
+  var isChrome = false;
+  var turboOn = false;
+  var scale = 1;
+  var scaleDesire = scale;
+  var scaleOld;
+  var flagForRedFinish = 1;
+  var flagForRedPath = 0;
+  var flagForScale = 0;
+  var scaleFactor = 0.2;
+  var opacity = 0.3;
+  var xShift = 0;
+  var yShift = 0;
+  var lineWidthInitial = 3;
+  var lineWidth = lineWidthInitial;
+  var lineWidthLinkage = lineWidthInitial;
+  var frictionScaleCoef = 0.3;
+  var frictionMoveCoef = 0.7;
+  var limitDesireInitial = 20;
+  var limitDesire = limitDesireInitial;
+  var limitApp = limitDesire;
+  browserDetect();
+  var nApp = 60 + 40 * isChrome;
+  var nP = 5 * nApp + 1;//step of integration
+  var dt = 20;
+  var step = 0.02;//step of walking during drawing
+  var xMoved = 0;
+  var yMoved = 0;
+  var speed = 0.01;
+  var time = Math.PI / speed;
+  var deltaTime = 1;
+  var xFourier = new Array();
+  var yFourier = new Array();
 
-var xSumMod=new Array();
-var ySumMod=new Array();
-var xMaxModCos=new Array();
-var yMaxModCos=new Array();
-var xMaxModSin=new Array();
-var yMaxModSin=new Array();
-var xMaxMod=new Array();
-var yMaxMod=new Array();
+  var xSumMod = new Array();
+  var ySumMod = new Array();
+  var xMaxModCos = new Array();
+  var yMaxModCos = new Array();
+  var xMaxModSin = new Array();
+  var yMaxModSin = new Array();
+  var xMaxMod = new Array();
+  var yMaxMod = new Array();
 
-var xCos=new Array();
-var yCos=new Array();
-var xSin=new Array();
-var ySin=new Array();
+  var xCos = new Array();
+  var yCos = new Array();
+  var xSin = new Array();
+  var ySin = new Array();
 
-var pathDataX=new Array();
-var pathDataY=new Array();
-var invPar=new Array();
-var trans=new Array();
-var xAttach=new Array();
-var yAttach=new Array();
-var xAttachX=new Array();
-var yAttachX=new Array();
-var xAttachY=new Array();
-var yAttachY=new Array();
+  var pathDataX = new Array();
+  var pathDataY = new Array();
+  var invPar = new Array();
+  var trans = new Array();
+  var xAttach = new Array();
+  var yAttach = new Array();
+  var xAttachX = new Array();
+  var yAttachX = new Array();
+  var xAttachY = new Array();
+  var yAttachY = new Array();
 
-var sInterval;
-var sIntervalOp;
-var sIntervalAn;
-var sIntervalPress;
+  var sInterval;
+  var sIntervalOp;
+  var sIntervalAn;
+  var sIntervalPress;
 
-var screenx,screeny;
-var xDesire=0;
-var yDesire=0;
-var offsetXDuringResize=0;
-var offsetYDuringResize=0;
-var pattern;
-var gPrevDistanceBetweenFingers = 0.0;
+  var screenx, screeny;
+  var xDesire = 0;
+  var yDesire = 0;
+  var offsetXDuringResize = 0;
+  var offsetYDuringResize = 0;
+  var pattern;
+  var gPrevDistanceBetweenFingers = 0.0;
 
-document.addEventListener("DOMContentLoaded", initCanvases(), false);
-//initCanvases();
-function initCanvases(){
-
-
- screenSize=viewPortSizes();
- screenWidth=screenSize[0]-3;
- screenHeight=screenSize[1]-10;
- if (screenWidth<800){screenWidth=800;}
- if (screenHeight<600){screenHeight=600;}
- turboLink=document.getElementById("turbo");
- theory=document.getElementById("theory");
- theory.style.top=100+"px";
- theory.style.left=200+"px";
-
- //________canvas______________________________________________
- canvas=document.getElementById("myCanvas");
- canvasMenu=document.getElementById("canvasMenu");
- canvasMenuBack=document.getElementById("canvasMenuBack");
- canvasText=document.getElementById("canvasText");
- canvasLinkage=document.getElementById("canvasLinkage");
- canvasRed=document.getElementById("canvasRed");
- canvasGreen=document.getElementById("canvasGreen");
- canvasCircle=document.getElementById("canvasCircle");
- canvasBackground=document.getElementById("canvasBackground");
-//________________________________________________________________
-//________context______________________________________________
- context=canvas.getContext("2d");
- contextMenu=canvasMenu.getContext("2d");
- contextMenuBack=canvasMenuBack.getContext("2d");
- contextText=canvasText.getContext("2d");
- contextLinkage=canvasLinkage.getContext("2d");
- contextRed=canvasRed.getContext("2d");
- contextGreen=canvasGreen.getContext("2d");
- contextCircle=canvasCircle.getContext("2d");
- contextBackground=canvasBackground.getContext("2d");
-//________________________________________________________________
-//________canvas_size______________________________________________
-menuWidth=180;
-canvas.width=screenWidth;
-canvas.height=screenHeight;
-canvasMenu.width=menuWidth;
-canvasMenu.height=screenHeight;
-canvasMenuBack.width=menuWidth;
-canvasMenuBack.height=screenHeight;
-canvasText.width=screenWidth;
-canvasText.height=screenHeight;
-canvasLinkage.width=screenWidth;
-canvasLinkage.height=screenHeight;
-canvasRed.width=screenWidth;
-canvasRed.height=screenHeight;
-canvasGreen.width=screenWidth;
-canvasGreen.height=screenHeight;
-canvasCircle.width=screenWidth;
-canvasCircle.height=screenHeight;
-canvasBackground.width=screenWidth;
-canvasBackground.height=screenHeight;
-//________________________________________________________________
-
-//___________________clear_________________________
-contextGreen.clearRect(0,0,screenWidth,screenHeight);
-contextRed.clearRect(0,0,screenWidth,screenHeight);
-contextLinkage.clearRect(0,0,screenWidth,screenHeight);
-contextMenu.clearRect(0,0,screenWidth,screenHeight);
-contextMenuBack.clearRect(0,0,menuWidth,screenHeight);
-context.clearRect(0,0,screenWidth,screenHeight);
-contextBackground.clearRect(0,0,screenWidth,screenHeight);
-contextCircle.clearRect(0,0,screenWidth,screenHeight);
-contextText.clearRect(0,0,screenWidth,screenHeight);
-
-//___________________________________________
-
-//_______background____________________________________________________
-backImage=new Image();
-circleImage=new Image();
-backImage.src = 'wood.jpg';  
-circleImage.src='circleWood.png';
-patternShift=[screenWidth/2+274,screenHeight+320];
-backImage.onload = function(){
-  {
-    pattern = contextBackground.createPattern(backImage,"repeat");
-    contextBackground.rect(0, 0, screenWidth, screenHeight);
-    contextBackground.translate(patternShift[0],patternShift[1]);
-    contextBackground.fillStyle = pattern;
-    contextBackground.fill();
-  }
-  if (turboOn){
-contextBackground.fillStyle="#8ED6FF";
-//contextCircle.fillStyle="#8ED6FF"
-contextBackground.fillRect(0,0,screenWidth,screenHeight);
-contextBackground.fill();
-//contextCircle.setTransform(1,0, 0, 1,0,0);
-//contextCircle.clearRect(0,0,screenWidth,screenHeight);
-//contextCircle.fill();
-  contextMenuBack.globalAlpha=1;
-  contextMenuBack.clearRect(0,0,menuWidth,screenHeight);
-  contextMenuBack.fillRect(0,0,menuWidth,screenHeight);
-}
-  
-  }
-circleCenter=[screenWidth/2+10,screenHeight/2-10];
-circleImage.onload = function(){
-   if (!turboOn){
-     contextCircle.translate(circleCenter[0],circleCenter[1]);
-     contextCircle.drawImage(circleImage,-195,-195);
-     contextCircle.fill(); 
-   }
-   else{
-    contextCircle.fillStyle="#8ED6FF"
-    contextCircle.setTransform(1,0, 0, 1,0,0);
-    contextCircle.clearRect(0,0,screenWidth,screenHeight);
-    contextCircle.fill();
-}
-   
-  }
-contextMenuBack.globalAlpha=0.75;
-contextMenuBack.fillRect(0,0,menuWidth,screenHeight);
-
-//________________________________________________________________
-//______________menu__________________________________________________
-playFlag=1;
-playDatum=[30,60,40,40];
-refreshDatum=[100,60,40,40];
-shifterRadius=48;
-shifterCenter=[61,180];
-minusDatum=[125,183,39,39];
-plusDatum=[minusDatum[0],minusDatum[1]-63,39,39];
-rangeDatum=[10,300,150,20];
-sliderDatum=[rangeDatum[0]+(rangeDatum[2]-10)*limitDesire/nApp,rangeDatum[1],10,20];
-rangeWidthDatum=[10,400,150,20];
-sliderWidthDatum=[rangeWidthDatum[0]+(rangeWidthDatum[2]-10)*lineWidthLinkage/5,rangeWidthDatum[1],10,20];
-
-shifterImage=new Image();
-resizeImage=new Image();
-playImage=new Image();
-stopImage=new Image();
-refreshImage=new Image();
-rangeImage=new Image();
-sliderImage=new Image();
-
-shifterImage.src='shifter.png'
-resizeImage.src='resize.png'
-stopImage.src='stop.png';
-playImage.src='play.png';
-refreshImage.src='refresh.png';
-rangeImage.src='range.png';
-sliderImage.src='slider.png';
+  document.addEventListener("DOMContentLoaded", initCanvases(), false);
+  //initCanvases();
+  function initCanvases() {
 
 
-shifterImage.onload=function(){contextMenu.drawImage(shifterImage,shifterCenter[0]-51,shifterCenter[1]-50,100,100);}
-resizeImage.onload=function(){contextMenu.drawImage(resizeImage,minusDatum[0],minusDatum[1]-62,40,100);}
-stopImage.onload=function(){contextMenu.drawImage(stopImage,playDatum[0],playDatum[1],40,40);}
-refreshImage.onload=function(){contextMenu.drawImage(refreshImage,refreshDatum[0],refreshDatum[1],40,40);}
-rangeImage.onload=function(){
-//_______________for_approximation______________________________
-  contextMenu.save();
-  contextMenu.fillStyle="#e6985f";
-  contextMenu.fillRect(rangeDatum[0],rangeDatum[1],sliderDatum[0],rangeDatum[3]);
-  contextMenu.restore();
-  contextMenu.drawImage(rangeImage,rangeDatum[0],rangeDatum[1],rangeDatum[2],rangeDatum[3]);
-//__________________________________________________________
-//_______________for_width_changing______________________________
-  contextMenu.save();
-  contextMenu.fillStyle="#e6985f";
-  contextMenu.fillRect(rangeWidthDatum[0],rangeWidthDatum[1],sliderWidthDatum[0],rangeWidthDatum[3]);
-  contextMenu.restore();
-  contextMenu.drawImage(rangeImage,rangeWidthDatum[0],rangeWidthDatum[1],rangeWidthDatum[2],rangeWidthDatum[3]);
-//__________________________________________________________
+    screenSize = viewPortSizes();
+    screenWidth = screenSize[0] - 3;
+    screenHeight = screenSize[1] - 10;
+    if (screenWidth < 800) { screenWidth = 800; }
+    if (screenHeight < 600) { screenHeight = 600; }
+    turboLink = document.getElementById("turbo");
+    theory = document.getElementById("theory");
+    theory.style.top = 100 + "px";
+    theory.style.left = 200 + "px";
 
+    //________canvas______________________________________________
+    canvas = document.getElementById("myCanvas");
+    canvasMenu = document.getElementById("canvasMenu");
+    canvasMenuBack = document.getElementById("canvasMenuBack");
+    canvasText = document.getElementById("canvasText");
+    canvasLinkage = document.getElementById("canvasLinkage");
+    canvasRed = document.getElementById("canvasRed");
+    canvasGreen = document.getElementById("canvasGreen");
+    canvasCircle = document.getElementById("canvasCircle");
+    canvasBackground = document.getElementById("canvasBackground");
+    //________________________________________________________________
+    //________context______________________________________________
+    context = canvas.getContext("2d");
+    contextMenu = canvasMenu.getContext("2d");
+    contextMenuBack = canvasMenuBack.getContext("2d");
+    contextText = canvasText.getContext("2d");
+    contextLinkage = canvasLinkage.getContext("2d");
+    contextRed = canvasRed.getContext("2d");
+    contextGreen = canvasGreen.getContext("2d");
+    contextCircle = canvasCircle.getContext("2d");
+    contextBackground = canvasBackground.getContext("2d");
+    //________________________________________________________________
+    //________canvas_size______________________________________________
+    menuWidth = 180;
+    canvas.width = screenWidth;
+    canvas.height = screenHeight;
+    canvasMenu.width = menuWidth;
+    canvasMenu.height = screenHeight;
+    canvasMenuBack.width = menuWidth;
+    canvasMenuBack.height = screenHeight;
+    canvasText.width = screenWidth;
+    canvasText.height = screenHeight;
+    canvasLinkage.width = screenWidth;
+    canvasLinkage.height = screenHeight;
+    canvasRed.width = screenWidth;
+    canvasRed.height = screenHeight;
+    canvasGreen.width = screenWidth;
+    canvasGreen.height = screenHeight;
+    canvasCircle.width = screenWidth;
+    canvasCircle.height = screenHeight;
+    canvasBackground.width = screenWidth;
+    canvasBackground.height = screenHeight;
+    //________________________________________________________________
 
-}
-sliderImage.onload=function(){
-contextMenu.drawImage(sliderImage,sliderDatum[0],sliderDatum[1],sliderDatum[2],sliderDatum[3]);
-contextMenu.drawImage(sliderImage,sliderWidthDatum[0],sliderWidthDatum[1],sliderWidthDatum[2],sliderWidthDatum[3]);
+    //___________________clear_________________________
+    contextGreen.clearRect(0, 0, screenWidth, screenHeight);
+    contextRed.clearRect(0, 0, screenWidth, screenHeight);
+    contextLinkage.clearRect(0, 0, screenWidth, screenHeight);
+    contextMenu.clearRect(0, 0, screenWidth, screenHeight);
+    contextMenuBack.clearRect(0, 0, menuWidth, screenHeight);
+    context.clearRect(0, 0, screenWidth, screenHeight);
+    contextBackground.clearRect(0, 0, screenWidth, screenHeight);
+    contextCircle.clearRect(0, 0, screenWidth, screenHeight);
+    contextText.clearRect(0, 0, screenWidth, screenHeight);
 
-}
+    //___________________________________________
 
+    //_______background____________________________________________________
+    backImage = new Image();
+    circleImage = new Image();
+    backImage.src = 'wood.jpg';
+    circleImage.src = 'circleWood.png';
+    patternShift = [screenWidth / 2 + 274, screenHeight + 320];
+    backImage.onload = function () {
+      {
+        pattern = contextBackground.createPattern(backImage, "repeat");
+        contextBackground.rect(0, 0, screenWidth, screenHeight);
+        contextBackground.translate(patternShift[0], patternShift[1]);
+        contextBackground.fillStyle = pattern;
+        contextBackground.fill();
+      }
+      if (turboOn) {
+        contextBackground.fillStyle = "#8ED6FF";
+        //contextCircle.fillStyle="#8ED6FF"
+        contextBackground.fillRect(0, 0, screenWidth, screenHeight);
+        contextBackground.fill();
+        //contextCircle.setTransform(1,0, 0, 1,0,0);
+        //contextCircle.clearRect(0,0,screenWidth,screenHeight);
+        //contextCircle.fill();
+        contextMenuBack.globalAlpha = 1;
+        contextMenuBack.clearRect(0, 0, menuWidth, screenHeight);
+        contextMenuBack.fillRect(0, 0, menuWidth, screenHeight);
+      }
 
-//________________________________________________________________
-
-
-
-//_______text____________________________________________________
-contextText.fillStyle="black";
-contextText.globalAlpha = opacity;
-contextText.font = 'italic 100px Calibri';
-contextText.textAlign = "center";
-contextText.fillText("Draw here", (screenWidth)/2+10, screenHeight/2);
-contextText.stroke();
-appTextDatum=[rangeDatum[0],rangeDatum[1]-20];
-contextMenu.fillStyle="white";
-contextMenu.font = 'italic 20px Calibri';
-contextMenu.fillText("approximation:", appTextDatum[0],appTextDatum[1]);
-contextMenu.fillText(limitDesire, appTextDatum[0]+130,appTextDatum[1]);
-contextMenu.stroke();
-
-widthTextDatum=[rangeWidthDatum[0],rangeWidthDatum[1]-20];
-contextMenu.fillStyle="white";
-contextMenu.font = 'italic 20px Calibri';
-contextMenu.fillText("width of sticks:", widthTextDatum[0],widthTextDatum[1]);
-contextMenu.fillText(lineWidthLinkage*100, widthTextDatum[0]+130,widthTextDatum[1]);
-contextMenu.stroke();
-
-
-//________________________________________________________________
-//_______color_of_paths___________________________________________________
-contextGreen.lineWidth=lineWidth;
-contextGreen.strokeStyle="green";
-context.strokeStyle="green";
-contextRed.strokeStyle="red";
-contextLinkage.strokeStyle="black";
-
-//_______width_of_paths___________________________________________________
-  
-  context.lineWidth=lineWidth*scale;
-//_____________________________________________________________________
-
-
- canvas.addEventListener('mousedown', onClick, false);
- canvas.addEventListener("touchstart", onTouchStart, false);
-}
-function shifterDeclick(e){
-clearInterval(sIntervalPress);
-canvasMenu.removeEventListener('mousemove',movingOverShifter,false);
-canvasMenu.removeEventListener('mouseup',shifterDeclick,false);
-}
-
-function movingOverShifter(e){
-  var x=e.pageX;
-  var y=e.pageY;
-  xControlShifting=x-shifterCenter[0];
-  yControlShifting=y-shifterCenter[1];
-  if (Math.sqrt(Math.pow(x-shifterCenter[0],2)+Math.pow(y-shifterCenter[1],2))>shifterRadius){
-  clearInterval(sIntervalPress);
-  canvasMenu.removeEventListener('mousemove',movingOverShifter,false);
-  canvasMenu.removeEventListener('mouseup',shifterDeclick,false);  
-  }  
-}
-
-function pressingShifter(){
-if ((xControlShifting>yControlShifting)&&(xControlShifting>-yControlShifting)){xDesire-=screenWidth/100;}
-if ((xControlShifting<yControlShifting)&&(xControlShifting>-yControlShifting)){yDesire-=screenWidth/100;}
-if ((xControlShifting<yControlShifting)&&(xControlShifting<-yControlShifting)){xDesire+=screenWidth/100;}
-if ((xControlShifting>yControlShifting)&&(xControlShifting<-yControlShifting)){yDesire+=screenWidth/100;}
-}
-
-function onMenuClick(e){
-var x=e.pageX;
-var y=e.pageY;
-if (Math.sqrt(Math.pow(x-shifterCenter[0],2)+Math.pow(y-shifterCenter[1],2))<=shifterRadius){   //press on shifter
-   xControlShifting=x-shifterCenter[0];
-   yControlShifting=y-shifterCenter[1];
-   canvasMenu.addEventListener('mousemove',movingOverShifter,false); 
-   canvasMenu.addEventListener('mouseup',shifterDeclick,false); 
-   sIntervalPress=setInterval(pressingShifter,10);
-
-}
-else if((x>playDatum[0])&&(y>playDatum[1])&&(x<playDatum[0]+playDatum[2])&&(y<playDatum[1]+playDatum[3])){  //press on play/stop
-  if (playFlag==1){
-    playFlag=0;
-	contextMenu.clearRect(playDatum[0],playDatum[1],playDatum[2],playDatum[3]);
-    contextMenu.drawImage(playImage,playDatum[0],playDatum[1],40,40);
-	deltaTime=0;
-	}
-  else{
-    playFlag=1;
-	contextMenu.clearRect(playDatum[0],playDatum[1],playDatum[2],playDatum[3]);
-    contextMenu.drawImage(stopImage,playDatum[0],playDatum[1],40,40);
-	deltaTime=1;
-   }
- }  
-else if((x>minusDatum[0])&&(y>minusDatum[1])&&(x<minusDatum[0]+minusDatum[2])&&(y<minusDatum[1]+minusDatum[3]))  //press on minus
-{
-  if(scaleDesire>0.07){
-    scaleDesire=scaleDesire/1.5;
-    offsetXDuringResize=screenWidth/2;
-    offsetYDuringResize=screenHeight/2;
-    flagForScale=Math.log(1/10000)/Math.log(1-frictionScaleCoef);
-	}
-}
-else if((x>plusDatum[0])&&(y>plusDatum[1])&&(x<plusDatum[0]+plusDatum[2])&&(y<plusDatum[1]+plusDatum[3]))     //press on plus
-{
-  if (scaleDesire<1000){
-    scaleDesire=scaleDesire*1.5;
-    offsetXDuringResize=screenWidth/2;
-    offsetYDuringResize=screenHeight/2;
-    flagForScale=Math.log(1/10000)/Math.log(1-frictionScaleCoef);
-  }
-}
-else if((x>refreshDatum[0])&&(y>refreshDatum[1])&&(x<refreshDatum[0]+refreshDatum[2])&&(y<refreshDatum[1]+refreshDatum[3]))     //press on refresh
-{
-    refresh();
-}
-else if((x>sliderDatum[0])&&(y>sliderDatum[1])&&(x<sliderDatum[0]+sliderDatum[2])&&(y<sliderDatum[1]+sliderDatum[3])){    //press on slider
-   canvasMenu.addEventListener('mousemove',movingOverRangeLimitDesire,false); 
-   canvasMenu.addEventListener('mouseup',rangeDeclickLimitDesire,false); 
-}
-else if((x>rangeDatum[0]+sliderDatum[2]/2)&&(y>rangeDatum[1])&&(x<rangeDatum[0]+rangeDatum[2]-sliderDatum[2]/2)&&(y<rangeDatum[1]+rangeDatum[3])){    //press on ranger
-  changeSliderPosition(x,y);
-}
-else if((x>sliderWidthDatum[0])&&(y>sliderWidthDatum[1])&&(x<sliderWidthDatum[0]+sliderWidthDatum[2])&&(y<sliderWidthDatum[1]+sliderWidthDatum[3])){    //press on width  slider
-   canvasMenu.addEventListener('mousemove',movingOverRangeWidth,false); 
-   canvasMenu.addEventListener('mouseup',rangeDeclickWidth,false); 
-  
-}
-else if((x>rangeWidthDatum[0]+sliderWidthDatum[2]/2)&&(y>rangeWidthDatum[1])&&(x<rangeWidthDatum[0]+rangeWidthDatum[2]-sliderWidthDatum[2]/2)&&(y<rangeWidthDatum[1]+rangeWidthDatum[3])){    //press on width ranger
-  changeWidthSliderPosition(x,y);
-
-}
-
-}
-function  changeSliderPosition(x,y){
-  sliderDatum[0]=x-sliderDatum[2]/2;
-  limitDesire=Math.floor(-1+(sliderDatum[0]-rangeDatum[0])/(rangeDatum[2]-sliderDatum[2])*(nApp+3));
-  if (limitDesire<1){limitDesire=1;}
-  if (limitDesire>nApp-1){limitDesire=nApp-1;}
-
-  context.clearRect(rangeDatum[0],rangeDatum[1]+50,400,200);
-  contextMenu.save();
-  contextMenu.fillStyle="#e6985f";
-  contextMenu.clearRect(rangeDatum[0],rangeDatum[1],rangeDatum[2],rangeDatum[3]);
-  contextMenu.fillRect(rangeDatum[0],rangeDatum[1],sliderDatum[0],rangeDatum[3]);
-  contextMenu.restore();
-  contextMenu.drawImage(rangeImage,rangeDatum[0],rangeDatum[1],rangeDatum[2],rangeDatum[3]);
-  contextMenu.drawImage(sliderImage,sliderDatum[0],sliderDatum[1],sliderDatum[2],sliderDatum[3]);
-//_____________text____________________
-contextMenu.clearRect(appTextDatum[0]+130,appTextDatum[1]-20,40,30)
-contextMenu.fillText(limitDesire, appTextDatum[0]+130,appTextDatum[1]);
-contextMenu.stroke();
-//_________________________________________
-
-}
-function  changeWidthSliderPosition(x,y){
-  sliderWidthDatum[0]=x-sliderWidthDatum[2]/2;
-  lineWidthLinkage=(sliderWidthDatum[0]-rangeWidthDatum[0])/(rangeWidthDatum[2]-sliderWidthDatum[2])*5;
-
-
-  context.clearRect(rangeWidthDatum[0],rangeWidthDatum[1]+50,400,200);
-  contextMenu.save();
-  contextMenu.fillStyle="#e6985f";
-  contextMenu.clearRect(rangeWidthDatum[0],rangeWidthDatum[1],rangeWidthDatum[2],rangeWidthDatum[3]);
-  contextMenu.fillRect(rangeWidthDatum[0],rangeWidthDatum[1],sliderWidthDatum[0],rangeWidthDatum[3]);
-  contextMenu.restore();
-  contextMenu.drawImage(rangeImage,rangeWidthDatum[0],rangeWidthDatum[1],rangeWidthDatum[2],rangeWidthDatum[3]);
-  contextMenu.drawImage(sliderImage,sliderWidthDatum[0],sliderWidthDatum[1],sliderWidthDatum[2],sliderWidthDatum[3]);
-//_____________text____________________
-contextMenu.clearRect(widthTextDatum[0]+130,widthTextDatum[1]-20,40,30)
-contextMenu.fillText(Math.floor(lineWidthLinkage*100), widthTextDatum[0]+130,widthTextDatum[1]);
-contextMenu.stroke();
-//_________________________________________
-}
-
-function movingOverRangeLimitDesire(e)
-{
-var x=e.pageX;
-var y=e.pageY;
-if((x>rangeDatum[0]+sliderDatum[2]/2)&&(x<rangeDatum[0]+rangeDatum[2]-sliderDatum[2]/2)){
-changeSliderPosition(x,y);
-
-  }
-  if(x>canvasMenu.width-10){
-   canvasMenu.removeEventListener('mousemove',movingOverRangeLimitDesire,false); 
-   canvasMenu.removeEventListener('mouseup',rangeDeclickLimitDesire,false); 
-}
-}
-function rangeDeclickLimitDesire(){
-   canvasMenu.removeEventListener('mousemove',movingOverRangeLimitDesire,false); 
-   canvasMenu.removeEventListener('mouseup',rangeDeclickLimitDesire,false); 
-}
-
-
-function movingOverRangeWidth(e)
-{
-var x=e.pageX;
-var y=e.pageY;
-if((x>rangeWidthDatum[0]+sliderWidthDatum[2]/2)&&(x<rangeWidthDatum[0]+rangeWidthDatum[2]-sliderWidthDatum[2]/2)){
-  changeWidthSliderPosition(x,y);
-}
-if(x>canvasMenu.width-10){
-   canvasMenu.removeEventListener('mousemove',movingOverRangeWidth,false); 
-   canvasMenu.removeEventListener('mouseup',rangeDeclickWidth,false); 
-}
-}
-
-function rangeDeclickWidth(){
-   canvasMenu.removeEventListener('mousemove',movingOverRangeWidth,false); 
-   canvasMenu.removeEventListener('mouseup',rangeDeclickWidth,false); 
-}
-
-//______linkage_classes________________________________________________________________
-this.inversePar=function(x,y,a,b,phi,phia,color)
-{
-this.a=a;
-this.b=b;
-this.phi=this.phi;
-this.phia=this.phia;
-this.A=[x,y];
-var B=[b*Math.cos(phi),b*Math.sin(phi)];
-this.B=[x+B[0]*Math.cos(phia)-B[1]*Math.sin(phia),y+B[0]*Math.sin(phia)+B[1]*Math.cos(phia)];
-var C=[a,0];
-this.C=[x+C[0]*Math.cos(phia),y+C[0]*Math.sin(phia)];
-var k=(a*a-b*b)/(a*a+b*b-2*a*b*Math.cos(phi));
-var D=[k*(a-b*Math.cos(phi)),-k*b*Math.sin(phi)];
-this.D=[x+D[0]*Math.cos(phia)-D[1]*Math.sin(phia),y+D[0]*Math.sin(phia)+D[1]*Math.cos(phia)];
-this.P=[(this.A[0]+this.B[0])/2,(this.A[1]+this.B[1])/2];
-this.Q=[(this.A[0]+this.C[0])/2,(this.A[1]+this.C[1])/2];
-this.R=[(this.B[0]+this.D[0])/2,(this.B[1]+this.D[1])/2];
-this.S=[(this.C[0]+this.D[0])/2,(this.C[1]+this.D[1])/2];
-this.O=[(this.Q[0]+this.R[0])/2,(this.Q[1]+this.R[1])/2];
-var PO=Math.sqrt(Math.pow(this.O[0]-this.P[0],2)+Math.pow(this.O[1]-this.P[1],2));
-var rb=0.6*a;
-var OT=Math.sqrt(rb*rb-PO*PO);
-var vertical=[this.S[1]-this.P[1],-this.S[0]+this.P[0]]
-var verticalLength=Math.sqrt(vertical[0]*vertical[0]+vertical[1]*vertical[1]);
-var eVertical=[vertical[0]/verticalLength,vertical[1]/verticalLength];
-this.T=[this.O[0]+eVertical[0]*OT,this.O[1]+eVertical[1]*OT];
-
-this.draw=function(){
-  drawLine(this.A,this.B,contextLinkage,color);
-  drawLine(this.C,this.D,contextLinkage,color);
-  drawLine(this.A,this.C,contextLinkage,color);
-  drawLine(this.B,this.D,contextLinkage,color);
-  drawLine(this.P,this.T,contextLinkage,color);
-  drawLine(this.Q,this.T,contextLinkage,color);
-  drawLine(this.R,this.T,contextLinkage,color);
-  drawLine(this.S,this.T,contextLinkage,color);
-  
-}
-}
-
-this.translator=function(A,b,phi,E,a){
-    this.a=a;
-	this.A=A;
-    this.B=[A[0]+b*Math.cos(phi),A[1]+b*Math.sin(phi)];
-    this.E=E;
-    var l=Math.sqrt(Math.pow(E[0]-A[0],2)+Math.pow(E[1]-A[1],2));
-    var cosPsi=(E[0]-A[0])/l;
-    var sinPsi=(E[1]-A[1])/l;
-    var cosPhi=(l/2)/a;
-    var sinPhi=Math.sqrt(1-Math.pow(cosPhi,2));
-    var D=[a*cosPsi,a*sinPsi];
-    this.D=[A[0]+D[0]*cosPhi+D[1]*sinPhi,A[1]-D[0]*sinPhi+D[1]*cosPhi];
-    this.C=[this.D[0]+this.B[0]-this.A[0],this.D[1]+this.B[1]-this.A[1]];
-    this.F=[this.E[0]+this.B[0]-this.A[0],this.E[1]+this.B[1]-this.A[1]];
-   
-  this.draw=function(){
-    drawLine(this.A,this.B,contextLinkage)
-    drawLine(this.B,this.C,contextLinkage)
-    drawLine(this.C,this.D,contextLinkage)
-    drawLine(this.D,this.A,contextLinkage)
-    drawLine(this.D,this.E,contextLinkage)
-    drawLine(this.E,this.F,contextLinkage)
-    drawLine(this.F,this.C,contextLinkage)
     }
-}
+    circleCenter = [screenWidth / 2 + 10, screenHeight / 2 - 10];
+    circleImage.onload = function () {
+      if (!turboOn) {
+        contextCircle.translate(circleCenter[0], circleCenter[1]);
+        contextCircle.drawImage(circleImage, -195, -195);
+        contextCircle.fill();
+      }
+      else {
+        contextCircle.fillStyle = "#8ED6FF"
+        contextCircle.setTransform(1, 0, 0, 1, 0, 0);
+        contextCircle.clearRect(0, 0, screenWidth, screenHeight);
+        contextCircle.fill();
+      }
 
-this.vStraightLine=function(x,y,delta,a,b,phi)//x,y - coordinates of point in line,
-//a-rhombus side, phi - rhombus angle when delta=0
-{
-this.D=[x,y+delta];
-var ax=a*Math.cos(phi);
-var ay=a*Math.sin(phi);
-var r=(Math.sqrt(Math.pow(b,2)-Math.pow(ay,2))-ax)/2;
-var psi=Math.atan(delta/(2*r+2*ax));
-this.O=[x-2*ax-2*r,y];
-this.Or=[x-2*ax-r,y];
-this.B=[x-2*ax-r+r*Math.cos(2*psi),y+r*Math.sin(2*psi)];
-var axNew=Math.sqrt(Math.pow(this.D[0]-this.B[0],2)+Math.pow(this.D[1]-this.B[1],2))/2;
-var ayNew=Math.sqrt(a*a-axNew*axNew);
-this.P=[(this.D[0]+this.B[0])/2,(this.D[1]+this.B[1])/2];
-this.A=[this.P[0]-ayNew*Math.sin(psi),this.P[1]+ayNew*Math.cos(psi)];
-this.C=[this.P[0]+ayNew*Math.sin(psi),this.P[1]-ayNew*Math.cos(psi)];
+    }
+    contextMenuBack.globalAlpha = 0.75;
+    contextMenuBack.fillRect(0, 0, menuWidth, screenHeight);
 
-this.draw=function(ctx){
-  //alert(xx);
-  drawLine(this.Or,this.O,ctx);
-  drawLine(this.Or,this.B,ctx);
-  drawLine(this.O,this.A,ctx);
-  drawLine(this.O,this.C,ctx);
-  drawLine(this.B,this.A,ctx);
-  drawLine(this.A,this.D,ctx);
-  drawLine(this.D,this.C,ctx);
-  drawLine(this.C,this.B,ctx);
+    //________________________________________________________________
+    //______________menu__________________________________________________
+    playFlag = 1;
+    playDatum = [30, 60, 40, 40];
+    refreshDatum = [100, 60, 40, 40];
+    shifterRadius = 48;
+    shifterCenter = [61, 180];
+    minusDatum = [125, 183, 39, 39];
+    plusDatum = [minusDatum[0], minusDatum[1] - 63, 39, 39];
+    rangeDatum = [10, 300, 150, 20];
+    sliderDatum = [rangeDatum[0] + (rangeDatum[2] - 10) * limitDesire / nApp, rangeDatum[1], 10, 20];
+    rangeWidthDatum = [10, 400, 150, 20];
+    sliderWidthDatum = [rangeWidthDatum[0] + (rangeWidthDatum[2] - 10) * lineWidthLinkage / 5, rangeWidthDatum[1], 10, 20];
 
-  //drawLine(this.Or,this.B);
+    shifterImage = new Image();
+    resizeImage = new Image();
+    playImage = new Image();
+    stopImage = new Image();
+    refreshImage = new Image();
+    rangeImage = new Image();
+    sliderImage = new Image();
+
+    shifterImage.src = 'shifter.png'
+    resizeImage.src = 'resize.png'
+    stopImage.src = 'stop.png';
+    playImage.src = 'play.png';
+    refreshImage.src = 'refresh.png';
+    rangeImage.src = 'range.png';
+    sliderImage.src = 'slider.png';
+
+
+    shifterImage.onload = function () { contextMenu.drawImage(shifterImage, shifterCenter[0] - 51, shifterCenter[1] - 50, 100, 100); }
+    resizeImage.onload = function () { contextMenu.drawImage(resizeImage, minusDatum[0], minusDatum[1] - 62, 40, 100); }
+    stopImage.onload = function () { contextMenu.drawImage(stopImage, playDatum[0], playDatum[1], 40, 40); }
+    refreshImage.onload = function () { contextMenu.drawImage(refreshImage, refreshDatum[0], refreshDatum[1], 40, 40); }
+    rangeImage.onload = function () {
+      //_______________for_approximation______________________________
+      contextMenu.save();
+      contextMenu.fillStyle = "#e6985f";
+      contextMenu.fillRect(rangeDatum[0], rangeDatum[1], sliderDatum[0], rangeDatum[3]);
+      contextMenu.restore();
+      contextMenu.drawImage(rangeImage, rangeDatum[0], rangeDatum[1], rangeDatum[2], rangeDatum[3]);
+      //__________________________________________________________
+      //_______________for_width_changing______________________________
+      contextMenu.save();
+      contextMenu.fillStyle = "#e6985f";
+      contextMenu.fillRect(rangeWidthDatum[0], rangeWidthDatum[1], sliderWidthDatum[0], rangeWidthDatum[3]);
+      contextMenu.restore();
+      contextMenu.drawImage(rangeImage, rangeWidthDatum[0], rangeWidthDatum[1], rangeWidthDatum[2], rangeWidthDatum[3]);
+      //__________________________________________________________
+
+
+    }
+    sliderImage.onload = function () {
+      contextMenu.drawImage(sliderImage, sliderDatum[0], sliderDatum[1], sliderDatum[2], sliderDatum[3]);
+      contextMenu.drawImage(sliderImage, sliderWidthDatum[0], sliderWidthDatum[1], sliderWidthDatum[2], sliderWidthDatum[3]);
+
+    }
+
+
+    //________________________________________________________________
+
+
+
+    //_______text____________________________________________________
+    contextText.fillStyle = "black";
+    contextText.globalAlpha = opacity;
+    contextText.font = 'italic 100px Calibri';
+    contextText.textAlign = "center";
+    contextText.fillText("Draw here", (screenWidth) / 2 + 10, screenHeight / 2);
+    contextText.stroke();
+    appTextDatum = [rangeDatum[0], rangeDatum[1] - 20];
+    contextMenu.fillStyle = "white";
+    contextMenu.font = 'italic 20px Calibri';
+    contextMenu.fillText("approximation:", appTextDatum[0], appTextDatum[1]);
+    contextMenu.fillText(limitDesire, appTextDatum[0] + 130, appTextDatum[1]);
+    contextMenu.stroke();
+
+    widthTextDatum = [rangeWidthDatum[0], rangeWidthDatum[1] - 20];
+    contextMenu.fillStyle = "white";
+    contextMenu.font = 'italic 20px Calibri';
+    contextMenu.fillText("width of sticks:", widthTextDatum[0], widthTextDatum[1]);
+    contextMenu.fillText(lineWidthLinkage * 100, widthTextDatum[0] + 130, widthTextDatum[1]);
+    contextMenu.stroke();
+
+
+    //________________________________________________________________
+    //_______color_of_paths___________________________________________________
+    contextGreen.lineWidth = lineWidth;
+    contextGreen.strokeStyle = "green";
+    context.strokeStyle = "green";
+    contextRed.strokeStyle = "red";
+    contextLinkage.strokeStyle = "black";
+
+    //_______width_of_paths___________________________________________________
+
+    context.lineWidth = lineWidth * scale;
+    //_____________________________________________________________________
+
+
+    canvas.addEventListener('mousedown', onClick, false);
+    canvas.addEventListener("touchstart", onTouchStart, false);
   }
-}
-this.hStraightLine=function(x,y,delta,a,b,phi)
-{
-this.D=[x+delta,y];
-var ax=a*Math.cos(phi);
-var ay=a*Math.sin(phi);
-var r=(Math.sqrt(Math.pow(b,2)-Math.pow(ay,2))-ax)/2;
-var psi=Math.atan(delta/(2*r+2*ax));
-this.O=[x,y-2*ax-2*r];
-this.Or=[x,y-2*ax-r];
-this.B=[x+r*Math.sin(2*psi),y-2*ax-r+r*Math.cos(2*psi)];
-
-var axNew=Math.sqrt(Math.pow(this.D[0]-this.B[0],2)+Math.pow(this.D[1]-this.B[1],2))/2;
-var ayNew=Math.sqrt(a*a-axNew*axNew);
-this.P=[(this.D[0]+this.B[0])/2,(this.D[1]+this.B[1])/2];
-this.A=[this.P[0]+ayNew*Math.cos(psi),this.P[1]-ayNew*Math.sin(psi)];
-this.C=[this.P[0]-ayNew*Math.cos(psi),this.P[1]+ayNew*Math.sin(psi)];
-
-this.draw=function(){
-  drawLine(this.Or,this.O,contextLinkage);
-  drawLine(this.Or,this.B,contextLinkage);
-  drawLine(this.O,this.A,contextLinkage);
-  drawLine(this.O,this.C,contextLinkage);
-  drawLine(this.B,this.A,contextLinkage);
-  drawLine(this.A,this.D,contextLinkage);
-  drawLine(this.D,this.C,contextLinkage);
-  drawLine(this.C,this.B,contextLinkage);
+  function shifterDeclick(e) {
+    clearInterval(sIntervalPress);
+    canvasMenu.removeEventListener('mousemove', movingOverShifter, false);
+    canvasMenu.removeEventListener('mouseup', shifterDeclick, false);
   }
-}
-//_____________________________________________________________________
+
+  function movingOverShifter(e) {
+    var x = e.pageX;
+    var y = e.pageY;
+    xControlShifting = x - shifterCenter[0];
+    yControlShifting = y - shifterCenter[1];
+    if (Math.sqrt(Math.pow(x - shifterCenter[0], 2) + Math.pow(y - shifterCenter[1], 2)) > shifterRadius) {
+      clearInterval(sIntervalPress);
+      canvasMenu.removeEventListener('mousemove', movingOverShifter, false);
+      canvasMenu.removeEventListener('mouseup', shifterDeclick, false);
+    }
+  }
+
+  function pressingShifter() {
+    if ((xControlShifting > yControlShifting) && (xControlShifting > -yControlShifting)) { xDesire -= screenWidth / 100; }
+    if ((xControlShifting < yControlShifting) && (xControlShifting > -yControlShifting)) { yDesire -= screenWidth / 100; }
+    if ((xControlShifting < yControlShifting) && (xControlShifting < -yControlShifting)) { xDesire += screenWidth / 100; }
+    if ((xControlShifting > yControlShifting) && (xControlShifting < -yControlShifting)) { yDesire += screenWidth / 100; }
+  }
+
+  function onMenuClick(e) {
+    var x = e.pageX;
+    var y = e.pageY;
+    if (Math.sqrt(Math.pow(x - shifterCenter[0], 2) + Math.pow(y - shifterCenter[1], 2)) <= shifterRadius) {   //press on shifter
+      xControlShifting = x - shifterCenter[0];
+      yControlShifting = y - shifterCenter[1];
+      canvasMenu.addEventListener('mousemove', movingOverShifter, false);
+      canvasMenu.addEventListener('mouseup', shifterDeclick, false);
+      sIntervalPress = setInterval(pressingShifter, 10);
+
+    }
+    else if ((x > playDatum[0]) && (y > playDatum[1]) && (x < playDatum[0] + playDatum[2]) && (y < playDatum[1] + playDatum[3])) {  //press on play/stop
+      if (playFlag == 1) {
+        playFlag = 0;
+        contextMenu.clearRect(playDatum[0], playDatum[1], playDatum[2], playDatum[3]);
+        contextMenu.drawImage(playImage, playDatum[0], playDatum[1], 40, 40);
+        deltaTime = 0;
+      }
+      else {
+        playFlag = 1;
+        contextMenu.clearRect(playDatum[0], playDatum[1], playDatum[2], playDatum[3]);
+        contextMenu.drawImage(stopImage, playDatum[0], playDatum[1], 40, 40);
+        deltaTime = 1;
+      }
+    }
+    else if ((x > minusDatum[0]) && (y > minusDatum[1]) && (x < minusDatum[0] + minusDatum[2]) && (y < minusDatum[1] + minusDatum[3]))  //press on minus
+    {
+      if (scaleDesire > 0.07) {
+        scaleDesire = scaleDesire / 1.5;
+        offsetXDuringResize = screenWidth / 2;
+        offsetYDuringResize = screenHeight / 2;
+        flagForScale = Math.log(1 / 10000) / Math.log(1 - frictionScaleCoef);
+      }
+    }
+    else if ((x > plusDatum[0]) && (y > plusDatum[1]) && (x < plusDatum[0] + plusDatum[2]) && (y < plusDatum[1] + plusDatum[3]))     //press on plus
+    {
+      if (scaleDesire < 1000) {
+        scaleDesire = scaleDesire * 1.5;
+        offsetXDuringResize = screenWidth / 2;
+        offsetYDuringResize = screenHeight / 2;
+        flagForScale = Math.log(1 / 10000) / Math.log(1 - frictionScaleCoef);
+      }
+    }
+    else if ((x > refreshDatum[0]) && (y > refreshDatum[1]) && (x < refreshDatum[0] + refreshDatum[2]) && (y < refreshDatum[1] + refreshDatum[3]))     //press on refresh
+    {
+      refresh();
+    }
+    else if ((x > sliderDatum[0]) && (y > sliderDatum[1]) && (x < sliderDatum[0] + sliderDatum[2]) && (y < sliderDatum[1] + sliderDatum[3])) {    //press on slider
+      canvasMenu.addEventListener('mousemove', movingOverRangeLimitDesire, false);
+      canvasMenu.addEventListener('mouseup', rangeDeclickLimitDesire, false);
+    }
+    else if ((x > rangeDatum[0] + sliderDatum[2] / 2) && (y > rangeDatum[1]) && (x < rangeDatum[0] + rangeDatum[2] - sliderDatum[2] / 2) && (y < rangeDatum[1] + rangeDatum[3])) {    //press on ranger
+      changeSliderPosition(x, y);
+    }
+    else if ((x > sliderWidthDatum[0]) && (y > sliderWidthDatum[1]) && (x < sliderWidthDatum[0] + sliderWidthDatum[2]) && (y < sliderWidthDatum[1] + sliderWidthDatum[3])) {    //press on width  slider
+      canvasMenu.addEventListener('mousemove', movingOverRangeWidth, false);
+      canvasMenu.addEventListener('mouseup', rangeDeclickWidth, false);
+
+    }
+    else if ((x > rangeWidthDatum[0] + sliderWidthDatum[2] / 2) && (y > rangeWidthDatum[1]) && (x < rangeWidthDatum[0] + rangeWidthDatum[2] - sliderWidthDatum[2] / 2) && (y < rangeWidthDatum[1] + rangeWidthDatum[3])) {    //press on width ranger
+      changeWidthSliderPosition(x, y);
+
+    }
+
+  }
+  function changeSliderPosition(x, y) {
+    sliderDatum[0] = x - sliderDatum[2] / 2;
+    limitDesire = Math.floor(-1 + (sliderDatum[0] - rangeDatum[0]) / (rangeDatum[2] - sliderDatum[2]) * (nApp + 3));
+    if (limitDesire < 1) { limitDesire = 1; }
+    if (limitDesire > nApp - 1) { limitDesire = nApp - 1; }
+
+    context.clearRect(rangeDatum[0], rangeDatum[1] + 50, 400, 200);
+    contextMenu.save();
+    contextMenu.fillStyle = "#e6985f";
+    contextMenu.clearRect(rangeDatum[0], rangeDatum[1], rangeDatum[2], rangeDatum[3]);
+    contextMenu.fillRect(rangeDatum[0], rangeDatum[1], sliderDatum[0], rangeDatum[3]);
+    contextMenu.restore();
+    contextMenu.drawImage(rangeImage, rangeDatum[0], rangeDatum[1], rangeDatum[2], rangeDatum[3]);
+    contextMenu.drawImage(sliderImage, sliderDatum[0], sliderDatum[1], sliderDatum[2], sliderDatum[3]);
+    //_____________text____________________
+    contextMenu.clearRect(appTextDatum[0] + 130, appTextDatum[1] - 20, 40, 30)
+    contextMenu.fillText(limitDesire, appTextDatum[0] + 130, appTextDatum[1]);
+    contextMenu.stroke();
+    //_________________________________________
+
+  }
+  function changeWidthSliderPosition(x, y) {
+    sliderWidthDatum[0] = x - sliderWidthDatum[2] / 2;
+    lineWidthLinkage = (sliderWidthDatum[0] - rangeWidthDatum[0]) / (rangeWidthDatum[2] - sliderWidthDatum[2]) * 5;
 
 
-function onClick(e){
-canvasMenuBack.style.zIndex=-1;
-canvas.removeEventListener('mousedown',onClick,false);
-canvas.removeEventListener('touchstart', onTouchStart, false);
-canvas.addEventListener('mouseup', onDeclick, false);
-canvas.addEventListener('touchend', onTouchEnd, false);
+    context.clearRect(rangeWidthDatum[0], rangeWidthDatum[1] + 50, 400, 200);
+    contextMenu.save();
+    contextMenu.fillStyle = "#e6985f";
+    contextMenu.clearRect(rangeWidthDatum[0], rangeWidthDatum[1], rangeWidthDatum[2], rangeWidthDatum[3]);
+    contextMenu.fillRect(rangeWidthDatum[0], rangeWidthDatum[1], sliderWidthDatum[0], rangeWidthDatum[3]);
+    contextMenu.restore();
+    contextMenu.drawImage(rangeImage, rangeWidthDatum[0], rangeWidthDatum[1], rangeWidthDatum[2], rangeWidthDatum[3]);
+    contextMenu.drawImage(sliderImage, sliderWidthDatum[0], sliderWidthDatum[1], sliderWidthDatum[2], sliderWidthDatum[3]);
+    //_____________text____________________
+    contextMenu.clearRect(widthTextDatum[0] + 130, widthTextDatum[1] - 20, 40, 30)
+    contextMenu.fillText(Math.floor(lineWidthLinkage * 100), widthTextDatum[0] + 130, widthTextDatum[1]);
+    contextMenu.stroke();
+    //_________________________________________
+  }
 
-var x = e.pageX - xShift - screenWidth / 2;
-var y=-(e.pageY-yShift-screenHeight/2);
-context.beginPath();
-context.moveTo((x+screenWidth/2)*scale+xMoved,(-y+screenHeight/2)*scale+yMoved);
-pathDataX.push(x);
-pathDataY.push(y);
-canvas.addEventListener('mousemove', getCoordinates, false);
-canvas.addEventListener('touchmove', onTouchMove, false);
+  function movingOverRangeLimitDesire(e) {
+    var x = e.pageX;
+    var y = e.pageY;
+    if ((x > rangeDatum[0] + sliderDatum[2] / 2) && (x < rangeDatum[0] + rangeDatum[2] - sliderDatum[2] / 2)) {
+      changeSliderPosition(x, y);
 
-sInterval=setInterval(drawPath,1);
-sIntervalOp=setInterval(textOpacity,dt);
-}
+    }
+    if (x > canvasMenu.width - 10) {
+      canvasMenu.removeEventListener('mousemove', movingOverRangeLimitDesire, false);
+      canvasMenu.removeEventListener('mouseup', rangeDeclickLimitDesire, false);
+    }
+  }
+  function rangeDeclickLimitDesire() {
+    canvasMenu.removeEventListener('mousemove', movingOverRangeLimitDesire, false);
+    canvasMenu.removeEventListener('mouseup', rangeDeclickLimitDesire, false);
+  }
 
-function onTouchStart(evt)
-{
-  evt.preventDefault();
-  var touches = evt.changedTouches;
-  if (touches.length > 0)
+
+  function movingOverRangeWidth(e) {
+    var x = e.pageX;
+    var y = e.pageY;
+    if ((x > rangeWidthDatum[0] + sliderWidthDatum[2] / 2) && (x < rangeWidthDatum[0] + rangeWidthDatum[2] - sliderWidthDatum[2] / 2)) {
+      changeWidthSliderPosition(x, y);
+    }
+    if (x > canvasMenu.width - 10) {
+      canvasMenu.removeEventListener('mousemove', movingOverRangeWidth, false);
+      canvasMenu.removeEventListener('mouseup', rangeDeclickWidth, false);
+    }
+  }
+
+  function rangeDeclickWidth() {
+    canvasMenu.removeEventListener('mousemove', movingOverRangeWidth, false);
+    canvasMenu.removeEventListener('mouseup', rangeDeclickWidth, false);
+  }
+
+  //______linkage_classes________________________________________________________________
+  this.inversePar = function (x, y, a, b, phi, phia, color) {
+    this.a = a;
+    this.b = b;
+    this.phi = this.phi;
+    this.phia = this.phia;
+    this.A = [x, y];
+    var B = [b * Math.cos(phi), b * Math.sin(phi)];
+    this.B = [x + B[0] * Math.cos(phia) - B[1] * Math.sin(phia), y + B[0] * Math.sin(phia) + B[1] * Math.cos(phia)];
+    var C = [a, 0];
+    this.C = [x + C[0] * Math.cos(phia), y + C[0] * Math.sin(phia)];
+    var k = (a * a - b * b) / (a * a + b * b - 2 * a * b * Math.cos(phi));
+    var D = [k * (a - b * Math.cos(phi)), -k * b * Math.sin(phi)];
+    this.D = [x + D[0] * Math.cos(phia) - D[1] * Math.sin(phia), y + D[0] * Math.sin(phia) + D[1] * Math.cos(phia)];
+    this.P = [(this.A[0] + this.B[0]) / 2, (this.A[1] + this.B[1]) / 2];
+    this.Q = [(this.A[0] + this.C[0]) / 2, (this.A[1] + this.C[1]) / 2];
+    this.R = [(this.B[0] + this.D[0]) / 2, (this.B[1] + this.D[1]) / 2];
+    this.S = [(this.C[0] + this.D[0]) / 2, (this.C[1] + this.D[1]) / 2];
+    this.O = [(this.Q[0] + this.R[0]) / 2, (this.Q[1] + this.R[1]) / 2];
+    var PO = Math.sqrt(Math.pow(this.O[0] - this.P[0], 2) + Math.pow(this.O[1] - this.P[1], 2));
+    var rb = 0.6 * a;
+    var OT = Math.sqrt(rb * rb - PO * PO);
+    var vertical = [this.S[1] - this.P[1], -this.S[0] + this.P[0]]
+    var verticalLength = Math.sqrt(vertical[0] * vertical[0] + vertical[1] * vertical[1]);
+    var eVertical = [vertical[0] / verticalLength, vertical[1] / verticalLength];
+    this.T = [this.O[0] + eVertical[0] * OT, this.O[1] + eVertical[1] * OT];
+
+    this.draw = function () {
+      drawLine(this.A, this.B, contextLinkage, color);
+      drawLine(this.C, this.D, contextLinkage, color);
+      drawLine(this.A, this.C, contextLinkage, color);
+      drawLine(this.B, this.D, contextLinkage, color);
+      drawLine(this.P, this.T, contextLinkage, color);
+      drawLine(this.Q, this.T, contextLinkage, color);
+      drawLine(this.R, this.T, contextLinkage, color);
+      drawLine(this.S, this.T, contextLinkage, color);
+
+    }
+  }
+
+  this.translator = function (A, b, phi, E, a) {
+    this.a = a;
+    this.A = A;
+    this.B = [A[0] + b * Math.cos(phi), A[1] + b * Math.sin(phi)];
+    this.E = E;
+    var l = Math.sqrt(Math.pow(E[0] - A[0], 2) + Math.pow(E[1] - A[1], 2));
+    var cosPsi = (E[0] - A[0]) / l;
+    var sinPsi = (E[1] - A[1]) / l;
+    var cosPhi = (l / 2) / a;
+    var sinPhi = Math.sqrt(1 - Math.pow(cosPhi, 2));
+    var D = [a * cosPsi, a * sinPsi];
+    this.D = [A[0] + D[0] * cosPhi + D[1] * sinPhi, A[1] - D[0] * sinPhi + D[1] * cosPhi];
+    this.C = [this.D[0] + this.B[0] - this.A[0], this.D[1] + this.B[1] - this.A[1]];
+    this.F = [this.E[0] + this.B[0] - this.A[0], this.E[1] + this.B[1] - this.A[1]];
+
+    this.draw = function () {
+      drawLine(this.A, this.B, contextLinkage)
+      drawLine(this.B, this.C, contextLinkage)
+      drawLine(this.C, this.D, contextLinkage)
+      drawLine(this.D, this.A, contextLinkage)
+      drawLine(this.D, this.E, contextLinkage)
+      drawLine(this.E, this.F, contextLinkage)
+      drawLine(this.F, this.C, contextLinkage)
+    }
+  }
+
+  this.vStraightLine = function (x, y, delta, a, b, phi)//x,y - coordinates of point in line,
+    //a-rhombus side, phi - rhombus angle when delta=0
   {
+    this.D = [x, y + delta];
+    var ax = a * Math.cos(phi);
+    var ay = a * Math.sin(phi);
+    var r = (Math.sqrt(Math.pow(b, 2) - Math.pow(ay, 2)) - ax) / 2;
+    var psi = Math.atan(delta / (2 * r + 2 * ax));
+    this.O = [x - 2 * ax - 2 * r, y];
+    this.Or = [x - 2 * ax - r, y];
+    this.B = [x - 2 * ax - r + r * Math.cos(2 * psi), y + r * Math.sin(2 * psi)];
+    var axNew = Math.sqrt(Math.pow(this.D[0] - this.B[0], 2) + Math.pow(this.D[1] - this.B[1], 2)) / 2;
+    var ayNew = Math.sqrt(a * a - axNew * axNew);
+    this.P = [(this.D[0] + this.B[0]) / 2, (this.D[1] + this.B[1]) / 2];
+    this.A = [this.P[0] - ayNew * Math.sin(psi), this.P[1] + ayNew * Math.cos(psi)];
+    this.C = [this.P[0] + ayNew * Math.sin(psi), this.P[1] - ayNew * Math.cos(psi)];
+
+    this.draw = function (ctx) {
+      //alert(xx);
+      drawLine(this.Or, this.O, ctx);
+      drawLine(this.Or, this.B, ctx);
+      drawLine(this.O, this.A, ctx);
+      drawLine(this.O, this.C, ctx);
+      drawLine(this.B, this.A, ctx);
+      drawLine(this.A, this.D, ctx);
+      drawLine(this.D, this.C, ctx);
+      drawLine(this.C, this.B, ctx);
+
+      //drawLine(this.Or,this.B);
+    }
+  }
+  this.hStraightLine = function (x, y, delta, a, b, phi) {
+    this.D = [x + delta, y];
+    var ax = a * Math.cos(phi);
+    var ay = a * Math.sin(phi);
+    var r = (Math.sqrt(Math.pow(b, 2) - Math.pow(ay, 2)) - ax) / 2;
+    var psi = Math.atan(delta / (2 * r + 2 * ax));
+    this.O = [x, y - 2 * ax - 2 * r];
+    this.Or = [x, y - 2 * ax - r];
+    this.B = [x + r * Math.sin(2 * psi), y - 2 * ax - r + r * Math.cos(2 * psi)];
+
+    var axNew = Math.sqrt(Math.pow(this.D[0] - this.B[0], 2) + Math.pow(this.D[1] - this.B[1], 2)) / 2;
+    var ayNew = Math.sqrt(a * a - axNew * axNew);
+    this.P = [(this.D[0] + this.B[0]) / 2, (this.D[1] + this.B[1]) / 2];
+    this.A = [this.P[0] + ayNew * Math.cos(psi), this.P[1] - ayNew * Math.sin(psi)];
+    this.C = [this.P[0] - ayNew * Math.cos(psi), this.P[1] + ayNew * Math.sin(psi)];
+
+    this.draw = function () {
+      drawLine(this.Or, this.O, contextLinkage);
+      drawLine(this.Or, this.B, contextLinkage);
+      drawLine(this.O, this.A, contextLinkage);
+      drawLine(this.O, this.C, contextLinkage);
+      drawLine(this.B, this.A, contextLinkage);
+      drawLine(this.A, this.D, contextLinkage);
+      drawLine(this.D, this.C, contextLinkage);
+      drawLine(this.C, this.B, contextLinkage);
+    }
+  }
+  //_____________________________________________________________________
+
+
+  function onClick(e) {
+    canvasMenuBack.style.zIndex = -1;
+    canvas.removeEventListener('mousedown', onClick, false);
+    canvas.removeEventListener('touchstart', onTouchStart, false);
+    canvas.addEventListener('mouseup', onDeclick, false);
+    canvas.addEventListener('touchend', onTouchEnd, false);
+
+    var x = e.pageX - xShift - screenWidth / 2;
+    var y = -(e.pageY - yShift - screenHeight / 2);
+    context.beginPath();
+    context.moveTo((x + screenWidth / 2) * scale + xMoved, (-y + screenHeight / 2) * scale + yMoved);
+    pathDataX.push(x);
+    pathDataY.push(y);
+    canvas.addEventListener('mousemove', getCoordinates, false);
+    canvas.addEventListener('touchmove', onTouchMove, false);
+
+    sInterval = setInterval(drawPath, 1);
+    sIntervalOp = setInterval(textOpacity, dt);
+  }
+
+  function onTouchStart(evt) {
+    evt.preventDefault();
+    var touches = evt.changedTouches;
+    if (touches.length > 0) {
       onClick(touches[0]);
+    }
   }
-}
 
-function getCoordinates(e)
-{
-var x=e.pageX-xShift-screenWidth/2;
-var y=-(e.pageY-yShift-screenHeight/2);
-pathDataX.push(x);
-pathDataY.push(y);
-}
+  function getCoordinates(e) {
+    var x = e.pageX - xShift - screenWidth / 2;
+    var y = -(e.pageY - yShift - screenHeight / 2);
+    pathDataX.push(x);
+    pathDataY.push(y);
+  }
 
-function onTouchMove(evt)
-{
-  var touches = evt.touches;
+  function onTouchMove(evt) {
+    var touches = evt.touches;
 
-  if (touches.length == 1)
-  {
+    if (touches.length == 1) {
       getCoordinates(touches[0]);
+    }
   }
-}
 
-function drawPath() {
-var l=pathDataX.length;
-context.lineTo((pathDataX[l-1]+screenWidth/2)*scale+xMoved,(-pathDataY[l-1]+screenHeight/2)*scale+yMoved);
-context.stroke();
-}
-
-function onDeclick() {
-canvas.removeEventListener('mousemove',getCoordinates,false);
-canvas.removeEventListener('mouseup',onDeclick,false);
-canvas.removeEventListener('touchmove', onTouchMove, false);
-canvas.removeEventListener('touchend', onTouchEnd, false);
-canvasMenuBack.style.zIndex = -2;
-canvasMenu.style.zIndex=-1;
-clearInterval(sInterval);
-clearInterval(sIntervalOp);
-contextText.clearRect(0,0,screenWidth,screenHeight);
-fourierTransformation();
-canvas.addEventListener('DOMMouseScroll', resize, false); //scrolling 
-canvas.addEventListener('mousewheel', resize, false);     //scrolling for firefox
-canvas.addEventListener('mousedown',drag,false)
-canvas.addEventListener('touchstart', dragTouch, false)
-
-canvasMenu.addEventListener('mousedown',onMenuClick,false);
-canvasMenu.style.zIndex=1;
-turboLink.innerHTML="Faster";
-context.clearRect(0,0,screenWidth,screenHeight);
-sIntervalAn=setInterval(animation,dt);
-}
-
-function onTouchEnd(e)
-{
-  onDeclick();
-}
-
-function textOpacity(){
-opacity=opacity/1.1;
-contextText.clearRect(0,0,screenWidth,screenHeight);
-contextText.globalAlpha = opacity;
-contextText.fillText("Draw here", (screenWidth)/2+10, screenHeight/2);
-contextText.stroke();
-}
-function fourierTransformation(){
- for(var i=0;i<=nApp;i++){
-  var integralX=0;
-  var integralY=0;
-
-  for(var t=0;t<nP;t++){
-    integralX+=f(Math.cos(Math.PI*(t+0.5)/nP),pathDataX)*((i>0)?1:Math.sqrt(2)/2)*Math.cos(i*Math.PI*(t+0.5)/nP)*2/nP;
-    integralY+=f(Math.cos(Math.PI*(t+0.5)/nP),pathDataY)*((i>0)?1:Math.sqrt(2)/2)*Math.cos(i*Math.PI*(t+0.5)/nP)*2/nP;
-	}
-  xFourier.push(integralX*((i>0)?1:Math.sqrt(2)/2));
-  yFourier.push(integralY*((i>0)?1:Math.sqrt(2)/2));
-  if (i==0){
-    xSumMod.push(Math.abs(xFourier[i]));
-    ySumMod.push(Math.abs(yFourier[i]));
+  function drawPath() {
+    var l = pathDataX.length;
+    context.lineTo((pathDataX[l - 1] + screenWidth / 2) * scale + xMoved, (-pathDataY[l - 1] + screenHeight / 2) * scale + yMoved);
+    context.stroke();
   }
-  else{
-    xSumMod.push(xSumMod[i-1]+Math.abs(xFourier[i]));
-    ySumMod.push(ySumMod[i-1]+Math.abs(yFourier[i]));
-  }  
- }
-for (var t=0;t<=nApp;t+=1/(nApp)/2){
-  for(var i=0;i<=nApp;i++){
-    if (i==0){
-	  xCos[i]=xFourier[i];
-	  yCos[i]=yFourier[i];
-	  xSin[i]=0;
-	  ySin[i]=0;
-       }
-	else{
-	  xCos[i]=xCos[i-1]+xFourier[i]*Math.cos(i*Math.PI*t/nApp);
-	  yCos[i]=yCos[i-1]+yFourier[i]*Math.cos(i*Math.PI*t/nApp);
-	  xSin[i]=xSin[i-1]+xFourier[i]*Math.sin(i*Math.PI*t/nApp);
-	  ySin[i]=ySin[i-1]+yFourier[i]*Math.sin(i*Math.PI*t/nApp);
-      }	
 
-	  if (t==0){
-      xMaxModCos[i]=Math.abs(xCos[i]);
-      yMaxModCos[i]=Math.abs(yCos[i]);
-      xMaxModSin[i]=Math.abs(xSin[i]);
-      yMaxModSin[i]=Math.abs(ySin[i]);
-      xMaxMod[i]=Math.sqrt(Math.pow(xCos[i],2)+Math.pow(xSin[i],2));
-	  yMaxMod[i]=Math.sqrt(Math.pow(yCos[i],2)+Math.pow(ySin[i],2));
-	  }
-	else{
-	  if(Math.abs(xCos[i])>xMaxModCos[i]) {xMaxModCos[i]=Math.abs(xCos[i]);}
-	  if(Math.abs(yCos[i])>yMaxModCos[i]) {yMaxModCos[i]=Math.abs(yCos[i]);}
-	  if(Math.abs(xSin[i])>xMaxModSin[i]) {xMaxModSin[i]=Math.abs(xSin[i]);}
-	  if(Math.abs(ySin[i])>yMaxModSin[i]) {yMaxModSin[i]=Math.abs(ySin[i]);}
-      if(Math.sqrt(Math.pow(xCos[i],2)+Math.pow(xSin[i],2))>xMaxMod[i]) {xMaxMod[i]=Math.sqrt(Math.pow(xCos[i],2)+Math.pow(xSin[i],2));}
-      if(Math.sqrt(Math.pow(yCos[i],2)+Math.pow(ySin[i],2))>yMaxMod[i]) {yMaxMod[i]=Math.sqrt(Math.pow(yCos[i],2)+Math.pow(ySin[i],2));}
-     }
- 
-	 }
+  function onDeclick() {
+    canvas.removeEventListener('mousemove', getCoordinates, false);
+    canvas.removeEventListener('mouseup', onDeclick, false);
+    canvas.removeEventListener('touchmove', onTouchMove, false);
+    canvas.removeEventListener('touchend', onTouchEnd, false);
+    canvasMenuBack.style.zIndex = -2;
+    canvasMenu.style.zIndex = -1;
+    clearInterval(sInterval);
+    clearInterval(sIntervalOp);
+    contextText.clearRect(0, 0, screenWidth, screenHeight);
+    fourierTransformation();
+    canvas.addEventListener('DOMMouseScroll', resize, false); //scrolling
+    canvas.addEventListener('mousewheel', resize, false);     //scrolling for firefox
+    canvas.addEventListener('mousedown', drag, false)
+    canvas.addEventListener('touchstart', dragTouch, false)
+
+    canvasMenu.addEventListener('mousedown', onMenuClick, false);
+    canvasMenu.style.zIndex = 1;
+    turboLink.innerHTML = "Faster";
+    context.clearRect(0, 0, screenWidth, screenHeight);
+    sIntervalAn = setInterval(animation, dt);
   }
-}
 
-function drag(e){
-canvas.addEventListener('mousemove',dragMoving,false);
-canvas.addEventListener('mouseup',drop,false);
+  function onTouchEnd(e) {
+    onDeclick();
+  }
 
-screenx = e.screenX;
-screeny=e.screenY;
-}
+  function textOpacity() {
+    opacity = opacity / 1.1;
+    contextText.clearRect(0, 0, screenWidth, screenHeight);
+    contextText.globalAlpha = opacity;
+    contextText.fillText("Draw here", (screenWidth) / 2 + 10, screenHeight / 2);
+    contextText.stroke();
+  }
+  function fourierTransformation() {
+    for (var i = 0; i <= nApp; i++) {
+      var integralX = 0;
+      var integralY = 0;
+
+      for (var t = 0; t < nP; t++) {
+        integralX += f(Math.cos(Math.PI * (t + 0.5) / nP), pathDataX) * ((i > 0) ? 1 : Math.sqrt(2) / 2) * Math.cos(i * Math.PI * (t + 0.5) / nP) * 2 / nP;
+        integralY += f(Math.cos(Math.PI * (t + 0.5) / nP), pathDataY) * ((i > 0) ? 1 : Math.sqrt(2) / 2) * Math.cos(i * Math.PI * (t + 0.5) / nP) * 2 / nP;
+      }
+      xFourier.push(integralX * ((i > 0) ? 1 : Math.sqrt(2) / 2));
+      yFourier.push(integralY * ((i > 0) ? 1 : Math.sqrt(2) / 2));
+      if (i == 0) {
+        xSumMod.push(Math.abs(xFourier[i]));
+        ySumMod.push(Math.abs(yFourier[i]));
+      }
+      else {
+        xSumMod.push(xSumMod[i - 1] + Math.abs(xFourier[i]));
+        ySumMod.push(ySumMod[i - 1] + Math.abs(yFourier[i]));
+      }
+    }
+    for (var t = 0; t <= nApp; t += 1 / (nApp) / 2) {
+      for (var i = 0; i <= nApp; i++) {
+        if (i == 0) {
+          xCos[i] = xFourier[i];
+          yCos[i] = yFourier[i];
+          xSin[i] = 0;
+          ySin[i] = 0;
+        }
+        else {
+          xCos[i] = xCos[i - 1] + xFourier[i] * Math.cos(i * Math.PI * t / nApp);
+          yCos[i] = yCos[i - 1] + yFourier[i] * Math.cos(i * Math.PI * t / nApp);
+          xSin[i] = xSin[i - 1] + xFourier[i] * Math.sin(i * Math.PI * t / nApp);
+          ySin[i] = ySin[i - 1] + yFourier[i] * Math.sin(i * Math.PI * t / nApp);
+        }
+
+        if (t == 0) {
+          xMaxModCos[i] = Math.abs(xCos[i]);
+          yMaxModCos[i] = Math.abs(yCos[i]);
+          xMaxModSin[i] = Math.abs(xSin[i]);
+          yMaxModSin[i] = Math.abs(ySin[i]);
+          xMaxMod[i] = Math.sqrt(Math.pow(xCos[i], 2) + Math.pow(xSin[i], 2));
+          yMaxMod[i] = Math.sqrt(Math.pow(yCos[i], 2) + Math.pow(ySin[i], 2));
+        }
+        else {
+          if (Math.abs(xCos[i]) > xMaxModCos[i]) { xMaxModCos[i] = Math.abs(xCos[i]); }
+          if (Math.abs(yCos[i]) > yMaxModCos[i]) { yMaxModCos[i] = Math.abs(yCos[i]); }
+          if (Math.abs(xSin[i]) > xMaxModSin[i]) { xMaxModSin[i] = Math.abs(xSin[i]); }
+          if (Math.abs(ySin[i]) > yMaxModSin[i]) { yMaxModSin[i] = Math.abs(ySin[i]); }
+          if (Math.sqrt(Math.pow(xCos[i], 2) + Math.pow(xSin[i], 2)) > xMaxMod[i]) { xMaxMod[i] = Math.sqrt(Math.pow(xCos[i], 2) + Math.pow(xSin[i], 2)); }
+          if (Math.sqrt(Math.pow(yCos[i], 2) + Math.pow(ySin[i], 2)) > yMaxMod[i]) { yMaxMod[i] = Math.sqrt(Math.pow(yCos[i], 2) + Math.pow(ySin[i], 2)); }
+        }
+
+      }
+    }
+  }
+
+  function drag(e) {
+    canvas.addEventListener('mousemove', dragMoving, false);
+    canvas.addEventListener('mouseup', drop, false);
+
+    screenx = e.screenX;
+    screeny = e.screenY;
+  }
 
 
-function getDistanceFromTouch(touchEvt1, touchEvt2)
-{
-  var dist = Math.sqrt(Math.pow(touchEvt1.pageX - touchEvt2.pageX, 2) +
-  Math.pow(touchEvt1.pageY - touchEvt2.pageY, 2));
-  return dist;
-}
+  function getDistanceFromTouch(touchEvt1, touchEvt2) {
+    var dist = Math.sqrt(Math.pow(touchEvt1.pageX - touchEvt2.pageX, 2) +
+    Math.pow(touchEvt1.pageY - touchEvt2.pageY, 2));
+    return dist;
+  }
 
-function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
+  function onTwoFingersTouchMove(touchEvt1, touchEvt2) {
 
-  var dist = getDistanceFromTouch(touchEvt1, touchEvt2);
+    var dist = getDistanceFromTouch(touchEvt1, touchEvt2);
 
 
-  if (gPrevDistanceBetweenFingers == 0) 
-  {
+    if (gPrevDistanceBetweenFingers == 0) {
+      gPrevDistanceBetweenFingers = dist;
+      return;
+    }
+    scaleDesire = scaleDesire * dist / gPrevDistanceBetweenFingers;
+
+
+    //if ((scaleDesire > 0.07) && (scaleDesire < 1000))
+    {
+      offsetXDuringResize = (touchEvt1.pageX + touchEvt2.pageX) / 2;
+      offsetYDuringResize = (touchEvt1.pageY + touchEvt2.pageY) / 2;
+      flagForScale = 10;
+    }
     gPrevDistanceBetweenFingers = dist;
-    return;
   }
-  scaleDesire = scaleDesire * dist / gPrevDistanceBetweenFingers;
 
-
-  //if ((scaleDesire > 0.07) && (scaleDesire < 1000))
-  {
-    offsetXDuringResize = (touchEvt1.pageX + touchEvt2.pageX) / 2;
-    offsetYDuringResize = (touchEvt1.pageY + touchEvt2.pageY) / 2;
-    flagForScale = 10;
+  function dragTouch(evt) {
+    evt.preventDefault();
+    var touches = evt.changedTouches;
+    if (touches.length == 1) {
+      drag(touches[0]);
+    }
+    canvas.addEventListener('touchmove', dragMovingTouch, false);
+    canvas.addEventListener('touchend', dropTouch, false);
   }
-  gPrevDistanceBetweenFingers = dist;
-}
 
-function dragTouch(evt) {
-  evt.preventDefault();
-  var touches = evt.changedTouches;
-  if (touches.length == 1) {
-    drag(touches[0]);
+  function dragMoving(e) {
+
+    xDesire = xDesire + e.screenX - screenx;
+    yDesire = yDesire + e.screenY - screeny;
+    screenx = e.screenX;
+    screeny = e.screenY;
   }
-  canvas.addEventListener('touchmove', dragMovingTouch, false);
-  canvas.addEventListener('touchend', dropTouch, false);
-}
 
-function dragMoving(e)
-{
-
- xDesire=xDesire+e.screenX-screenx;
- yDesire=yDesire+e.screenY-screeny;
- screenx=e.screenX;
- screeny=e.screenY;
-}
-
-function dragMovingTouch(evt)
-{
-  var touches = evt.touches;
-  if (touches.length == 1)
-  {
+  function dragMovingTouch(evt) {
+    var touches = evt.touches;
+    if (touches.length == 1) {
       dragMoving(touches[0]);
+    }
+    else if (touches.length == 2) {
+      onTwoFingersTouchMove(touches[0], touches[1]);
+    }
   }
-  else if (touches.length == 2)
-  {
-    onTwoFingersTouchMove(touches[0], touches[1]);
-   }   
-}
 
-function drop()
-{
-canvas.removeEventListener('mousemove',dragMoving,false);
-canvas.removeEventListener('mouseup',drop,false);
-}
+  function drop() {
+    canvas.removeEventListener('mousemove', dragMoving, false);
+    canvas.removeEventListener('mouseup', drop, false);
+  }
 
-function dropTouch()
-{
-  canvas.removeEventListener('touchmove', dragMovingTouch, false);
-  canvas.removeEventListener('touchend', dropTouch, false);
-  gPrevDistanceBetweenFingers = 0;
-  drop();
-}
+  function dropTouch() {
+    canvas.removeEventListener('touchmove', dragMovingTouch, false);
+    canvas.removeEventListener('touchend', dropTouch, false);
+    gPrevDistanceBetweenFingers = 0;
+    drop();
+  }
 
-function resizeWithWheel(wheelSpeed, x, y)
-{
-  if (((scaleDesire > 0.07) || (wheelSpeed > 0)) && ((scaleDesire < 1000) || (wheelSpeed < 0)))
-  {
+  function resizeWithWheel(wheelSpeed, x, y) {
+    if (((scaleDesire > 0.07) || (wheelSpeed > 0)) && ((scaleDesire < 1000) || (wheelSpeed < 0))) {
       var signWheelSpeed = Math.abs(wheelSpeed) / wheelSpeed;
       scaleDesire = scaleDesire * (1 + signWheelSpeed * scaleFactor);
       offsetXDuringResize = x;
       offsetYDuringResize = y;
       flagForScale = Math.log(1 / 10000) / Math.log(1 - frictionScaleCoef);
+    }
   }
-}
 
-function resize(e)
-{
+  function resize(e) {
     var wheelSpeed = wheelDetail(e);
     resizeWithWheel(wheelSpeed, e.pageX, e.pageY);
     e.preventDefault();
-}
+  }
 
-function wheelDetail(e) {
-  return (e.detail ? -e.detail / 3 : e.wheelDelta / 120);
-}
+  function wheelDetail(e) {
+    return (e.detail ? -e.detail / 3 : e.wheelDelta / 120);
+  }
 
-function f(x,pathData){  //x\in[-1,1]
-var value;
-var l=pathData.length;
-//l=2;
-if ((x<-1)||(x>1)) {value=0;}
-else if (l==1){value=pathData[0];}
-else if (x==1){value=pathData[l-1];}
-else{
-var nl=Math.floor((x+1)*(l-1)/2);
-value=pathData[nl]+((x+1)*(l-1)/2-nl)*(pathData[nl+1]-pathData[nl]);
-}
-
-return value;
-}	
-
-
-
-function animation(){
-var date = new Date();
-var time1 = date.getTime(); 
- time+=deltaTime;
-  contextGreen.lineWidth=lineWidth*scale;
-  contextRed.lineWidth=lineWidth*scale*2;
-  contextLinkage.lineWidth=lineWidthLinkage*scale/3;
-//___________scaling___________________________________________
-  limitApp+=(limitDesire-limitApp)*0.5;
-  scaleOld=scale;
-  scale+=(scaleDesire-scale)*frictionScaleCoef;
-  var xMovedDelta=(xDesire-xMoved)*frictionMoveCoef+(xMoved-offsetXDuringResize+xShift)*(scale/scaleOld-1);
-  var yMovedDelta=(yDesire-yMoved)*frictionMoveCoef+(yMoved-offsetYDuringResize+yShift)*(scale/scaleOld-1);
-  xMoved+=xMovedDelta;
-  yMoved+=yMovedDelta;
-  if (flagForScale>0){xDesire=xMoved;yDesire=yMoved;flagForScale--}
-  
-if (!turboOn){
-  contextBackground.setTransform(1, 0, 0, 1,0,0);
-  contextBackground.scale(scale,scale);
-  contextBackground.translate((xMoved)/scale+patternShift[0],(yMoved)/scale+patternShift[1]);
-  contextBackground.fillStyle = pattern;
-  contextBackground.fill();
-
- contextCircle.setTransform(1,0, 0, 1,0,0);
- contextCircle.clearRect(0,0,screenWidth,screenHeight);
- contextCircle.scale(scale,scale);
- contextCircle.translate((xMoved)/scale+circleCenter[0],(yMoved)/scale+circleCenter[1]);
- contextCircle.rotate(Math.PI-time*speed);
- contextCircle.drawImage(circleImage,-195,-195);
- contextCircle.fill();
-}
-else{
-/*contextBackground.fillStyle="#8ED6FF";
-contextCircle.fillStyle="#8ED6FF"
-contextBackground.fill();
-contextCircle.setTransform(1,0, 0, 1,0,0);
-contextCircle.clearRect(0,0,screenWidth,screenHeight);
-contextCircle.fill();
-*/
-}
-  
-  //_____________________________________________________________________________  
-  
-  
-  //____________linkage______________________________________________
-
-  contextLinkage.beginPath();
-  contextLinkage.clearRect(0,0,screenWidth,screenHeight);
-  contextLinkage.clearRect(0,0,screenWidth,screenHeight);
-
-  var eps=0.9;
-  var invParSize=200;
-  var mainVehicleSize=150;
-  var trSh=30;
-  
-  for (var i=0;i<=limitDesire;i++){
-     if (i==0){
-	   xAttachX[i]=xFourier[i]*Math.cos(speed*time*i);
-	   yAttachX[i]=xFourier[i]*Math.sin(speed*time*i);
-	   xAttachY[i]=-yFourier[i]*Math.sin(speed*time*i);
-	   yAttachY[i]=yFourier[i]*Math.cos(speed*time*i);
-       }
-	 else{
-	   xAttachX[i]=xAttachX[i-1]+xFourier[i]*Math.cos(speed*time*i);
-	   yAttachX[i]=yAttachX[i-1]+xFourier[i]*Math.sin(speed*time*i);
-	   xAttachY[i]=xAttachY[i-1]-yFourier[i]*Math.sin(speed*time*i);
-	   yAttachY[i]=yAttachY[i-1]+yFourier[i]*Math.cos(speed*time*i);
-       }	 
+  function f(x, pathData) {  //x\in[-1,1]
+    var value;
+    var l = pathData.length;
+    //l=2;
+    if ((x < -1) || (x > 1)) { value = 0; }
+    else if (l == 1) { value = pathData[0]; }
+    else if (x == 1) { value = pathData[l - 1]; }
+    else {
+      var nl = Math.floor((x + 1) * (l - 1) / 2);
+      value = pathData[nl] + ((x + 1) * (l - 1) / 2 - nl) * (pathData[nl + 1] - pathData[nl]);
     }
-//_________________________________driver_linkage___________________________________________________
-  contextLinkage.save();
-  contextLinkage.lineWidth=lineWidthLinkage*scale;
-  contextLinkage.strokeStyle="#129";
-  contextLinkage.beginPath();
-  drawLine([10,10],[10+invParSize*eps*Math.cos(time*speed),10+invParSize*eps*Math.sin(time*speed)],contextLinkage)
-  drawLine([10,10],[10-invParSize*eps*Math.sin(time*speed),10+invParSize*eps*Math.cos(time*speed)],contextLinkage)
-  drawLine([10+invParSize*eps*Math.cos(speed*time),10+invParSize*eps*Math.sin(speed*time)],[10-invParSize*eps*Math.sin(speed*time),10+invParSize*eps*Math.cos(speed*time)],contextLinkage)
-  contextLinkage.stroke();
-  contextLinkage.restore();
-//______________________________________________________________________________________________________________  
-  drawLine([10+invParSize*eps*Math.cos(speed*time),10+invParSize*eps*Math.sin(speed*time)],[10-invParSize*eps*Math.sin(speed*time),10+invParSize*eps*Math.cos(speed*time)],contextLinkage)
 
-  //____________X_________________________
-
-  for(var i=0;i<=limitDesire;i++){
-    if (i>0){
-	  invPar[i]=new inversePar(0,-yAttachX[limitDesire]+yAttachY[limitDesire],invParSize*Math.pow(eps,i-1),invParSize*Math.pow(eps,i),time*speed,speed*time*(i-1));
-      invPar[i].draw();  
-	}
-    drawLine([0,-yAttachX[limitDesire]+yAttachY[limitDesire]],[xFourier[i]*Math.cos(speed*time*(i)),-yAttachX[limitDesire]+yAttachY[limitDesire]+xFourier[i]*Math.sin(speed*time*(i))],contextLinkage)
-    
+    return value;
   }
- 
- 
-  trans[0]=new translator([10,10],invParSize,0,[0,-yAttachX[limitDesire]+yAttachY[limitDesire]],(xMaxMod[limitDesire]+yMaxMod[limitDesire])/2+trSh);
-  trans[0].draw();
-  trans[0]=new translator([10,10],invParSize*eps,speed*time,[0,-yAttachX[limitDesire]+yAttachY[limitDesire]],(xMaxMod[limitDesire]+yMaxMod[limitDesire])/2+trSh);
-  trans[0].draw();
-  
-  for(var i=1;i<=limitDesire;i++){
-	trans[i]=new translator([0,-yAttachX[limitDesire]+yAttachY[limitDesire]],xFourier[i],speed*time*i,[xAttachX[i-1],yAttachX[i-1]-yAttachX[limitDesire]+yAttachY[limitDesire]],xMaxMod[i-1]/2+trSh);
-	trans[i].draw();  
-  }
-  
-  //______________________________________
-  
-  //____________Y_________________________
-  
 
 
-  for(var i=0;i<=limitDesire;i++){
-    if (i>0){
-	  invPar[i]=new inversePar(-xAttachY[limitDesire]+xAttachX[limitDesire],0,invParSize*Math.pow(eps,i-1),invParSize*Math.pow(eps,i),time*speed,speed*time*(i-1)+Math.PI/2);
-      invPar[i].draw();  
-	}
-    drawLine([-xAttachY[limitDesire]+xAttachX[limitDesire],0],[-yFourier[i]*Math.sin(speed*time*(i))-xAttachY[limitDesire]+xAttachX[limitDesire],yFourier[i]*Math.cos(speed*time*(i))],contextLinkage)
-  }
- 
-  trans[0]=new translator([10,10],invParSize,Math.PI/2,[-xAttachY[limitDesire]+xAttachX[limitDesire],0],(xSumMod[limitDesire]+ySumMod[limitDesire])/2+trSh);
-  trans[0].draw();
-  trans[0]=new translator([10,10],invParSize*eps,Math.PI/2+speed*time,[-xAttachY[limitDesire]+xAttachX[limitDesire],0],(xSumMod[limitDesire]+ySumMod[limitDesire])/2+trSh);
-  trans[0].draw();
-  
-  for(var i=1;i<=limitDesire;i++){
-	trans[i]=new translator([-xAttachY[limitDesire]+xAttachX[limitDesire],0],yFourier[i],Math.PI/2+speed*time*i,[xAttachY[i-1]-xAttachY[limitDesire]+xAttachX[limitDesire],yAttachY[i-1]],yMaxMod[i]/2+trSh);
-	trans[i].draw();  
-  }
-  
-  //______________________________________
-  
-  
-  
-  //__________________________________________________________________
-  
-  
-//________________this.vStraightLine=function(x,y,delta,a,b,phi)______________
-var vStrLine= new vStraightLine(0,0,-yAttachX[limitDesire]+yAttachY[limitDesire],(xMaxModSin[limitDesire]+yMaxModCos[limitDesire])/2,1.5*(xMaxModSin[limitDesire]+yMaxModCos[limitDesire]),Math.PI/3)
-vStrLine.draw(contextLinkage);
-//___________________________________________________________________________________  
-//________________this.hStraightLine=function(x,y,delta,a,b,phi)______________
-var hStrLine= new hStraightLine(0,0,-xAttachY[limitDesire]+xAttachX[limitDesire],(yMaxModSin[limitDesire]+xMaxModCos[limitDesire])/2,1.5*(yMaxModSin[limitDesire]+xMaxModCos[limitDesire]),Math.PI/3)
-hStrLine.draw();
-//___________________________________________________________________________________  
 
-  contextLinkage.stroke();
+  function animation() {
+    var date = new Date();
+    var time1 = date.getTime();
+    time += deltaTime;
+    contextGreen.lineWidth = lineWidth * scale;
+    contextRed.lineWidth = lineWidth * scale * 2;
+    contextLinkage.lineWidth = lineWidthLinkage * scale / 3;
+    //___________scaling___________________________________________
+    limitApp += (limitDesire - limitApp) * 0.5;
+    scaleOld = scale;
+    scale += (scaleDesire - scale) * frictionScaleCoef;
+    var xMovedDelta = (xDesire - xMoved) * frictionMoveCoef + (xMoved - offsetXDuringResize + xShift) * (scale / scaleOld - 1);
+    var yMovedDelta = (yDesire - yMoved) * frictionMoveCoef + (yMoved - offsetYDuringResize + yShift) * (scale / scaleOld - 1);
+    xMoved += xMovedDelta;
+    yMoved += yMovedDelta;
+    if (flagForScale > 0) { xDesire = xMoved; yDesire = yMoved; flagForScale-- }
 
+    if (!turboOn) {
+      contextBackground.setTransform(1, 0, 0, 1, 0, 0);
+      contextBackground.scale(scale, scale);
+      contextBackground.translate((xMoved) / scale + patternShift[0], (yMoved) / scale + patternShift[1]);
+      contextBackground.fillStyle = pattern;
+      contextBackground.fill();
 
-//_______________________________Path_____________________________________________________
+      contextCircle.setTransform(1, 0, 0, 1, 0, 0);
+      contextCircle.clearRect(0, 0, screenWidth, screenHeight);
+      contextCircle.scale(scale, scale);
+      contextCircle.translate((xMoved) / scale + circleCenter[0], (yMoved) / scale + circleCenter[1]);
+      contextCircle.rotate(Math.PI - time * speed);
+      contextCircle.drawImage(circleImage, -195, -195);
+      contextCircle.fill();
+    }
+    else {
+      /*contextBackground.fillStyle="#8ED6FF";
+      contextCircle.fillStyle="#8ED6FF"
+      contextBackground.fill();
+      contextCircle.setTransform(1,0, 0, 1,0,0);
+      contextCircle.clearRect(0,0,screenWidth,screenHeight);
+      contextCircle.fill();
+      */
+    }
 
-//__________________________________green_path_________________________________________________
-if ((Math.pow(xMovedDelta,2)+Math.pow(yMovedDelta,2)>0.1)||(flagForScale>0)||(time<=Math.PI/speed+2*deltaTime))
-{
-  contextGreen.clearRect(0,0,screenWidth,screenHeight)
-   contextGreen.beginPath();
-   myMoveTo(pathDataX[0],pathDataY[0],contextGreen);
-  for(var j=1;j<pathDataX.length;j++){
-    myLineTo(pathDataX[j],pathDataY[j],contextGreen);
-	}
-   contextGreen.stroke();
-   contextRed.beginPath();
-   contextRed.clearRect(0,0,screenWidth,screenHeight);
-   flagForRedPath=1;
-}
-else {flagForRedPath=0;}
-if (Math.abs(limitDesire-limitApp)>0.001){flagForRedPath=1;}
-//________________________________________________________________________________________________________________
+    //_____________________________________________________________________________
 
 
-//______________________________________________red_path___________________________________________________________
-contextRed.beginPath();
-var step=0.5/pathDataX.length;
-if (pathDataX.length<40){step=0.5/40;}
-if (time*speed>=2*Math.PI){flagForRedFinish=0;}
-if (flagForRedPath==1){contextRed.clearRect(0,0,screenWidth,screenHeight);}
-for(var shiftFlag=0;shiftFlag<=1;shiftFlag++){ 
-  var x=0;
-  var y=0;
-  var flagForStartDraw=0;
-  for(var t=Math.PI+shiftFlag*step/2;t>=0;t-=step){
-     if (((flagForRedPath==1)&&(t>=flagForRedFinish*Math.acos(Math.cos(time*speed))))||(t<=Math.acos(Math.cos(time*speed))+2.5*speed&&t>=Math.acos(Math.cos(time*speed))-2.5*speed)){
-	   var xOld=x;
-	   var yOld=y;
-	   var x=0;
-       var y=0;
-	   for(var i=0;i<=limitApp;i++){
-        x+=xFourier[i]*Math.cos(i*t);
-        y+=yFourier[i]*Math.cos(i*t);
+    //____________linkage______________________________________________
+
+    contextLinkage.beginPath();
+    contextLinkage.clearRect(0, 0, screenWidth, screenHeight);
+    contextLinkage.clearRect(0, 0, screenWidth, screenHeight);
+
+    var eps = 0.9;
+    var invParSize = 200;
+    var mainVehicleSize = 150;
+    var trSh = 30;
+
+    for (var i = 0; i <= limitDesire; i++) {
+      if (i == 0) {
+        xAttachX[i] = xFourier[i] * Math.cos(speed * time * i);
+        yAttachX[i] = xFourier[i] * Math.sin(speed * time * i);
+        xAttachY[i] = -yFourier[i] * Math.sin(speed * time * i);
+        yAttachY[i] = yFourier[i] * Math.cos(speed * time * i);
       }
-      x+=(limitApp+1-Math.floor(limitApp+1))*xFourier[i]*Math.cos(i*t);
-      y+=(limitApp+1-Math.floor(limitApp+1))*yFourier[i]*Math.cos(i*t);
-      if (flagForStartDraw>0){
-         if (flagForRedFinish==0){
-		   if (t>=Math.acos(Math.cos(time*speed))){contextRed.strokeStyle="red";}
-		   else                                   {contextRed.strokeStyle="white";}
-		 }
-	    if ((flagForRedFinish==1)&&(t>=Math.acos(Math.cos(time*speed)))||(flagForRedFinish==0))
-	    {
-	      {contextRed.beginPath();}
-          myMoveTo(xOld,yOld,contextRed);
-          myLineTo(x,y,contextRed);
-	      {contextRed.stroke();}
-	    }
-	  }
-	flagForStartDraw++;
+      else {
+        xAttachX[i] = xAttachX[i - 1] + xFourier[i] * Math.cos(speed * time * i);
+        yAttachX[i] = yAttachX[i - 1] + xFourier[i] * Math.sin(speed * time * i);
+        xAttachY[i] = xAttachY[i - 1] - yFourier[i] * Math.sin(speed * time * i);
+        yAttachY[i] = yAttachY[i - 1] + yFourier[i] * Math.cos(speed * time * i);
+      }
+    }
+    //_________________________________driver_linkage___________________________________________________
+    contextLinkage.save();
+    contextLinkage.lineWidth = lineWidthLinkage * scale;
+    contextLinkage.strokeStyle = "#129";
+    contextLinkage.beginPath();
+    drawLine([10, 10], [10 + invParSize * eps * Math.cos(time * speed), 10 + invParSize * eps * Math.sin(time * speed)], contextLinkage)
+    drawLine([10, 10], [10 - invParSize * eps * Math.sin(time * speed), 10 + invParSize * eps * Math.cos(time * speed)], contextLinkage)
+    drawLine([10 + invParSize * eps * Math.cos(speed * time), 10 + invParSize * eps * Math.sin(speed * time)], [10 - invParSize * eps * Math.sin(speed * time), 10 + invParSize * eps * Math.cos(speed * time)], contextLinkage)
+    contextLinkage.stroke();
+    contextLinkage.restore();
+    //______________________________________________________________________________________________________________
+    drawLine([10 + invParSize * eps * Math.cos(speed * time), 10 + invParSize * eps * Math.sin(speed * time)], [10 - invParSize * eps * Math.sin(speed * time), 10 + invParSize * eps * Math.cos(speed * time)], contextLinkage)
+
+    //____________X_________________________
+
+    for (var i = 0; i <= limitDesire; i++) {
+      if (i > 0) {
+        invPar[i] = new inversePar(0, -yAttachX[limitDesire] + yAttachY[limitDesire], invParSize * Math.pow(eps, i - 1), invParSize * Math.pow(eps, i), time * speed, speed * time * (i - 1));
+        invPar[i].draw();
+      }
+      drawLine([0, -yAttachX[limitDesire] + yAttachY[limitDesire]], [xFourier[i] * Math.cos(speed * time * (i)), -yAttachX[limitDesire] + yAttachY[limitDesire] + xFourier[i] * Math.sin(speed * time * (i))], contextLinkage)
+
+    }
 
 
-	  }  
+    trans[0] = new translator([10, 10], invParSize, 0, [0, -yAttachX[limitDesire] + yAttachY[limitDesire]], (xMaxMod[limitDesire] + yMaxMod[limitDesire]) / 2 + trSh);
+    trans[0].draw();
+    trans[0] = new translator([10, 10], invParSize * eps, speed * time, [0, -yAttachX[limitDesire] + yAttachY[limitDesire]], (xMaxMod[limitDesire] + yMaxMod[limitDesire]) / 2 + trSh);
+    trans[0].draw();
+
+    for (var i = 1; i <= limitDesire; i++) {
+      trans[i] = new translator([0, -yAttachX[limitDesire] + yAttachY[limitDesire]], xFourier[i], speed * time * i, [xAttachX[i - 1], yAttachX[i - 1] - yAttachX[limitDesire] + yAttachY[limitDesire]], xMaxMod[i - 1] / 2 + trSh);
+      trans[i].draw();
+    }
+
+    //______________________________________
+
+    //____________Y_________________________
+
+
+
+    for (var i = 0; i <= limitDesire; i++) {
+      if (i > 0) {
+        invPar[i] = new inversePar(-xAttachY[limitDesire] + xAttachX[limitDesire], 0, invParSize * Math.pow(eps, i - 1), invParSize * Math.pow(eps, i), time * speed, speed * time * (i - 1) + Math.PI / 2);
+        invPar[i].draw();
+      }
+      drawLine([-xAttachY[limitDesire] + xAttachX[limitDesire], 0], [-yFourier[i] * Math.sin(speed * time * (i)) - xAttachY[limitDesire] + xAttachX[limitDesire], yFourier[i] * Math.cos(speed * time * (i))], contextLinkage)
+    }
+
+    trans[0] = new translator([10, 10], invParSize, Math.PI / 2, [-xAttachY[limitDesire] + xAttachX[limitDesire], 0], (xSumMod[limitDesire] + ySumMod[limitDesire]) / 2 + trSh);
+    trans[0].draw();
+    trans[0] = new translator([10, 10], invParSize * eps, Math.PI / 2 + speed * time, [-xAttachY[limitDesire] + xAttachX[limitDesire], 0], (xSumMod[limitDesire] + ySumMod[limitDesire]) / 2 + trSh);
+    trans[0].draw();
+
+    for (var i = 1; i <= limitDesire; i++) {
+      trans[i] = new translator([-xAttachY[limitDesire] + xAttachX[limitDesire], 0], yFourier[i], Math.PI / 2 + speed * time * i, [xAttachY[i - 1] - xAttachY[limitDesire] + xAttachX[limitDesire], yAttachY[i - 1]], yMaxMod[i] / 2 + trSh);
+      trans[i].draw();
+    }
+
+    //______________________________________
+
+
+
+    //__________________________________________________________________
+
+
+    //________________this.vStraightLine=function(x,y,delta,a,b,phi)______________
+    var vStrLine = new vStraightLine(0, 0, -yAttachX[limitDesire] + yAttachY[limitDesire], (xMaxModSin[limitDesire] + yMaxModCos[limitDesire]) / 2, 1.5 * (xMaxModSin[limitDesire] + yMaxModCos[limitDesire]), Math.PI / 3)
+    vStrLine.draw(contextLinkage);
+    //___________________________________________________________________________________
+    //________________this.hStraightLine=function(x,y,delta,a,b,phi)______________
+    var hStrLine = new hStraightLine(0, 0, -xAttachY[limitDesire] + xAttachX[limitDesire], (yMaxModSin[limitDesire] + xMaxModCos[limitDesire]) / 2, 1.5 * (yMaxModSin[limitDesire] + xMaxModCos[limitDesire]), Math.PI / 3)
+    hStrLine.draw();
+    //___________________________________________________________________________________
+
+    contextLinkage.stroke();
+
+
+    //_______________________________Path_____________________________________________________
+
+    //__________________________________green_path_________________________________________________
+    if ((Math.pow(xMovedDelta, 2) + Math.pow(yMovedDelta, 2) > 0.1) || (flagForScale > 0) || (time <= Math.PI / speed + 2 * deltaTime)) {
+      contextGreen.clearRect(0, 0, screenWidth, screenHeight)
+      contextGreen.beginPath();
+      myMoveTo(pathDataX[0], pathDataY[0], contextGreen);
+      for (var j = 1; j < pathDataX.length; j++) {
+        myLineTo(pathDataX[j], pathDataY[j], contextGreen);
+      }
+      contextGreen.stroke();
+      contextRed.beginPath();
+      contextRed.clearRect(0, 0, screenWidth, screenHeight);
+      flagForRedPath = 1;
+    }
+    else { flagForRedPath = 0; }
+    if (Math.abs(limitDesire - limitApp) > 0.001) { flagForRedPath = 1; }
+    //________________________________________________________________________________________________________________
+
+
+    //______________________________________________red_path___________________________________________________________
+    contextRed.beginPath();
+    var step = 0.5 / pathDataX.length;
+    if (pathDataX.length < 40) { step = 0.5 / 40; }
+    if (time * speed >= 2 * Math.PI) { flagForRedFinish = 0; }
+    if (flagForRedPath == 1) { contextRed.clearRect(0, 0, screenWidth, screenHeight); }
+    for (var shiftFlag = 0; shiftFlag <= 1; shiftFlag++) {
+      var x = 0;
+      var y = 0;
+      var flagForStartDraw = 0;
+      for (var t = Math.PI + shiftFlag * step / 2; t >= 0; t -= step) {
+        if (((flagForRedPath == 1) && (t >= flagForRedFinish * Math.acos(Math.cos(time * speed)))) || (t <= Math.acos(Math.cos(time * speed)) + 2.5 * speed && t >= Math.acos(Math.cos(time * speed)) - 2.5 * speed)) {
+          var xOld = x;
+          var yOld = y;
+          var x = 0;
+          var y = 0;
+          for (var i = 0; i <= limitApp; i++) {
+            x += xFourier[i] * Math.cos(i * t);
+            y += yFourier[i] * Math.cos(i * t);
+          }
+          x += (limitApp + 1 - Math.floor(limitApp + 1)) * xFourier[i] * Math.cos(i * t);
+          y += (limitApp + 1 - Math.floor(limitApp + 1)) * yFourier[i] * Math.cos(i * t);
+          if (flagForStartDraw > 0) {
+            if (flagForRedFinish == 0) {
+              if (t >= Math.acos(Math.cos(time * speed))) { contextRed.strokeStyle = "red"; }
+              else { contextRed.strokeStyle = "white"; }
+            }
+            if ((flagForRedFinish == 1) && (t >= Math.acos(Math.cos(time * speed))) || (flagForRedFinish == 0)) {
+              { contextRed.beginPath(); }
+              myMoveTo(xOld, yOld, contextRed);
+              myLineTo(x, y, contextRed);
+              { contextRed.stroke(); }
+            }
+          }
+          flagForStartDraw++;
+
+
+        }
+      }
+    }
+    contextRed.stroke();
+
+    //________________________________________________________________________________________________________________
+
+    //________________________________________________________________________________________
+    var date2 = new Date();
+    var time2 = date2.getTime();
+    contextMenu.fillStyle = "white";
+    contextMenu.font = 'italic 20px Calibri';
+    contextMenu.clearRect(0, 460, 150, 30);
+    contextMenu.fillText("ms/frame:", 10, 480);
+    contextMenu.fillText(time2 - time1, 100, 480);
+
   }
-}
-	      contextRed.stroke();
 
-//________________________________________________________________________________________________________________
-
-  //________________________________________________________________________________________
-var date2= new Date();
-var time2 = date2.getTime();
-contextMenu.fillStyle="white";
-contextMenu.font = 'italic 20px Calibri';
-contextMenu.clearRect(0,460,150,30);
-contextMenu.fillText("ms/frame:", 10,480);
-contextMenu.fillText(time2-time1, 100,480);
-
-   }
-
-function myMoveTo(x,y,ctx){
-ctx.moveTo((x+screenWidth/2)*scale+xMoved,(-y+screenHeight/2)*scale+yMoved);
-}
-function myLineTo(x,y,ctx){
-ctx.lineTo((x+screenWidth/2)*scale+xMoved,(-y+screenHeight/2)*scale+yMoved);
-}
-function drawLine(A,B,ctx,color){
-if (!isChrome){ctx.beginPath();}
-myMoveTo(A[0],A[1],ctx);
-myLineTo(B[0],B[1],ctx);
-if (!isChrome){ctx.stroke();}
-}
+  function myMoveTo(x, y, ctx) {
+    ctx.moveTo((x + screenWidth / 2) * scale + xMoved, (-y + screenHeight / 2) * scale + yMoved);
+  }
+  function myLineTo(x, y, ctx) {
+    ctx.lineTo((x + screenWidth / 2) * scale + xMoved, (-y + screenHeight / 2) * scale + yMoved);
+  }
+  function drawLine(A, B, ctx, color) {
+    if (!isChrome) { ctx.beginPath(); }
+    myMoveTo(A[0], A[1], ctx);
+    myLineTo(B[0], B[1], ctx);
+    if (!isChrome) { ctx.stroke(); }
+  }
 
 
-function viewPortSizes(){
- var viewportwidth;
- var viewportheight;
-  
- // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
-  
- if (typeof window.innerWidth != 'undefined')
- {
+  function viewPortSizes() {
+    var viewportwidth;
+    var viewportheight;
+
+    // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
+
+    if (typeof window.innerWidth != 'undefined') {
       viewportwidth = window.innerWidth,
       viewportheight = window.innerHeight
- }
-  
-// IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
- 
- else if (typeof document.documentElement != 'undefined'
-     && typeof document.documentElement.clientWidth !=
-     'undefined' && document.documentElement.clientWidth != 0)
- {
-       viewportwidth = document.documentElement.clientWidth,
-       viewportheight = document.documentElement.clientHeight
- }
-  
- // older versions of IE
-  
- else
- {
-       viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
-       viewportheight = document.getElementsByTagName('body')[0].clientHeight
- }
-return [viewportwidth,viewportheight]
-}
-function browserDetect(){
-	   var val = navigator.userAgent.toLowerCase();
-        if(val.indexOf("chrome") > -1)
-       {
-		   isChrome=true;
-       } 
+    }
 
-  /*   if(val.indexOf("firefox") > -1)
-     {
-         alert("firefox");
-     } 
+      // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
 
-       else if(val.indexOf("opera") > -1)
-       {
-           alert("opera")
-       }
-       else if(val.indexOf("msie") > -1)
-       {
-           alert("internet explorer")
-       } 
-       else if(val.indexOf("safari") > -1)
-       {
-           alert("safari")
-       } */
-} 
-function changeTurboMode(){
-turboOn=!turboOn;
-if (turboOn){
-  turboLink.innerHTML="Nicer";
-  turboLink.style.left=500;
-  contextBackground.fillStyle="#8ED6FF";
-  contextCircle.fillStyle="#8ED6FF"
-  contextBackground.fill();
-  contextCircle.setTransform(1,0, 0, 1,0,0);
-  contextCircle.clearRect(0,0,screenWidth,screenHeight);
-  contextCircle.fill();
-  contextMenuBack.globalAlpha=1;
-  contextMenuBack.clearRect(0,0,menuWidth,screenHeight);
-  contextMenuBack.fillRect(0,0,menuWidth,screenHeight);
+    else if (typeof document.documentElement != 'undefined'
+        && typeof document.documentElement.clientWidth !=
+        'undefined' && document.documentElement.clientWidth != 0) {
+      viewportwidth = document.documentElement.clientWidth,
+      viewportheight = document.documentElement.clientHeight
+    }
 
+      // older versions of IE
+
+    else {
+      viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
+      viewportheight = document.getElementsByTagName('body')[0].clientHeight
+    }
+    return [viewportwidth, viewportheight]
   }
-else{
-  turboLink.innerHTML="Faster";
-  contextMenuBack.globalAlpha=0.75;
-  contextMenuBack.clearRect(0,0,menuWidth,screenHeight);
-  contextMenuBack.fillRect(0,0,menuWidth,screenHeight);
-    
-	contextBackground.rect(0, 0, screenWidth, screenHeight);
-    contextBackground.translate(patternShift[0],patternShift[1]);
-    contextBackground.fillStyle = pattern;
-    contextBackground.fill();
-	 
-   contextCircle.translate(circleCenter[0],circleCenter[1]);
-   contextCircle.drawImage(circleImage,-195,-195);
-   contextCircle.fill(); 
+  function browserDetect() {
+    var val = navigator.userAgent.toLowerCase();
+    if (val.indexOf("chrome") > -1) {
+      isChrome = true;
+    }
 
-  }    
-return false
-}
+    /*   if(val.indexOf("firefox") > -1)
+       {
+           alert("firefox");
+       }
 
-function refresh(){
-clearInterval(sIntervalAn);
-canvas.removeEventListener('DOMMouseScroll', resize, false); //scrolling 
-canvas.removeEventListener('mousewheel', resize, false);     //scrolling for firefox
-canvas.removeEventListener('mousedown', drag, false);
-canvas.removeEventListener('mouseup', drop, false);
-canvas.removeEventListener('touchstart', dragTouch, false);
-canvas.removeEventListener('touchend', dropTouch, false);
-canvasMenu.removeEventListener('mousedown', onMenuClick, false);
-canvasMenu.style.zIndex=-2;
-canvasMenuBack.style.zIndex=-1;
- scale=1;
- deltaTime=1;
- scaleDesire=scale;
- flagForRedFinish=1;
- flagForRedPath=0;
- flagForScale=0;
- limitApp=limitDesire;
- xMoved=0;
- yMoved=0;
- opacity=0.3;
- limitDesire=limitDesireInitial;
- lineWidthLinkage=lineWidthInitial;
- 
- time=Math.PI/speed;
- xFourier=new Array();
- yFourier=new Array();
- xSumMod=new Array();
- ySumMod=new Array();
- xMaxModCos=new Array();
- yMaxModCos=new Array();
- xMaxModSin=new Array();
- yMaxModSin=new Array();
- xMaxMod=new Array();
- yMaxMod=new Array();
- xCos=new Array();
- yCos=new Array();
- xSin=new Array();
- ySin=new Array();
- pathDataX=new Array();
- pathDataY=new Array();
- invPar=new Array();
- trans=new Array();
- xAttach=new Array();
- yAttach=new Array();
- xAttachX=new Array();
- yAttachX=new Array();
- xAttachY=new Array();
- yAttachY=new Array();
- xDesire=0;
- yDesire=0;
- offsetXDuringResize=0;
- offsetYDuringResize=0;
- initCanvases();
-}
+         else if(val.indexOf("opera") > -1)
+         {
+             alert("opera")
+         }
+         else if(val.indexOf("msie") > -1)
+         {
+             alert("internet explorer")
+         }
+         else if(val.indexOf("safari") > -1)
+         {
+             alert("safari")
+         } */
+  }
+  function changeTurboMode() {
+    turboOn = !turboOn;
+    if (turboOn) {
+      turboLink.innerHTML = "Nicer";
+      turboLink.style.left = 500;
+      contextBackground.fillStyle = "#8ED6FF";
+      contextCircle.fillStyle = "#8ED6FF"
+      contextBackground.fill();
+      contextCircle.setTransform(1, 0, 0, 1, 0, 0);
+      contextCircle.clearRect(0, 0, screenWidth, screenHeight);
+      contextCircle.fill();
+      contextMenuBack.globalAlpha = 1;
+      contextMenuBack.clearRect(0, 0, menuWidth, screenHeight);
+      contextMenuBack.fillRect(0, 0, menuWidth, screenHeight);
 
- </script>
+    }
+    else {
+      turboLink.innerHTML = "Faster";
+      contextMenuBack.globalAlpha = 0.75;
+      contextMenuBack.clearRect(0, 0, menuWidth, screenHeight);
+      contextMenuBack.fillRect(0, 0, menuWidth, screenHeight);
+
+      contextBackground.rect(0, 0, screenWidth, screenHeight);
+      contextBackground.translate(patternShift[0], patternShift[1]);
+      contextBackground.fillStyle = pattern;
+      contextBackground.fill();
+
+      contextCircle.translate(circleCenter[0], circleCenter[1]);
+      contextCircle.drawImage(circleImage, -195, -195);
+      contextCircle.fill();
+
+    }
+    return false
+  }
+
+  function refresh() {
+    clearInterval(sIntervalAn);
+    canvas.removeEventListener('DOMMouseScroll', resize, false); //scrolling
+    canvas.removeEventListener('mousewheel', resize, false);     //scrolling for firefox
+    canvas.removeEventListener('mousedown', drag, false);
+    canvas.removeEventListener('mouseup', drop, false);
+    canvas.removeEventListener('touchstart', dragTouch, false);
+    canvas.removeEventListener('touchend', dropTouch, false);
+    canvasMenu.removeEventListener('mousedown', onMenuClick, false);
+    canvasMenu.style.zIndex = -2;
+    canvasMenuBack.style.zIndex = -1;
+    scale = 1;
+    deltaTime = 1;
+    scaleDesire = scale;
+    flagForRedFinish = 1;
+    flagForRedPath = 0;
+    flagForScale = 0;
+    limitApp = limitDesire;
+    xMoved = 0;
+    yMoved = 0;
+    opacity = 0.3;
+    limitDesire = limitDesireInitial;
+    lineWidthLinkage = lineWidthInitial;
+
+    time = Math.PI / speed;
+    xFourier = new Array();
+    yFourier = new Array();
+    xSumMod = new Array();
+    ySumMod = new Array();
+    xMaxModCos = new Array();
+    yMaxModCos = new Array();
+    xMaxModSin = new Array();
+    yMaxModSin = new Array();
+    xMaxMod = new Array();
+    yMaxMod = new Array();
+    xCos = new Array();
+    yCos = new Array();
+    xSin = new Array();
+    ySin = new Array();
+    pathDataX = new Array();
+    pathDataY = new Array();
+    invPar = new Array();
+    trans = new Array();
+    xAttach = new Array();
+    yAttach = new Array();
+    xAttachX = new Array();
+    yAttachX = new Array();
+    xAttachY = new Array();
+    yAttachY = new Array();
+    xDesire = 0;
+    yDesire = 0;
+    offsetXDuringResize = 0;
+    offsetYDuringResize = 0;
+    initCanvases();
+  }
+
+</script>
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-27665935-1']);
   _gaq.push(['_trackPageview']);
 
-  (function() {
+  (function () {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
