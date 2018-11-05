@@ -294,9 +294,9 @@
     //_______text____________________________________________________
     contextText.fillStyle = "black";
     contextText.globalAlpha = opacity;
-    contextText.font = 'italic 400px Calibri';
+    contextText.font = 'italic 500px Calibri';
     contextText.textAlign = "center";
-    contextText.fillText("Draw here", (screenWidth) / 2, (screenHeight) / 2);
+    contextText.fillText("Draw", (screenWidth) / 2, 400);
     contextText.stroke();
     appTextDatum = [rangeDatum[0], rangeDatum[1] - 20];
     contextMenu.fillStyle = "white";
@@ -703,7 +703,7 @@
     opacity = opacity / 1.1;
     contextText.clearRect(0, 0, screenWidth, screenHeight);
     contextText.globalAlpha = opacity;
-    contextText.fillText("Draw here", (screenWidth) / 2 + 10, screenHeight / 2);
+    contextText.fillText("Draw", (screenWidth) / 2, 400);
     contextText.stroke();
   }
   function fourierTransformation() {
