@@ -35,10 +35,7 @@ By definition, a mean value of a random variable is a value which we get in a li
   <h4>Independent random variables</h4>
 
   Random variables may depend on each other or not. Imagine that you are throwing a needle on the floor and measuring coordinates of its both ends. This two coordinates are random variables, but they depend on each other, since a distance between them should be always equal to the length of the needle. Random variables are independent from each other if falling results of the first one doesn’t depend on results of the second. For two independent variables $inline$\xi_1$inline$ and $inline$\xi_2$inline$ the mean of their product is equal to the product of their mean: $inline$E(\xi_1\cdot\xi_2) = E\xi_1\cdot\xi_2$inline$<br>
-  <div class="spoiler-head">
-    Proof<br>
-  </div>
-  <div class="spoiler-body">
+  <spoiler title="Proof">
     For instance to have blue eyes and finish a school with higher honors are independent random variables. Let say that there are $inline$20\% = 0.2$inline$ of people with blue eyes and $inline$5\%=0.05$inline$ of people with higher honors. So there are $inline$0.2\cdot 0.5 = 0.01 = 1\%$inline$ of people with blue eyes and higher honors. This example helps us to understand the following. For two independent random variables $inline$\xi_1$inline$ and $inline$\xi_2$inline$ which are given by their density of probability $inline$\rho_1(x)$inline$ and $inline$\rho_2(y)$inline$, the density of probability $inline$\rho(x,y)$inline$ (the first variable falls at $inline$x$inline$ and the second at $inline$y$inline$) can by find by the formula
     $$display$$\rho(x,y) = \rho_1(x)\cdot\rho_2(y)$$display$$
     It means that
@@ -48,7 +45,7 @@ By definition, a mean value of a random variable is a value which we get in a li
     \end{array}
     $$display$$
     As you see, the proof is done for random variables which have a continuous spectrum of values and are given by their density of probability function. The proof is similar for general case.
-  </div>
+  </spoiler>
 
   <h3>Kalman filter</h3>
   <h4>Problem statement</h4>
@@ -96,10 +93,7 @@ By definition, a mean value of a random variable is a value which we get in a li
   $$display$$e_{k+1} = x_{k+1}-x^{opt}_{k+1}$$display$$
   We use equations (1) (those which are on a blue frame), to rewrite the equation for the error:
   $$display$$e_{k+1} = (1-K)(e_k+\xi_k) - K\eta_{k+1}$$display$$
-  <div class="spoiler-head">
-    Proof
-  </div>
-  <div class="spoiler-body">
+  <spoiler title="Proof">
     $$display$$
     \begin{array}{l}
     {
@@ -107,46 +101,32 @@ By definition, a mean value of a random variable is a value which we get in a li
     }
     \end{array}
     $$display$$
-  </div>
+  </spoiler>
   Now it comes a time to discuss, what does it mean the expression “to minimize the error”? We know that the  error is a random variable so each time it takes different values. Actually there is no unique answer on that question. Similarly it was in the case of the variance of a random variable, when we were trying  to estimate the characteristic width of its probability density function. So we would choose a simple criterium. We would minimize a mean of the square:
   $$display$$E(e^2_{k+1})\rightarrow min$$display$$
   Let us rewrite the last expression:
   $$display$$E(e^2_{k+1})=(1-K)^2(E_k^2+\sigma^2_\xi)+K^2\sigma^2_\eta$$display$$
-  <div class="spoiler-head">
-    Key to the proof
-  </div>
-  <div class="spoiler-body">
+  <spoiler title="Key to proof">
     From the fact that all random variables in the equation for $inline$e_{k+1}$inline$ don’t depend on each other and the mean values $inline$E\eta_{k+1}=E\xi_k=0$inline$, follows that all cross terms in $inline$E(e^2_{k+1})$inline$ become zeros:
     $$display$$E(\xi_k\eta_{k+1})=E(e_k\xi_k)=E(e_k\eta_{k+1})=0.$$display$$
     Indeed for instance $inline$E(e_k\xi_k) = E(e_k)E(\xi_k)=0.$inline$<br>
     Also note that formulas for the variances looks much simpler: $inline$\sigma^2_\eta = E\eta^2_k$inline$ and $inline$\sigma^2_\eta = E\eta^2_{k+1}$inline$ (since $inline$E\eta_{k+1}=E\xi_k=0$inline$)
-  </div>
-
+  </spoiler>
   The last expression takes its minimal value, when its derivation is zero. So when:
   $$display$$\displaystyle K_{k+1} = \frac{Ee^2_k + \sigma^2_\eta}{Ee^2_k+\sigma^2_\xi+\sigma^2_\eta}$$display$$
   Here we write the Kalman coefficient with its subscript, so we emphasize the fact that it do depends on the step of iteration. We substitute to the equation for the mean square error $inline$E(e^2_{k+1})$inline$ the Kalman coefficient $inline$K_{k+1}$inline$ which minimize its value:
   $$display$$\displaystyle E(e^2_{k+1}) = \frac{\sigma^2_\eta(Ee^2_k + \sigma^2_\eta)}{Ee^2_k+\sigma^2_\xi+\sigma^2_\eta}$$display$$
   So we have solved our problem. We got the iterative formula for computing the Kalman coefficient.
-  <div class="spoiler-head">
-    All formulas in one place:
-  </div>
-  <div class="spoiler-body">
+  <spoiler title="All formulas in one place">
     <br><img src="https://habrastorage.org/webt/ie/w9/lb/iew9lb42nzlmeiyb6f3dojf62xo.png" /><br>
-  </div>
-
+  </spoiler>
   <h4>Example</h4>
   On the plot from the beginning of this article there are filtered datum from the fictional GPS sensor, settled on the fictional car, which moves with the constant acceleration $inline$a$inline$.
   $$display$$x_{t+1} = x_t+ at\cdot dt+ \xi_t$$display$$
-  <div class="spoiler-head">
-    Look at the filtered results once again:
-  </div>
-  <div class="spoiler-body">
+  <spoiler title="Look at the filtered results once again:">
     <img src="https://habrastorage.org/webt/kk/yw/cv/kkywcvxe2mo141hjofwmnbu8nzq.png" />
-  </div>
-  <div class="spoiler-head">
-    The code on matlab:
-  </div>
-  <div class="spoiler-body">
+  </spoiler>
+  <spoiler title="Code in matlab">
 <pre>
 clear all;
 N=100  % number of samples
@@ -172,38 +152,38 @@ for t=1:(N-1)
 end;
 plot(k,xOpt,k,z,k,x)
 </pre>
-  </div>
-  <h3>Analysis</h3>
+</spoiler>
+    <h3>Analysis</h3>
 
-  If one look at how the Kalman coefficient $inline$K_k$inline$ changes from the iteration $inline$k$inline$, it is possible to see that it stabilizes to the certain value $inline$K_{stab}$inline$. For instance if the square mean errors of sensor and the model respect to each other as ten to one, then the plot of the Kalman coefficient dependency from the iteration step would be the following:
-  <br><img src="https://habrastorage.org/webt/ac/kb/lz/ackblznogaptvojswjgrvfo0cgy.png" /><br>
+    If one look at how the Kalman coefficient $inline$K_k$inline$ changes from the iteration $inline$k$inline$, it is possible to see that it stabilizes to the certain value $inline$K_{stab}$inline$. For instance if the square mean errors of sensor and the model respect to each other as ten to one, then the plot of the Kalman coefficient dependency from the iteration step would be the following:
+    <br><img src="https://habrastorage.org/webt/ac/kb/lz/ackblznogaptvojswjgrvfo0cgy.png" /><br>
 
-  In the next example we would discuss how that can simplify our life.
+    In the next example we would discuss how that can simplify our life.
 
-  <h3>Second example</h3>
+    <h3>Second example</h3>
 
-  In practice it happens that we don’t know almost anything from the physical model what we are filtering. Imagine you have decided to filter that measurements from your favourite accelerometer. Actually you don’t know in forward how the accelerometer would be moved. Only thing you might know is the variance of sensor’s error $inline$\sigma^2_\eta$inline$. In this difficult problem we might put all unknown information from the physical model to the random variable $inline$\xi_k$inline$:
-  $$display$$x_{k+1} = x_k + \xi_k$$display$$
-  Strictly speaking this kind of system doesn’t satisfy the condition that we have imposed on the random variable $inline$\xi_k$inline$. Since it holds the information unknown for us physics of the movement. We can’t say that it different moment of times the errors are independent from each other and their means are equals to zero. In other words, it means that for this kind of situations the Kalman theory isn’t applied. But anyway we can try to use the machinery of Kalman theory just by choosing some reasonable values for $inline$\sigma_\xi^2$inline$ and $inline$\sigma_\eta^2$inline$ to get just a nice graph of filtered datum.
-  But there is a much simpler way. We saw that with increasing of the step $inline$k$inline$ the Kalman coefficient always stabilizes to the certain value $inline$K_{stab}$inline$. So instead of guessing the values of the coefficients $inline$\sigma^2_\xi$inline$ and $inline$\sigma^2_\eta$inline$ and computing the Kalman coefficient $inline$K_k$inline$ by difficult formulas, we can assume that this coefficient is constant and select just this constant. This assumption would not affect much on filtering results. At first we anyway the Kalman machinery is not exactly applicable to our problem and secondly, the Kalman coefficient quickly stabilizes to the constant. In the end everything becomes very simple. We don’t need almost any formula from Kalman theory, we just need to select a reasonable value $inline$K_{stab}$inline$ and insert it to the iterative formula
-  $$display$$x^{opt}_{k+1} = K_{stab}\cdot z_{k+1}+(1-K_{stab})\cdot x_k^{opt}$$display$$
-  On the next graph you can see the filtered by two different ways measurements from an imaginary sensor. The first method is the honest one, with all formulas from Kalman theory. The second method is the simplified one.
-  <br><img src="https://habrastorage.org/webt/-y/ld/8z/-yld8zenntbpvtgx-iuztdqx4z4.png" /><br>
+    In practice it happens that we don’t know almost anything from the physical model what we are filtering. Imagine you have decided to filter that measurements from your favourite accelerometer. Actually you don’t know in forward how the accelerometer would be moved. Only thing you might know is the variance of sensor’s error $inline$\sigma^2_\eta$inline$. In this difficult problem we might put all unknown information from the physical model to the random variable $inline$\xi_k$inline$:
+    $$display$$x_{k+1} = x_k + \xi_k$$display$$
+    Strictly speaking this kind of system doesn’t satisfy the condition that we have imposed on the random variable $inline$\xi_k$inline$. Since it holds the information unknown for us physics of the movement. We can’t say that it different moment of times the errors are independent from each other and their means are equals to zero. In other words, it means that for this kind of situations the Kalman theory isn’t applied. But anyway we can try to use the machinery of Kalman theory just by choosing some reasonable values for $inline$\sigma_\xi^2$inline$ and $inline$\sigma_\eta^2$inline$ to get just a nice graph of filtered datum.
+    But there is a much simpler way. We saw that with increasing of the step $inline$k$inline$ the Kalman coefficient always stabilizes to the certain value $inline$K_{stab}$inline$. So instead of guessing the values of the coefficients $inline$\sigma^2_\xi$inline$ and $inline$\sigma^2_\eta$inline$ and computing the Kalman coefficient $inline$K_k$inline$ by difficult formulas, we can assume that this coefficient is constant and select just this constant. This assumption would not affect much on filtering results. At first we anyway the Kalman machinery is not exactly applicable to our problem and secondly, the Kalman coefficient quickly stabilizes to the constant. In the end everything becomes very simple. We don’t need almost any formula from Kalman theory, we just need to select a reasonable value $inline$K_{stab}$inline$ and insert it to the iterative formula
+    $$display$$x^{opt}_{k+1} = K_{stab}\cdot z_{k+1}+(1-K_{stab})\cdot x_k^{opt}$$display$$
+    On the next graph you can see the filtered by two different ways measurements from an imaginary sensor. The first method is the honest one, with all formulas from Kalman theory. The second method is the simplified one.
+    <br><img src="https://habrastorage.org/webt/-y/ld/8z/-yld8zenntbpvtgx-iuztdqx4z4.png" /><br>
 
 
-  We see that there is not a big difference between two this methods. There is a small variation in the beginning, when the Kalman coefficient still is not stabilized.
+    We see that there is not a big difference between two this methods. There is a small variation in the beginning, when the Kalman coefficient still is not stabilized.
 
-  <h3>Discussion</h3>
-  We have seen that the main idea of Kalman filter is to choose the coefficient $inline$K$inline$ in a way that the filtered value
-  $$display$$x^{opt}_{k+1}= Kz_{k+1}+(1-K)(x^{opt}_k+u_k)$$display$$
-  in average would be as close as possible to the real coordinate $inline$x_{k+1}$inline$. We see that the filtered value $inline$x^{opt}_{k+1}$inline$ is a linear function from the sensor's measurement $inline$z_{k+1}$inline$ and the previous filtered value $inline$x^{opt}_k$inline$. But the previous filtered value $inline$x^{opt}_k$inline$ itself is a linear function of the sensor’s measurement $inline$z_k$inline$ and  the pre-previous filtered value $inline$x^{opt}_{k-1}$inline$. And so on until the end of the chain. So the filtered value linearly depends on all previous sensor’s readings:
-  $$display$$x^{opt}_{k+1}= \lambda + \lambda_0z_0 + \ldots + \lambda_{k+1}z_{k+1}$$display$$
-  That is a reason that the Kalman filter is called a linear filter. It is possible to prove that the Kalman filter is the best from all linear filters. The best in a sense that it minimizes a square mean of the error.
+    <h3>Discussion</h3>
+    We have seen that the main idea of Kalman filter is to choose the coefficient $inline$K$inline$ in a way that the filtered value
+    $$display$$x^{opt}_{k+1}= Kz_{k+1}+(1-K)(x^{opt}_k+u_k)$$display$$
+    in average would be as close as possible to the real coordinate $inline$x_{k+1}$inline$. We see that the filtered value $inline$x^{opt}_{k+1}$inline$ is a linear function from the sensor's measurement $inline$z_{k+1}$inline$ and the previous filtered value $inline$x^{opt}_k$inline$. But the previous filtered value $inline$x^{opt}_k$inline$ itself is a linear function of the sensor’s measurement $inline$z_k$inline$ and  the pre-previous filtered value $inline$x^{opt}_{k-1}$inline$. And so on until the end of the chain. So the filtered value linearly depends on all previous sensor’s readings:
+    $$display$$x^{opt}_{k+1}= \lambda + \lambda_0z_0 + \ldots + \lambda_{k+1}z_{k+1}$$display$$
+    That is a reason that the Kalman filter is called a linear filter. It is possible to prove that the Kalman filter is the best from all linear filters. The best in a sense that it minimizes a square mean of the error.
 
-  <h3>Multidimensional case</h3>
-  It is possible to generalise all the Kalman theory to the multidimensional case. Formulas there looks a bit more ellaborated but the idea of their deriving still remains the same as in a one dimension. For instance, In this nice <a href="http://www.youtube.com/watch?v=FkCT_LV9Syk">video</a> you can see the example.
+    <h3>Multidimensional case</h3>
+    It is possible to generalise all the Kalman theory to the multidimensional case. Formulas there looks a bit more ellaborated but the idea of their deriving still remains the same as in a one dimension. For instance, In this nice <a href="http://www.youtube.com/watch?v=FkCT_LV9Syk">video</a> you can see the example.
 
-  <h3>Literature</h3>
-  The original article which is written by Kalman you can download here:
-  <a href="http://www.cs.unc.edu/~welch/kalman/media/pdf/Kalman1960.pdf">http://www.cs.unc.edu/~welch/kalman/media/pdf/Kalman1960.pdf</a>
-  </div>
+    <h3>Literature</h3>
+    The original article which is written by Kalman you can download here:
+    <a href="http://www.cs.unc.edu/~welch/kalman/media/pdf/Kalman1960.pdf">http://www.cs.unc.edu/~welch/kalman/media/pdf/Kalman1960.pdf</a>
+    </div>
