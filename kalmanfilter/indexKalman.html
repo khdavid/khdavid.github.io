@@ -8,141 +8,145 @@ Kalman filter is very powerful tool for filtering of different kinds of data. Th
 At first, let’s memorize some definitions and facts from probability theory.
 
 <h4>Random variable</h4>
-When one says  that it is given a random variable $\xi$, it means that it may take random values. Different values come with different probabilities. For example, if someone drops a dice then the set of values is discrete $\{1,2,3,4,5,6\}$. When you deal with a speed of  moving particle then obviously you should work with a continuous set of values. Values which come out after each experiment (measurement) we would denote by $x_1, x_2,...$, but sometimes we would use the same letter as we use for a random variable $\xi$. In the case of continuous set of values a random variable is characterized by its probability density function $\rho(x)$. This function shows a probability that the random variable falls into a small neighbourhood $dx$ of the point $x$. As we can see on the picture, this probability is equal to the area of the hatched rectangle below the graph $\rho(x)dx$.<br>
+When one says  that it is given a random variable $inline$\xi$inline$, it means that it may take random values. Different values come with different probabilities. For example, if someone drops a dice then the set of values is discrete $inline$\{1,2,3,4,5,6\}$inline$. When you deal with a speed of  moving particle then obviously you should work with a continuous set of values. Values which come out after each experiment (measurement) we would denote by $inline$x_1, x_2,...$inline$, but sometimes we would use the same letter as we use for a random variable $inline$\xi$inline$. In the case of continuous set of values a random variable is characterized by its probability density function $inline$\rho(x)$inline$. This function shows a probability that the random variable falls into a small neighbourhood $inline$dx$inline$ of the point $inline$x$inline$. As we can see on the picture, this probability is equal to the area of the hatched rectangle below the graph $inline$\rho(x)dx$inline$.<br>
 <img src ="7.png"> </img><br>
 
-Quite often in our life, random variables have the Gauss Distribution, when the probability density is  $\rho(x)\sim e^{-\frac{(x-\mu)^2}{2\sigma^2}}$.<br>
+Quite often in our life, random variables have the Gauss Distribution, when the probability density is  $inline$\rho(x)\sim e^{-\frac{(x-\mu)^2}{2\sigma^2}}$inline$.<br>
 <img src = "6.png"></img><br>
 
-We can see that the bell-shaped function $\rho(x)$ is centered at the point $\mu$ and its characteristic width is around $\sigma$.
-Since we are talking about the Gaussian Distribution, then it would be a sin not to mention from where does it come from. As well as the number $e$ and $\pi$  are firmly penetrated in mathematics and can be found in the most unexpected places, so Gaussian Distribution has deep roots in the theory of probability. The following remarkable statement partly explains presence of the Gauss Distribution in a lot of processes:<br>
-Let a random variable $\xi$ has an arbitrary distribution (in fact there are some restrictions on arbitrariness, but they are not restrictive at all). Let’s perform $n$ experiments and calculate a sum $\xi_1+...+\xi_n$, of fallen values. Let’s make a lot of experiments. It is clear that every time we will get a different value of the sum. In other words, this sum is a random variable with its own distribution law. It turns out that for sufficiently large $n$, the law of distribution of  this sum tends to a Gaussian Distribution (by the way, the characteristic width of a bell is growing like $\sqrt n$. Read more in the Wikipedia: <a href = "https://en.wikipedia.org/wiki/Central_limit_theorem">Central limit theorem</a>. In real life there are a lot of values ​​which are a sum of large number of independent and identically distributed random variables. So this values have Gauss Distribution.
+We can see that the bell-shaped function $inline$\rho(x)$inline$ is centered at the point $inline$\mu$inline$ and its characteristic width is around $inline$\sigma$inline$.
+Since we are talking about the Gaussian Distribution, then it would be a sin not to mention from where does it come from. As well as the number $inline$e$inline$ and $inline$\pi$inline$  are firmly penetrated in mathematics and can be found in the most unexpected places, so Gaussian Distribution has deep roots in the theory of probability. The following remarkable statement partly explains presence of the Gauss Distribution in a lot of processes:<br>
+Let a random variable $inline$\xi$inline$ has an arbitrary distribution (in fact there are some restrictions on arbitrariness, but they are not restrictive at all). Let’s perform $inline$n$inline$ experiments and calculate a sum $inline$\xi_1+...+\xi_n$inline$, of fallen values. Let’s make a lot of experiments. It is clear that every time we will get a different value of the sum. In other words, this sum is a random variable with its own distribution law. It turns out that for sufficiently large $inline$n$inline$, the law of distribution of  this sum tends to a Gaussian Distribution (by the way, the characteristic width of a bell is growing like $inline$\sqrt n$inline$. Read more in the Wikipedia: <a href = "https://en.wikipedia.org/wiki/Central_limit_theorem">Central limit theorem</a>. In real life there are a lot of values ​​which are a sum of large number of independent and identically distributed random variables. So this values have Gauss Distribution.
 
 <h4>Mean Value</h4>
-By definition, a mean value of a random variable is a value which we get in a limit if we perform more and more experiments and calculate a mean of fallen values. A mean value is denoted in different ways: mathematicians denote by $E\xi$ (expectation), Physicists denote it by $\overline{\xi}$ or $<\xi>$. We will denote it as mathematicians do.
-For instance, a mean value of Gaussian Distribution  $\rho(x)\sim e^{-\frac{(x-\mu)^2}{2\sigma^2}}$ is equal to $\mu$.
+By definition, a mean value of a random variable is a value which we get in a limit if we perform more and more experiments and calculate a mean of fallen values. A mean value is denoted in different ways: mathematicians denote by $inline$E\xi$inline$ (expectation), Physicists denote it by $inline$\overline{\xi}$inline$ or $inline$<\xi>
+  $inline$. We will denote it as mathematicians do.
+  For instance, a mean value of Gaussian Distribution  $inline$\rho(x)\sim e^{-\frac{(x-\mu)^2}{2\sigma^2}}$inline$ is equal to $inline$\mu$inline$.
+  A
+  <h4>Variance</h4>
+  For Gaussian distribution, we clearly see that the random variable tends to fall within a certain region of its mean value $inline$\mu$inline$. Let us enjoy the Gaussian distribution once again: <br>
+  <img src="6.png"></img><br>
 
-<h4>Variance</h4>
-For Gaussian distribution, we clearly see that the random variable tends to fall within a certain region of its mean value $\mu$. Let us enjoy the Gaussian distribution once again: <br>
-<img src ="6.png"></img><br>
+  On the picture, one may see that a characteristic width of a region where values mostly fall is $inline$\sigma$inline$. How can we estimate this width for an arbitrary random variable? We can draw a graph of its probability density function and just visually evaluate the characteristic range. However it would be better to choose a precise algebraic way for this evaluation. We may find a mean length of deviation from the mean value: $inline$E|\xi-E\xi|$inline$. This value is a good estimation of a characteristic deviation of  $inline$\xi$inline$ . However we know very well, how problematic it is to use absolute values in formulas, thus this formula is rarely used in practice.
+  A simpler approach (simple from calculation’s point of view) is to calculate  $inline$E(\xi-E\xi)^2$inline$.
+  This value called variance and denoted by $inline$\sigma_\xi^2$inline$. The quadratic root of the variance is a good estimation of random variable’s characteristic deviation. It’s called the standard deviation.
+  For instance, one can compute that for the Gaussian distribution $inline$\rho(x)\sim e^{-\frac{(x-\mu)^2}{2\sigma^2}}$inline$ the variance is equal to $inline$\sigma^2$inline$ thus the standard deviation is $inline$\sigma$inline$. This result really corresponds to our geometrical intuition. In fact a small cheating is hidden here. Actually in a definition of the Gauss distribution you see the number $inline$2$inline$ in a denominator of expression $inline$-\frac{(x-\mu)^2}{2\sigma^2}$inline$. This $inline$2$inline$ stands there in purpose, for the standard deviation $inline$\sigma_\xi$inline$ to be equal exactly to $inline$\sigma$inline$. So the  formula of Gauss distribution is written in a way, which keep in mind that one would compute its standard deviation.
 
-On the picture, one may see that a characteristic width of a region where values mostly fall is $\sigma$. How can we estimate this width for an arbitrary random variable? We can draw a graph of its probability density function and just visually evaluate the characteristic range. However it would be better to choose a precise algebraic way for this evaluation. We may find a mean length of deviation from the mean value: $E|\xi-E\xi|$. This value is a good estimation of a characteristic deviation of  $\xi$ . However we know very well, how problematic it is to use absolute values in formulas, thus this formula is rarely used in practice.
-A simpler approach (simple from calculation’s point of view) is to calculate  $E(\xi-E\xi)^2$.
-This value called variance and denoted by $\sigma_\xi^2$. The quadratic root of the variance is a good estimation of random variable’s characteristic deviation. It’s called the standard deviation. 
-For instance, one can compute that for the Gaussian distribution $\rho(x)\sim e^{-\frac{(x-\mu)^2}{2\sigma^2}}$ the variance is equal to $\sigma^2$ thus the standard deviation is $\sigma$. This result really corresponds to our geometrical intuition. In fact a small cheating is hidden here. Actually in a definition of the Gauss distribution you see the number $2$ in a denominator of expression $-\frac{(x-\mu)^2}{2\sigma^2}$. This $2$ stands there in purpose, for the standard deviation $\sigma_\xi$ to be equal exactly to $\sigma$. So the  formula of Gauss distribution is written in a way, which keep in mind that one would compute its standard deviation.
+  <h4>Independent random variables</h4>
 
-<h4>Independent random variables</h4>
+  Random variables may depend on each other or not. Imagine that you are throwing a needle on the floor and measuring coordinates of its both ends. This two coordinates are random variables, but they depend on each other, since a distance between them should be always equal to the length of the needle. Random variables are independent from each other if falling results of the first one doesn’t depend on results of the second. For two independent variables $inline$\xi_1$inline$ and $inline$\xi_2$inline$ the mean of their product is equal to the product of their mean: $inline$E(\xi_1\cdot\xi_2) = E\xi_1\cdot\xi_2$inline$<br>
+  <div class="spoiler-head">
+    Proof<br>
+  </div>
+  <div class="spoiler-body">
+    For instance to have blue eyes and finish a school with higher honors are independent random variables. Let say that there are $inline$20\% = 0.2$inline$ of people with blue eyes and $inline$5\%=0.05$inline$ of people with higher honors. So there are $inline$0.2\cdot 0.5 = 0.01 = 1\%$inline$ of people with blue eyes and higher honors. This example helps us to understand the following. For two independent random variables $inline$\xi_1$inline$ and $inline$\xi_2$inline$ which are given by their density of probability $inline$\rho_1(x)$inline$ and $inline$\rho_2(y)$inline$, the density of probability $inline$\rho(x,y)$inline$ (the first variable falls at $inline$x$inline$ and the second at $inline$y$inline$) can by find by the formula
+    $$display$$\rho(x,y) = \rho_1(x)\cdot\rho_2(y)$$display$$
+    It means that
+    $$display$$
+    \begin{array}{l}
+    \displaystyle E(\xi_1\cdot\xi_2)=\int xy\rho(x,y)dxdy=\int xy\rho_1(x)\rho_2(y)dxdy=\\ \displaystyle \int x\rho_1(x)dx\int y\rho_2(y)dy=E\xi_1\cdot E\xi_2
+    \end{array}
+    $$display$$
+    As you see, the proof is done for random variables which have a continuous spectrum of values and are given by their density of probability function. The proof is similar for general case.
+  </div>
 
-Random variables may depend on each other or not. Imagine that you are throwing a needle on the floor and measuring coordinates of its both ends. This two coordinates are random variables, but they depend on each other, since a distance between them should be always equal to the length of the needle. Random variables are independent from each other if falling results of the first one doesn’t depend on results of the second. For two independent variables $\xi_1$ and $\xi_2$ the mean of their product is equal to the product of their mean: $E(\xi_1\cdot\xi_2) = E\xi_1\cdot\xi_2$<br>
-<div class="spoiler-head">Proof<br>
-</div>
-<div class="spoiler-body">
-For instance to have blue eyes and finish a school with higher honors are independent random variables. Let say that there are $20\% = 0.2$ of people with blue eyes and $5\%=0.05$ of people with higher honors. So there are $0.2\cdot 0.5 = 0.01 = 1\%$ of people with blue eyes and higher honors. This example helps us to understand the following. For two independent random variables $\xi_1$ and $\xi_2$ which are given by their density of probability $\rho_1(x)$ and $\rho_2(y)$, the density of probability $\rho(x,y)$ (the first variable falls at $x$ and the second at $y$) can by find by the formula
-$$display$$\rho(x,y) = \rho_1(x)\cdot\rho_2(y)$$display$$
-It means that
-$$display$$
- \begin{array}{l} 
-\displaystyle E(\xi_1\cdot\xi_2)=\int xy\rho(x,y)dxdy=\int xy\rho_1(x)\rho_2(y)dxdy=\\ \displaystyle \int x\rho_1(x)dx\int y\rho_2(y)dy=E\xi_1\cdot E\xi_2 
-\end{array} 
-$$display$$
-As you see, the proof is done for random variables which have a continuous spectrum of values and are given by their density of probability function. The proof is similar for general case.
-</div>
+  <h3>Kalman filter</h3>
+  <h4>Problem statement</h4>
 
-<h3>Kalman filter</h3>
-<h4>Problem statement</h4>
+  Let denote by $inline$x_k$inline$ a value which we intend to measure and then filter. It can be a coordinate, velocity, acceleration, humidity, temperature, pressure, e.t.c.
+  Let us start with a simple example, which will lead us to the formulation of the general problem. Imagine that you have a radio control toy car which can run only forward and backward. Knowing its mass, shape, and other parameters of the system we have computed how the way how a controlling joystick acts on a car’s velocity $inline$v_k$inline$.
+  <br><img src="8.png"></img><br>
 
-Let denote by $x_k$ a value which we intend to measure and then filter. It can be a coordinate, velocity, acceleration, humidity, temperature, pressure, e.t.c.
-Let us start with a simple example, which will lead us to the formulation of the general problem. Imagine that you have a radio control toy car which can run only forward and backward. Knowing its mass, shape, and other parameters of the system we have computed how the way how a controlling joystick acts on a car’s velocity $v_k$.
-<br><img src="8.png"></img><br>
+  The the coordinate of the car would by the following formula
+  $$display$$x_{k+1}=x_k+v_kdt$$display$$
+  In real life we can’t , we can’t have a precise formula for the coordinate since some small disturbances acting on the car as wind, bumps, stones on the road, so the real speed of the car will differ from the calculated one. So we add a random variable $inline$\xi_k$inline$ to the right hand side of last equation:
+  $$display$$x_{k+1}=x_k+v_kdt+\xi_k$$display$$
 
-The the coordinate of the car would by the following formula
-$$display$$x_{k+1}=x_k+v_kdt$$display$$
-In real life we can’t , we can’t have a precise formula for the coordinate since some small disturbances acting on the car as wind, bumps, stones on the road, so the real speed of the car will differ from the calculated one. So we add a random variable $\xi_k$ to the right hand side of last equation:
-$$display$$x_{k+1}=x_k+v_kdt+\xi_k$$display$$
+  We also have a GPS sensor on the car which tries to measure the coordinate of the car $inline$x_k$inline$. Of course there is an error in this measuring, which is a random variable $inline$\eta_k$inline$. So from the sensor we would get a wrong data:
+  $$display$$z_k=x_k+\eta_k$$display$$
 
-We also have a GPS sensor on the car which tries to measure the coordinate of the car $x_k$. Of course there is an error in this measuring, which is a random variable $\eta_k$. So from the sensor we would get a wrong data:
-$$display$$z_k=x_k+\eta_k$$display$$   
+  Our aim is to find a good estimation for true coordinate $inline$x_k$inline$, knowing a wrong sensor’s data $inline$z_k$inline$. This good estimation we will denote by $inline$x^{opt}$inline$.
+  In general the coordinate $inline$x_k$inline$ may stands for any value (temperature, humidity,...) and the controlling member we would denote by $inline$u_k$inline$ ( in the example with a car $inline$u_k = v_k\cdot dt$inline$). The equations for the coordinate and the sensor measurements would be the following:
+  <br>
+  <img src="5.png"> &nbsp;&nbsp;(1)
+  <br>
+  Let us discuss, what do we know in these equations.<br>
+  <ul>
+    <li>$inline$u_k$inline$ is a known value which controls an evolution of the system. We do know it from the model of the system.</li>
+    <li>The random variable $inline$\xi$inline$ represents the error in the model of the system and the random variable $inline$\eta$inline$ is a sensor’s error. Their distribution laws don’t depend on time (on iteration index $inline$k$inline$).</li>
+    <li>The means of errors are equal to zero: $inline$E\eta_k = E\xi_k = 0$inline$.</li>
+    <li>We might not know a distribution law of the random variables, but we do know their variances $inline$\sigma_\xi$inline$ and $inline$\sigma_\eta$inline$. Note that the variances don’t depend on time (on $inline$k$inline$) since the corresponding distribution laws neither.</li>
+    <li>We suppose that all random errors are independent from each other: the error at the time $inline$k$inline$ doesn’t depend on the error at the time $inline$k’$inline$.</li>
+  </ul>
 
-Our aim is to find a good estimation for true coordinate $x_k$, knowing a wrong sensor’s data $z_k$. This good estimation we will denote by $x^{opt}$.
-In general the coordinate $x_k$ may stands for any value (temperature, humidity,...) and the controlling member we would denote by $u_k$ ( in the example with a car $u_k = v_k\cdot dt$). The equations for the coordinate and the sensor measurements would be the following:
-<br>
-<img src ="5.png"> &nbsp;&nbsp;(1)
-<br>
-Let us discuss, what do we know in these equations.<br>
-<ul>
-  <li>$u_k$ is a known value which controls an evolution of the system. We do know it from the model of the system.</li>
-  <li>The random variable $\xi$ represents the error in the model of the system and the random variable $\eta$ is a sensor’s error. Their distribution laws don’t depend on time (on iteration index $k$).</li>
-  <li>The means of errors are equal to zero: $E\eta_k = E\xi_k = 0$.</li>
-  <li>We might not know a distribution law of the random variables, but we do know their variances $\sigma_\xi$ and $\sigma_\eta$. Note that the variances don’t depend on time (on $k$) since the corresponding distribution laws neither.</li>
-  <li>We suppose that all random errors are independent from each other: the error at the time $k$ doesn’t depend on the error at the time $k’$.</li>
-</ul>
+  Note that a filtration problem is not a smoothing problem. Our aim is not to smooth a sensor’s data, we just want to get the value which is as close as it is possible to the real coordinate $inline$x_k$inline$.
 
-Note that a filtration problem is not a smoothing problem. Our aim is not to smooth a sensor’s data, we just want to get the value which is as close as it is possible to the real coordinate $x_k$.
+  <h4>Kalman algorithm</h4>
 
-<h4>Kalman algorithm</h4>
+  We would use an induction. Imagine that at the step $inline$k$inline$ we have already found the filtered sensor’s value $inline$x^{opt}$inline$, which is a good estimation of the real coordinate $inline$x_k$inline$. Recall that we know the equation which controls the real coordinate:
+  $$display$$x_{k+1} = x_k + u_k + \xi_k$$display$$
 
-We would use an induction. Imagine that at the step $k$ we have already found the filtered sensor’s value $x^{opt}$, which is a good estimation of the real coordinate $x_k$. Recall that we know the equation which controls the real coordinate:
-$$display$$x_{k+1} = x_k + u_k + \xi_k$$display$$
+  Therefore before getting the sensor’s value we might state that it would show the value which is close to $inline$x^{opt}+u_k$inline$. Unfortunately so far we can’t say something more precise. But at the step $inline$k+1$inline$ we would have a non precise reading from the sensor $inline$z_{k+1}$inline$.
+  The idea of Kalman is the following. To get the best estimation of the real coordinate $inline$x_{k+1}$inline$ we should get a golden middle between the reading of  non precise sensor $inline$z_{k+1}$inline$ and  $inline$x^{opt}+u_k$inline$ - our prediction, what we have expected to see on the sensor. We will give a weight $inline$K$inline$ to the sensor’s value and $inline$(1-K)$inline$ to the predicted value:
+  $$display$$x^{opt}_{k+1} = K\cdot z_{k+1} + (1-K)\cdot(x_k^{opt}+u_k)$$display$$
+  The coefficient $inline$K$inline$ is called a Kalman coefficient. It depends on iteration index, and strictly speaking we should rather write $inline$K_{k+1}$inline$. But to keep formulas in a nice shape we would omit the index of $inline$K$inline$.
+  We should choose the Kalman coefficient in way that the estimated coordinate $inline$x^{opt}_{k+1}$inline$ would be as close as it is possible to the real coordinate $inline$x_{k+1}$inline$.
+  For instance, if we do know that our sensor is very super precise then we would trust to its reading and give him a big weight ($inline$K$inline$ is close to one). If the sensor conversely is not precise at all, then we would rely on our theoretically predicted value $inline$x^{opt}_k+u_k$inline$.
+  In general situation, we should minimize the error of our estimation:
+  $$display$$e_{k+1} = x_{k+1}-x^{opt}_{k+1}$$display$$
+  We use equations (1) (those which are on a blue frame), to rewrite the equation for the error:
+  $$display$$e_{k+1} = (1-K)(e_k+\xi_k) - K\eta_{k+1}$$display$$
+  <div class="spoiler-head">
+    Proof
+  </div>
+  <div class="spoiler-body">
+    $$display$$
+    \begin{array}{l}
+    {
+    e_{k+1}=x_{k+1}-x^{opt}_{k+1}=x_{k+1}-Kz_{k+1}-(1-K)(x^{opt}_k+u_k)=\\ =x_k+u_k+\xi_k-K(x_k+u_k+\xi_k+\eta_{k+1})-(1-K)(x^{opt}_k+u_k)=\\=(1-K)(x_k-x_k^{opt}+\xi_k)-K\eta_{k+1}=(1-K)(e_k+\xi_k)-K\eta_{k+1}
+    }
+    \end{array}
+    $$display$$
+  </div>
+  Now it comes a time to discuss, what does it mean the expression “to minimize the error”? We know that the  error is a random variable so each time it takes different values. Actually there is no unique answer on that question. Similarly it was in the case of the variance of a random variable, when we were trying  to estimate the characteristic width of its probability density function. So we would choose a simple criterium. We would minimize a mean of the square:
+  $$display$$E(e^2_{k+1})\rightarrow min$$display$$
+  Let us rewrite the last expression:
+  $$display$$E(e^2_{k+1})=(1-K)^2(E_k^2+\sigma^2_\xi)+K^2\sigma^2_\eta$$display$$
+  <div class="spoiler-head">
+    Key to the proof
+  </div>
+  <div class="spoiler-body">
+    From the fact that all random variables in the equation for $inline$e_{k+1}$inline$ don’t depend on each other and the mean values $inline$E\eta_{k+1}=E\xi_k=0$inline$, follows that all cross terms in $inline$E(e^2_{k+1})$inline$ become zeros:
+    $$display$$E(\xi_k\eta_{k+1})=E(e_k\xi_k)=E(e_k\eta_{k+1})=0.$$display$$
+    Indeed for instance $inline$E(e_k\xi_k) = E(e_k)E(\xi_k)=0.$inline$<br>
+    Also note that formulas for the variances looks much simpler: $inline$\sigma^2_\eta = E\eta^2_k$inline$ and $inline$\sigma^2_\eta = E\eta^2_{k+1}$inline$ (since $inline$E\eta_{k+1}=E\xi_k=0$inline$)
+  </div>
 
-Therefore before getting the sensor’s value we might state that it would show the value which is close to $x^{opt}+u_k$. Unfortunately so far we can’t say something more precise. But at the step $k+1$ we would have a non precise reading from the sensor $z_{k+1}$.
-The idea of Kalman is the following. To get the best estimation of the real coordinate $x_{k+1}$ we should get a golden middle between the reading of  non precise sensor $z_{k+1}$ and  $x^{opt}+u_k$ - our prediction, what we have expected to see on the sensor. We will give a weight $K$ to the sensor’s value and $(1-K)$ to the predicted value:
-$$display$$x^{opt}_{k+1} = K\cdot z_{k+1} + (1-K)\cdot(x_k^{opt}+u_k)$$display$$
-The coefficient $K$ is called a Kalman coefficient. It depends on iteration index, and strictly speaking we should rather write $K_{k+1}$. But to keep formulas in a nice shape we would omit the index of $K$.
-We should choose the Kalman coefficient in way that the estimated coordinate $x^{opt}_{k+1}$ would be as close as it is possible to the real coordinate $x_{k+1}$.
-For instance, if we do know that our sensor is very super precise then we would trust to its reading and give him a big weight ($K$ is close to one). If the sensor conversely is not precise at all, then we would rely on our theoretically predicted value $x^{opt}_k+u_k$.
-In general situation, we should minimize the error of our estimation:
-$$display$$e_{k+1} = x_{k+1}-x^{opt}_{k+1}$$display$$ 
-We use equations (1) (those which are on a blue frame), to rewrite the equation for the error:
-$$display$$e_{k+1} = (1-K)(e_k+\xi_k) - K\eta_{k+1}$$display$$
-<div class="spoiler-head">Proof
-</div>
-<div class="spoiler-body">
-$$display$$
-\begin{array}{l}
-{
-e_{k+1}=x_{k+1}-x^{opt}_{k+1}=x_{k+1}-Kz_{k+1}-(1-K)(x^{opt}_k+u_k)=\\ =x_k+u_k+\xi_k-K(x_k+u_k+\xi_k+\eta_{k+1})-(1-K)(x^{opt}_k+u_k)=\\=(1-K)(x_k-x_k^{opt}+\xi_k)-K\eta_{k+1}=(1-K)(e_k+\xi_k)-K\eta_{k+1}
-}
-\end{array}
-$$display$$
-</div>
-Now it comes a time to discuss, what does it mean the expression “to minimize the error”? We know that the  error is a random variable so each time it takes different values. Actually there is no unique answer on that question. Similarly it was in the case of the variance of a random variable, when we were trying  to estimate the characteristic width of its probability density function. So we would choose a simple criterium. We would minimize a mean of the square:
-$$display$$E(e^2_{k+1})\rightarrow min$$display$$
-Let us rewrite the last expression:
-$$display$$E(e^2_{k+1})=(1-K)^2(E_k^2+\sigma^2_\xi)+K^2\sigma^2_\eta$$display$$
-<div class="spoiler-head">Key to the proof
-</div>
-<div class="spoiler-body">
-From the fact that all random variables in the equation for $e_{k+1}$ don’t depend on each other and the mean values $E\eta_{k+1}=E\xi_k=0$, follows that all cross terms in $E(e^2_{k+1})$ become zeros:
-$$display$$E(\xi_k\eta_{k+1})=E(e_k\xi_k)=E(e_k\eta_{k+1})=0.$$display$$ 
-Indeed for instance $E(e_k\xi_k) = E(e_k)E(\xi_k)=0.$<br>
-Also note that formulas for the variances looks much simpler: $\sigma^2_\eta = E\eta^2_k$ and $\sigma^2_\eta = E\eta^2_{k+1}$ (since $E\eta_{k+1}=E\xi_k=0$)
-</div>
+  The last expression takes its minimal value, when its derivation is zero. So when:
+  $$display$$\displaystyle K_{k+1} = \frac{Ee^2_k + \sigma^2_\eta}{Ee^2_k+\sigma^2_\xi+\sigma^2_\eta}$$display$$
+  Here we write the Kalman coefficient with its subscript, so we emphasize the fact that it do depends on the step of iteration. We substitute to the equation for the mean square error $inline$E(e^2_{k+1})$inline$ the Kalman coefficient $inline$K_{k+1}$inline$ which minimize its value:
+  $$display$$\displaystyle E(e^2_{k+1}) = \frac{\sigma^2_\eta(Ee^2_k + \sigma^2_\eta)}{Ee^2_k+\sigma^2_\xi+\sigma^2_\eta}$$display$$
+  So we have solved our problem. We got the iterative formula for computing the Kalman coefficient.
+  <div class="spoiler-head">
+    All formulas in one place:
+  </div>
+  <div class="spoiler-body">
+    <br><img src="3.png"><br>
+  </div>
 
-The last expression takes its minimal value, when its derivation is zero. So when:
-$$display$$\displaystyle K_{k+1} = \frac{Ee^2_k + \sigma^2_\eta}{Ee^2_k+\sigma^2_\xi+\sigma^2_\eta}$$display$$
-Here we write the Kalman coefficient with its subscript, so we emphasize the fact that it do depends on the step of iteration. We substitute to the equation for the mean square error $E(e^2_{k+1})$ the Kalman coefficient $K_{k+1}$ which minimize its value:
-$$display$$\displaystyle E(e^2_{k+1}) = \frac{\sigma^2_\eta(Ee^2_k + \sigma^2_\eta)}{Ee^2_k+\sigma^2_\xi+\sigma^2_\eta}$$display$$
-So we have solved our problem. We got the iterative formula for computing the Kalman coefficient.
-<div class="spoiler-head">
-All formulas in one place:
-</div>
-<div class="spoiler-body">
-<br><img src="3.png"><br>
-</div>
-
-<h4>Example</h4>
-On the plot from the beginning of this article there are filtered datum from the fictional GPS sensor, settled on the fictional car, which moves with the constant acceleration $a$.
-$$display$$x_{t+1} = x_t+ at\cdot dt+ \xi_t$$display$$
-<div class="spoiler-head">
-Look at the filtered results once again:
-</div>
-<div class="spoiler-body">
-<img src = "1.png">
-</div>
-<div class="spoiler-head">
-The code on matlab:
-</div>
-<div class="spoiler-body">
+  <h4>Example</h4>
+  On the plot from the beginning of this article there are filtered datum from the fictional GPS sensor, settled on the fictional car, which moves with the constant acceleration $inline$a$inline$.
+  $$display$$x_{t+1} = x_t+ at\cdot dt+ \xi_t$$display$$
+  <div class="spoiler-head">
+    Look at the filtered results once again:
+  </div>
+  <div class="spoiler-body">
+    <img src="1.png">
+  </div>
+  <div class="spoiler-head">
+    The code on matlab:
+  </div>
+  <div class="spoiler-body">
 <pre>
 clear all;
 N=100  % number of samples
@@ -168,38 +172,38 @@ for t=1:(N-1)
 end;
 plot(k,xOpt,k,z,k,x)
 </pre>
-</div>
-<h3>Analysis</h3>
+  </div>
+  <h3>Analysis</h3>
 
-If one look at how the Kalman coefficient $K_k$ changes from the iteration $k$, it is possible to see that it stabilizes to the certain value $K_{stab}$. For instance if the square mean errors of sensor and the model respect to each other as ten to one, then the plot of the Kalman coefficient dependency from the iteration step would be the following:
-<br><img src="2.png"><br>
+  If one look at how the Kalman coefficient $inline$K_k$inline$ changes from the iteration $inline$k$inline$, it is possible to see that it stabilizes to the certain value $inline$K_{stab}$inline$. For instance if the square mean errors of sensor and the model respect to each other as ten to one, then the plot of the Kalman coefficient dependency from the iteration step would be the following:
+  <br><img src="2.png"><br>
 
-In the next example we would discuss how that can simplify our life.
+  In the next example we would discuss how that can simplify our life.
 
-<h3>Second example</h3>
+  <h3>Second example</h3>
 
-In practice it happens that we don’t know almost anything from the physical model what we are filtering. Imagine you have decided to filter that measurements from your favourite accelerometer. Actually you don’t know in forward how the accelerometer would be moved. Only thing you might know is the variance of sensor’s error $\sigma^2_\eta$. In this difficult problem we might put all unknown information from the physical model to the random variable $\xi_k$:
-$$display$$x_{k+1} = x_k + \xi_k$$display$$
-Strictly speaking this kind of system doesn’t satisfy the condition that we have imposed on the random variable $\xi_k$. Since it holds the information unknown for us physics of the movement. We can’t say that it different moment of times the errors are independent from each other and their means are equals to zero. In other words, it means that for this kind of situations the Kalman theory isn’t applied. But anyway we can try to use the machinery of Kalman theory just by choosing some reasonable values for $\sigma_\xi^2$ and $\sigma_\eta^2$ to get just a nice graph of filtered datum.
-But there is a much simpler way. We saw that with increasing of the step $k$ the Kalman coefficient always stabilizes to the certain value $K_{stab}$. So instead of guessing the values of the coefficients $\sigma^2_\xi$ and $\sigma^2_\eta$ and computing the Kalman coefficient $K_k$ by difficult formulas, we can assume that this coefficient is constant and select just this constant. This assumption would not affect much on filtering results. At first we anyway the Kalman machinery is not exactly applicable to our problem and secondly, the Kalman coefficient quickly stabilizes to the constant. In the end everything becomes very simple. We don’t need almost any formula from Kalman theory, we just need to select a reasonable value $K_{stab}$ and insert it to the iterative formula
-$$display$$x^{opt}_{k+1} = K_{stab}\cdot z_{k+1}+(1-K_{stab})\cdot x_k^{opt}$$display$$
-On the next graph you can see the filtered by two different ways measurements from an imaginary sensor. The first method is the honest one, with all formulas from Kalman theory. The second method is the simplified one.
-<br><img src="4.png"><br>
+  In practice it happens that we don’t know almost anything from the physical model what we are filtering. Imagine you have decided to filter that measurements from your favourite accelerometer. Actually you don’t know in forward how the accelerometer would be moved. Only thing you might know is the variance of sensor’s error $inline$\sigma^2_\eta$inline$. In this difficult problem we might put all unknown information from the physical model to the random variable $inline$\xi_k$inline$:
+  $$display$$x_{k+1} = x_k + \xi_k$$display$$
+  Strictly speaking this kind of system doesn’t satisfy the condition that we have imposed on the random variable $inline$\xi_k$inline$. Since it holds the information unknown for us physics of the movement. We can’t say that it different moment of times the errors are independent from each other and their means are equals to zero. In other words, it means that for this kind of situations the Kalman theory isn’t applied. But anyway we can try to use the machinery of Kalman theory just by choosing some reasonable values for $inline$\sigma_\xi^2$inline$ and $inline$\sigma_\eta^2$inline$ to get just a nice graph of filtered datum.
+  But there is a much simpler way. We saw that with increasing of the step $inline$k$inline$ the Kalman coefficient always stabilizes to the certain value $inline$K_{stab}$inline$. So instead of guessing the values of the coefficients $inline$\sigma^2_\xi$inline$ and $inline$\sigma^2_\eta$inline$ and computing the Kalman coefficient $inline$K_k$inline$ by difficult formulas, we can assume that this coefficient is constant and select just this constant. This assumption would not affect much on filtering results. At first we anyway the Kalman machinery is not exactly applicable to our problem and secondly, the Kalman coefficient quickly stabilizes to the constant. In the end everything becomes very simple. We don’t need almost any formula from Kalman theory, we just need to select a reasonable value $inline$K_{stab}$inline$ and insert it to the iterative formula
+  $$display$$x^{opt}_{k+1} = K_{stab}\cdot z_{k+1}+(1-K_{stab})\cdot x_k^{opt}$$display$$
+  On the next graph you can see the filtered by two different ways measurements from an imaginary sensor. The first method is the honest one, with all formulas from Kalman theory. The second method is the simplified one.
+  <br><img src="4.png"><br>
 
 
-We see that there is not a big difference between two this methods. There is a small variation in the beginning, when the Kalman coefficient still is not stabilized.
+  We see that there is not a big difference between two this methods. There is a small variation in the beginning, when the Kalman coefficient still is not stabilized.
 
-<h3>Discussion</h3>
-We have seen that the main idea of Kalman filter is to choose the coefficient $K$ in a way that the filtered value
-$$display$$x^{opt}_{k+1}= Kz_{k+1}+(1-K)(x^{opt}_k+u_k)$$display$$
-in average would be as close as possible to the real coordinate $x_{k+1}$. We see that the filtered value $x^{opt}_{k+1}$ is a linear function from the sensor's measurement $z_{k+1}$ and the previous filtered value $x^{opt}_k$. But the previous filtered value $x^{opt}_k$ itself is a linear function of the sensor’s measurement $z_k$ and  the pre-previous filtered value $x^{opt}_{k-1}$. And so on until the end of the chain. So the filtered value linearly depends on all previous sensor’s readings:
-$$display$$x^{opt}_{k+1}= \lambda + \lambda_0z_0 + \ldots + \lambda_{k+1}z_{k+1}$$display$$ 
-That is a reason that the Kalman filter is called a linear filter. It is possible to prove that the Kalman filter is the best from all linear filters. The best in a sense that it minimizes a square mean of the error.
+  <h3>Discussion</h3>
+  We have seen that the main idea of Kalman filter is to choose the coefficient $inline$K$inline$ in a way that the filtered value
+  $$display$$x^{opt}_{k+1}= Kz_{k+1}+(1-K)(x^{opt}_k+u_k)$$display$$
+  in average would be as close as possible to the real coordinate $inline$x_{k+1}$inline$. We see that the filtered value $inline$x^{opt}_{k+1}$inline$ is a linear function from the sensor's measurement $inline$z_{k+1}$inline$ and the previous filtered value $inline$x^{opt}_k$inline$. But the previous filtered value $inline$x^{opt}_k$inline$ itself is a linear function of the sensor’s measurement $inline$z_k$inline$ and  the pre-previous filtered value $inline$x^{opt}_{k-1}$inline$. And so on until the end of the chain. So the filtered value linearly depends on all previous sensor’s readings:
+  $$display$$x^{opt}_{k+1}= \lambda + \lambda_0z_0 + \ldots + \lambda_{k+1}z_{k+1}$$display$$
+  That is a reason that the Kalman filter is called a linear filter. It is possible to prove that the Kalman filter is the best from all linear filters. The best in a sense that it minimizes a square mean of the error.
 
-<h3>Multidimensional case</h3>
-It is possible to generalise all the Kalman theory to the multidimensional case. Formulas there looks a bit more ellaborated but the idea of their deriving still remains the same as in a one dimension. For instance, In this nice <a href ="http://www.youtube.com/watch?v=FkCT_LV9Syk">video</a> you can see the example.
+  <h3>Multidimensional case</h3>
+  It is possible to generalise all the Kalman theory to the multidimensional case. Formulas there looks a bit more ellaborated but the idea of their deriving still remains the same as in a one dimension. For instance, In this nice <a href="http://www.youtube.com/watch?v=FkCT_LV9Syk">video</a> you can see the example.
 
-<h3>Literature</h3>
-The original article which is written by Kalman you can download here:
-<a href="http://www.cs.unc.edu/~welch/kalman/media/pdf/Kalman1960.pdf">http://www.cs.unc.edu/~welch/kalman/media/pdf/Kalman1960.pdf</a>
-</div>
+  <h3>Literature</h3>
+  The original article which is written by Kalman you can download here:
+  <a href="http://www.cs.unc.edu/~welch/kalman/media/pdf/Kalman1960.pdf">http://www.cs.unc.edu/~welch/kalman/media/pdf/Kalman1960.pdf</a>
+  </div>
