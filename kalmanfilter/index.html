@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head>
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>David Khudaverdyan. Kalman Filter</title><base target="_top">
@@ -159,7 +159,7 @@ Also note that formulas for the variances looks much simpler: $\sigma^2_\eta = E
 </div>
 
 The last expression takes its minimal value, when its derivation is zero. So when:
-$$\displaystyle K_{k+1} = \frac{Ee^2_k + \sigma^2_\eta}{Ee^2_k+\sigma^2_\xi+\sigma^2_\eta}$$
+$$\displaystyle K_{k+1} = \frac{Ee^2_k + \sigma^2_\xi}{Ee^2_k+\sigma^2_\xi+\sigma^2_\eta}$$
 Here we write the Kalman coefficient with its subscript, so we emphasize the fact that it do depends on the step of iteration. We substitute to the equation for the mean square error $E(e^2_{k+1})$ the Kalman coefficient $K_{k+1}$ which minimize its value:
 $$\displaystyle E(e^2_{k+1}) = \frac{\sigma^2_\eta(Ee^2_k + \sigma^2_\eta)}{Ee^2_k+\sigma^2_\xi+\sigma^2_\eta}$$
 So we have solved our problem. We got the iterative formula for computing the Kalman coefficient.
