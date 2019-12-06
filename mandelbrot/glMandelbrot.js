@@ -1,11 +1,3 @@
-var fragmentShaderCode = `
- precision mediump float;
-
- void main(void) {
-     gl_FragColor = vec4(0.2, 0.3, 0.2, 1.0);
- }
- `;
-
 var vertexShaderCode = `
  attribute vec3 Position;
 
@@ -14,7 +6,17 @@ var vertexShaderCode = `
      gl_Position = vec4(Position, 1.0);
  }
  `;
- 
+
+var fragmentShaderCode = `
+ precision lowp float;
+  
+  
+ void main(void) {
+     gl_FragColor = vec4(0.2, 0.3, 0.2, 1.0);
+     
+ }
+ `;
+
  
  
 function initGL(canvas)
