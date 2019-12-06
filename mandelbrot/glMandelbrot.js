@@ -9,11 +9,9 @@ var fragmentShaderCode = `
  var vertexShaderCode = `
  attribute vec3 Position;
 
- uniform mat4 u_ModelView;
- uniform mat4 u_Persp;
 
  void main(void) {
-     gl_Position = u_Persp * u_ModelView * vec4(Position, 1.0);
+     gl_Position = vec4(Position, 1.0);
  }
  `;
  
@@ -92,25 +90,14 @@ var fragmentShaderCode = `
 
  function drawScene(gl, triangleVertexPositionBuffer, shader_prog) {
 
-     var mvMatrix = mat4.create();
-     var pMatrix = mat4.create();
 
      gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-
-     mat4.identity(mvMatrix);
-     //Move our triangle
-     mat4.translate(mvMatrix, [0.0, 0.0, -4.0]);
 
      //Pass triangle position to vertex shader
      gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
      gl.vertexAttribPointer(shader_prog.positionLocation, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-     //Pass model view projection matrix to vertex shader
-     gl.uniformMatrix4fv(shader_prog.u_PerspLocation, false, pMatrix);
-     gl.uniformMatrix4fv(shader_prog.u_ModelViewLocation, false, mvMatrix);
 
      //Draw our lovely triangle
      gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
@@ -120,7 +107,7 @@ var fragmentShaderCode = `
  
    $( document ).ready(function() 
   {
-     var canvas = document.getElementById("webgl_hello_world");
+     var canvas = document.getElementById("webgl_canvas");
      var gl = initGL(canvas);
      var shader_prog = initShaders(gl);
      var triangleVertexPositionBuffer = initBuffers(gl);
