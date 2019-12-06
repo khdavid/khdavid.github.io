@@ -6,7 +6,7 @@ var fragmentShaderCode = `
  }
  `;
 
- var vertexShaderCode = `
+var vertexShaderCode = `
  attribute vec3 Position;
 
 
@@ -33,9 +33,10 @@ function getShader(gl, shaderType, shaderCode)
   gl.shaderSource(shader, shaderCode);
   gl.compileShader(shader);
 
-  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      alert(gl.getShaderInfoLog(shader));
-      return null;
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+  {
+    alert(gl.getShaderInfoLog(shader));
+    return null;
   }
 
   return shader;
@@ -74,7 +75,8 @@ function initBuffers(gl)
 {
   triangleVertexPositionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
-  var vertices = [
+  var vertices = 
+  [
        0.0,  1.0,  0.0,
       -1.0, -1.0,  0.0,
        1.0, -1.0,  0.0
@@ -95,25 +97,23 @@ function drawScene(gl, triangleVertexPositionBuffer, shader_prog)
   gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
   gl.vertexAttribPointer(shader_prog.positionLocation, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-
   //Draw our lovely triangle
   gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
-
 }
 
 
-  $( document ).ready(function() 
- {
-    var canvas = document.getElementById("webgl_canvas");
-    var gl = initGL(canvas);
-    var shader_prog = initShaders(gl);
-    var triangleVertexPositionBuffer = initBuffers(gl);
+$(document).ready(function() 
+{
+   var canvas = document.getElementById("webgl_canvas");
+   var gl = initGL(canvas);
+   var shader_prog = initShaders(gl);
+   var triangleVertexPositionBuffer = initBuffers(gl);
 
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    gl.enable(gl.DEPTH_TEST);
+   gl.clearColor(0.0, 0.0, 0.0, 1.0);
+   gl.enable(gl.DEPTH_TEST);
 
-    drawScene(gl, triangleVertexPositionBuffer, shader_prog);
+   drawScene(gl, triangleVertexPositionBuffer, shader_prog);
 
- }
- );
+}
+);
 
