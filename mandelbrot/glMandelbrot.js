@@ -27,7 +27,7 @@ function initGL(canvas)
 }
 
 
-function getShader(gl, shaderType, shaderCode) 
+function createShader(gl, shaderType, shaderCode) 
 {
   var shader = gl.createShader(shaderType);
   gl.shaderSource(shader, shaderCode);
@@ -45,8 +45,8 @@ function getShader(gl, shaderType, shaderCode)
 
 function initShaders(gl) 
 {
-  var fragmentShader = getShader(gl, gl.FRAGMENT_SHADER, fragmentShaderCode);
-  var vertexShader = getShader(gl, gl.VERTEX_SHADER, vertexShaderCode);
+  var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderCode);
+  var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderCode);
 
   shader_prog = gl.createProgram();
   gl.attachShader(shader_prog, vertexShader);
