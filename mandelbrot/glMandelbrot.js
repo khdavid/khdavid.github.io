@@ -75,29 +75,10 @@ var fragmentShaderCode = `
     return first + float(x - min) * (last - first) / xDiff;
   }
   
-  int getOutOfBoundsIdx(int nMax)
+  int getOutOfBoundsIdx()
   {
-    ComplexNumber z;
-    z.Real = 0.;
-    z.Imagine = 0.;
-  
-    ComplexNumber c;
-    c.Real = (gl_FragCoord.x - xShift ) * fade;
-    c.Imagine = (gl_FragCoord.y - yShift) * fade; 
+    const int nMax = 1000;
 
-    int i = 0;
-
-    for (i = 0; i < nMax; i++)
-    {
-       z = Add (Product(z,z), c);
-       if (length2(z) > 4.) break;
-    }
-    
-    return i;
-  } 
-
-  int getOutOfBoundsIdxFast(int nMax)
-  {
     ComplexNumberFast z;
     z.Real = 0.;
     z.Imagine = 0.;
@@ -106,15 +87,16 @@ var fragmentShaderCode = `
     c.Real = float((gl_FragCoord.x - xShift ) * fade);
     c.Imagine = float((gl_FragCoord.y - yShift) * fade); 
 
-    int i = 0;
-
-    for (i = 0; i < nMax; i++)
+    for (int i = 0; i < nMax; i++)
     {
        z = Add (Product(z,z), c);
-       if (length2(z) > 4.) break;
+       if (length2(z) > 4.)
+       {
+         return i;
+       }
     }
     
-    return i;
+    return nMax;
   } 
 
   
@@ -128,8 +110,6 @@ var fragmentShaderCode = `
     const vec4 black = vec4(0, 0, 0, 255) / 255.;
      
     
-    const int nMaxFloatMode = 1000;
-    const int nMaxDoubleMode = 400;
 
     const int kThreshold0 = 0;
     const int kThreshold1 = 100;
@@ -139,16 +119,8 @@ var fragmentShaderCode = `
     
 
     const float fadeThreshold = 1e-7;
+    int k = getOutOfBoundsIdx();
 
-    int k = 0;
-    if (fade > fadeThreshold)
-    {
-      k = getOutOfBoundsIdxFast(nMaxFloatMode);
-    }
-    else
-    {
-       k = getOutOfBoundsIdx(nMaxDoubleMode);
-    }
 
     vec4 color;
     if (k < kThreshold1)
