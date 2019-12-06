@@ -19,8 +19,8 @@ var fragmentShaderCode = `
  
  
  
- var gl;
  function initGL(canvas) {
+     var gl
      try {
          gl = canvas.getContext("webgl");
          gl.viewportWidth = canvas.width;
@@ -30,6 +30,7 @@ var fragmentShaderCode = `
      if (!gl) {
          alert("WebGL is not avaiable on your browser!");
      }
+     return gl;
  }
 
 
@@ -49,7 +50,7 @@ var fragmentShaderCode = `
 
  var shader_prog;
 
- function initShaders() {
+ function initShaders(gl) {
      var fragmentShader = getShader(gl, gl.FRAGMENT_SHADER, fragmentShaderCode);
      var vertexShader = getShader(gl, gl.VERTEX_SHADER, vertexShaderCode);
 
@@ -75,7 +76,7 @@ var fragmentShaderCode = `
 
  var triangleVertexPositionBuffer;
 
- function initBuffers() {
+ function initBuffers(gl) {
 
      triangleVertexPositionBuffer = gl.createBuffer();
      gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
@@ -93,7 +94,7 @@ var fragmentShaderCode = `
  var mvMatrix = mat4.create();
  var pMatrix = mat4.create();
 
- function drawScene() {
+ function drawScene(gl) {
 
      gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -117,18 +118,18 @@ var fragmentShaderCode = `
 
  }
 
-
+ 
    $( document ).ready(function() 
   {
      var canvas = document.getElementById("webgl_hello_world");
-     initGL(canvas);
-     initShaders();
-     initBuffers();
+     var gl = initGL(canvas);
+     initShaders(gl);
+     initBuffers(gl);
 
      gl.clearColor(0.0, 0.0, 0.0, 1.0);
      gl.enable(gl.DEPTH_TEST);
 
-     drawScene();
+     drawScene(gl);
 
   }
   );
