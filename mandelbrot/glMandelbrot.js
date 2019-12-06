@@ -122,7 +122,7 @@ var fragmentShaderCode = `
    $( document ).ready(function() 
   {
      var canvas = document.getElementById("webgl_hello_world");
-     var gl = initGL(canvas);
+     var gl = initGL(canvas); 
      initShaders(gl);
      initBuffers(gl);
 
