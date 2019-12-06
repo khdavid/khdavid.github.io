@@ -10,10 +10,9 @@ var vertexShaderCode = `
 
 var fragmentShaderCode = `
   precision lowp float;
-  uniform float fade;
-  uniform float xShift;
-  uniform float yShift;
-
+  float xShift = 200.0;
+  float yShift = 50.0;
+  float fade = 0.02;
 
   struct ComplexNumber
   {
