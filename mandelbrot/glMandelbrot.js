@@ -173,9 +173,6 @@ function initShaders(gl)
   shader_prog.positionLocation = gl.getAttribLocation(shader_prog, "Position");
   gl.enableVertexAttribArray(shader_prog.positionLocation);
 
-  shader_prog.u_PerspLocation = gl.getUniformLocation(shader_prog, "u_Persp");
-  shader_prog.u_ModelViewLocation = gl.getUniformLocation(shader_prog, "u_ModelView");
-  
   return shader_prog;
 }
 
