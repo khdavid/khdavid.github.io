@@ -20,11 +20,6 @@ var fragmentShaderCode = `
     float Imagine;
   };
 
-  struct ComplexNumberFast
-  {
-    float Real;
-    float Imagine;
-  };
   
   ComplexNumber Product(in ComplexNumber first, in ComplexNumber second)
   {
@@ -34,13 +29,6 @@ var fragmentShaderCode = `
     return result;
   }
   
-  ComplexNumberFast Product(in ComplexNumberFast first, in ComplexNumberFast second)
-  {
-    ComplexNumberFast result;  
-    result.Real = first.Real * second.Real - first.Imagine * second.Imagine;
-    result.Imagine = first.Real * second.Imagine + first.Imagine * second.Real;
-    return result;
-  }
 
   ComplexNumber Add(in ComplexNumber first, in ComplexNumber second)
   {
@@ -50,23 +38,12 @@ var fragmentShaderCode = `
     return result;
   }
   
-  ComplexNumberFast Add(in ComplexNumberFast first, in ComplexNumberFast second)
-  {
-    ComplexNumberFast result;  
-    result.Real = first.Real + second.Real;
-    result.Imagine = first.Imagine + second.Imagine;
-    return result;
-  }
 
   float length2(in ComplexNumber number)
   {
      return number.Real * number.Real + number.Imagine * number.Imagine;
   }
 
-  float length2(in ComplexNumberFast number)
-  {
-     return number.Real * number.Real + number.Imagine * number.Imagine;
-  }
   
   vec4 linearExtrapolation(const vec4 first, const vec4 last, int min, int max, int x)
   {
@@ -78,11 +55,11 @@ var fragmentShaderCode = `
   {
     const int nMax = 1000;
 
-    ComplexNumberFast z;
+    ComplexNumber z;
     z.Real = 0.;
     z.Imagine = 0.;
   
-    ComplexNumberFast c;
+    ComplexNumber c;
     c.Real = float((gl_FragCoord.x - xShift ) * fade);
     c.Imagine = float((gl_FragCoord.y - yShift) * fade); 
 
@@ -117,7 +94,6 @@ var fragmentShaderCode = `
     const int kThreshold4 = 390;
     
 
-    const float fadeThreshold = 1e-7;
     int k = getOutOfBoundsIdx();
 
 
