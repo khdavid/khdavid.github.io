@@ -7,14 +7,175 @@ var vertexShaderCode = `
  }
  `;
 
+
 var fragmentShaderCode = `
- precision lowp float;
+  precision lowp float;
+  uniform float fade;
+  uniform float xShift;
+  uniform float yShift;
+
+
+  struct ComplexNumber
+  {
+    float Real;
+    float Imagine;
+  };
+
+  struct ComplexNumberFast
+  {
+    float Real;
+    float Imagine;
+  };
   
+  ComplexNumber Product(in ComplexNumber first, in ComplexNumber second)
+  {
+    ComplexNumber result;  
+    result.Real = first.Real * second.Real - first.Imagine * second.Imagine;
+    result.Imagine = first.Real * second.Imagine + first.Imagine * second.Real;
+    return result;
+  }
   
- void main(void) {
-     gl_FragColor = vec4(0.2, 0.3, 0.2, 1.0);
+  ComplexNumberFast Product(in ComplexNumberFast first, in ComplexNumberFast second)
+  {
+    ComplexNumberFast result;  
+    result.Real = first.Real * second.Real - first.Imagine * second.Imagine;
+    result.Imagine = first.Real * second.Imagine + first.Imagine * second.Real;
+    return result;
+  }
+
+  ComplexNumber Add(in ComplexNumber first, in ComplexNumber second)
+  {
+    ComplexNumber result;  
+    result.Real = first.Real + second.Real;
+    result.Imagine = first.Imagine + second.Imagine;
+    return result;
+  }
+  
+  ComplexNumberFast Add(in ComplexNumberFast first, in ComplexNumberFast second)
+  {
+    ComplexNumberFast result;  
+    result.Real = first.Real + second.Real;
+    result.Imagine = first.Imagine + second.Imagine;
+    return result;
+  }
+
+  float length2(in ComplexNumber number)
+  {
+     return number.Real * number.Real + number.Imagine * number.Imagine;
+  }
+
+  float length2(in ComplexNumberFast number)
+  {
+     return number.Real * number.Real + number.Imagine * number.Imagine;
+  }
+  
+  vec4 linearExtrapolation(const vec4 first, const vec4 last, int min, int max, int x)
+  {
+    float xDiff = float(max - min);
+    return first + float(x - min) * (last - first) / xDiff;
+  }
+  
+  int getOutOfBoundsIdx(int nMax)
+  {
+    ComplexNumber z;
+    z.Real = 0.;
+    z.Imagine = 0.;
+  
+    ComplexNumber c;
+    c.Real = (gl_FragCoord.x - xShift ) * fade;
+    c.Imagine = (gl_FragCoord.y - yShift) * fade; 
+
+    int i = 0;
+
+    for (i = 0; i < nMax; i++)
+    {
+       z = Add (Product(z,z), c);
+       if (length2(z) > 4.) break;
+    }
+    
+    return i;
+  } 
+
+  int getOutOfBoundsIdxFast(int nMax)
+  {
+    ComplexNumberFast z;
+    z.Real = 0.;
+    z.Imagine = 0.;
+  
+    ComplexNumberFast c;
+    c.Real = float((gl_FragCoord.x - xShift ) * fade);
+    c.Imagine = float((gl_FragCoord.y - yShift) * fade); 
+
+    int i = 0;
+
+    for (i = 0; i < nMax; i++)
+    {
+       z = Add (Product(z,z), c);
+       if (length2(z) > 4.) break;
+    }
+    
+    return i;
+  } 
+
+  
+  void main()
+  {
+
+    const vec4 blue = vec4(166, 202, 240, 255) / 255.;
+    const vec4 biruz = vec4(123, 228, 209, 255) / 255.;
+    const vec4 red = vec4(255, 0, 0, 255) / 255.;
+    const vec4 green = vec4(0, 255, 0, 255) / 255.;
+    const vec4 black = vec4(0, 0, 0, 255) / 255.;
      
- }
+    
+    const int nMaxFloatMode = 1000;
+    const int nMaxDoubleMode = 400;
+
+    const int kThreshold0 = 0;
+    const int kThreshold1 = 100;
+    const int kThreshold2 = 150;
+    const int kThreshold3 = 250;
+    const int kThreshold4 = 390;
+    
+
+    const float fadeThreshold = 1e-7;
+
+    int k = 0;
+    if (fade > fadeThreshold)
+    {
+      k = getOutOfBoundsIdxFast(nMaxFloatMode);
+    }
+    else
+    {
+       k = getOutOfBoundsIdx(nMaxDoubleMode);
+    }
+
+    vec4 color;
+    if (k < kThreshold1)
+    {
+       color = linearExtrapolation(biruz, blue, kThreshold0, kThreshold1, k);
+    }
+    else if (k < kThreshold2)
+    {
+       color = linearExtrapolation(red, green, kThreshold1, kThreshold2, k);
+    }
+    else if (k < kThreshold3)
+    {
+       color = linearExtrapolation(biruz, blue, kThreshold2, kThreshold3, k);
+    }
+    else if (k < kThreshold4)
+    {
+       color = linearExtrapolation(biruz, green, kThreshold3, kThreshold4, k);
+    }
+
+    else
+    {
+       color = black;  
+    }
+    
+    gl_FragColor = color;
+  }
+
  `;
 
  
