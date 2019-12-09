@@ -1,5 +1,6 @@
-var vertexShaderCode = `
- attribute vec3 Position;
+var vertexShaderCode = 
+`#version 300 es
+ in vec3 Position;
 
 
  void main(void) {
@@ -8,11 +9,13 @@ var vertexShaderCode = `
  `;
 
 
-var fragmentShaderCode = `
-  precision lowp float;
+var fragmentShaderCode = 
+ `#version 300 es
+  precision highp float;
   float xShift = 200.0;
   float yShift = 50.0;
   float fade = 0.02;
+  out vec4 color;
 
   struct ComplexNumber
   {
@@ -97,7 +100,6 @@ var fragmentShaderCode = `
     int k = getOutOfBoundsIdx();
 
 
-    vec4 color;
     if (k < kThreshold1)
     {
        color = linearExtrapolation(biruz, blue, kThreshold0, kThreshold1, k);
@@ -120,7 +122,6 @@ var fragmentShaderCode = `
        color = black;  
     }
     
-    gl_FragColor = color;
   }
 
  `;
@@ -129,7 +130,7 @@ var fragmentShaderCode = `
  
 function initGL(canvas)
 {
-  var gl = canvas.getContext("webgl");
+  var gl = canvas.getContext("webgl2");
   gl.viewportWidth = canvas.width;
   gl.viewportHeight = canvas.height;
 
