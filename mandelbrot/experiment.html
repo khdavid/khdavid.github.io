@@ -6,9 +6,9 @@
 <script>
 
 var vertexShaderCode = 
-`//#version 100 es
- //in vec3 Position;
-  attribute vec3 Position;
+`#version 300 es
+ in vec3 Position;
+ // attribute vec3 Position;
 
  void main(void) {
      gl_Position = vec4(Position, 1.0);
@@ -17,21 +17,28 @@ var vertexShaderCode =
 
 
 var fragmentShaderCode = 
- `//#version 100 es
-  precision lowp float;
-  //out vec4 color;
+ `#version 300 es
+  precision highp float;
+  out vec4 color;
   void main()
   {
     float ONE = 1.0;
     float NEAR_ONE = 1.0000001;
     float diff = NEAR_ONE - ONE;
-    if (diff == 0.)
+
+    float result = NEAR_ONE;
+    for (int i = 0; i < 10000000; i++)
     {
-      gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+      result = result * NEAR_ONE;
+    }    
+    
+    if (result > 3.2)
+    {
+      color = vec4(0.5, 0.5, 0.5, 1.0);
     }
     else
     {
-      gl_FragColor = vec4(0.5, 0.5, 0.5, 1.0);
+      color = vec4(0.0, 0.0, 0.0, 1.0);
     }
 
   }
@@ -41,7 +48,7 @@ var fragmentShaderCode =
  
 function initGL(canvas)
 {
-  var gl = canvas.getContext("webgl");
+  var gl = canvas.getContext("webgl2");
   gl.viewportWidth = canvas.width;
   gl.viewportHeight = canvas.height;
 
