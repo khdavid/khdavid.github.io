@@ -131,10 +131,13 @@ var fragmentShaderCode =
 function initGL(canvas)
 {
   var gl = canvas.getContext("webgl2");
+  if (!gl)
+  {
+     alert("Your browser does not support WebGL2");
+  }
+
   gl.viewportWidth = canvas.clientWidth;
   gl.viewportHeight = canvas.clientHeight;
-
-
   return gl;
 }
 
