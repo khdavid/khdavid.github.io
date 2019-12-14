@@ -12,9 +12,9 @@ var vertexShaderCode =
 var fragmentShaderCode = 
  `#version 300 es
   precision highp float;
-  float xShift = 200.0;
-  float yShift = 50.0;
-  float fade = 0.02;
+  uniform float xShift;
+  uniform float yShift;
+  uniform float fade;
   out vec4 color;
 
   struct ComplexNumber
@@ -173,6 +173,16 @@ function initShaders(gl)
 
   shader_prog.positionLocation = gl.getAttribLocation(shader_prog, "Position");
   gl.enableVertexAttribArray(shader_prog.positionLocation);
+  
+  var fadeLoc = gl.getUniformLocation(shader_prog, 'fade');
+  gl.uniform1f(fadeLoc, 0.02);
+
+  var xShiftLoc = gl.getUniformLocation(shader_prog, 'xShift');
+  gl.uniform1f(xShiftLoc, 200);
+
+  var yShiftLoc = gl.getUniformLocation(shader_prog, 'yShift');
+  gl.uniform1f(yShiftLoc, 50);
+  
 
   return shader_prog;
 }
