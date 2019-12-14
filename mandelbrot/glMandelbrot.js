@@ -223,6 +223,17 @@ function drawScene(gl, triangleVertexPositionBuffer, shader_prog)
   gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
 }
 
+function mouseWheelEvent(e)
+{
+  if(e.originalEvent.wheelDelta  > 0) 
+  {
+      alert('scrolling up !');
+  }
+  else
+  {
+      alert('scrolling down !');
+  }
+}  
 
 $(document).ready(function() 
 {
@@ -235,6 +246,8 @@ $(document).ready(function()
    gl.enable(gl.DEPTH_TEST);
 
    drawScene(gl, triangleVertexPositionBuffer, shader_prog);
+   
+   $('#webgl_canvas').bind('mousewheel', mouseWheelEvent);
 
 }
 );
