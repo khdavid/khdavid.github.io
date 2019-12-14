@@ -56,7 +56,7 @@ var fragmentShaderCode =
   
   int getOutOfBoundsIdx()
   {
-    const int nMax = 1000;
+    const int nMax = 400;
 
     ComplexNumber z;
     z.Real = 0.;
@@ -121,7 +121,7 @@ var fragmentShaderCode =
     {
        color = black;  
     }
-    
+
   }
 
  `;
@@ -131,8 +131,9 @@ var fragmentShaderCode =
 function initGL(canvas)
 {
   var gl = canvas.getContext("webgl2");
-  gl.viewportWidth = canvas.width;
-  gl.viewportHeight = canvas.height;
+  gl.viewportWidth = canvas.clientWidth;
+  gl.viewportHeight = canvas.clientHeight;
+
 
   return gl;
 }
@@ -223,31 +224,74 @@ function drawScene(gl, triangleVertexPositionBuffer, shader_prog)
   gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
 }
 
+
+
 function mouseWheelEvent(e)
 {
+  var gl = e.data.glObject;
+  
+  var k = 1;
   if(e.originalEvent.wheelDelta  > 0) 
   {
-      alert('scrolling up !');
+    k = 0.98;
   }
   else
   {
-      alert('scrolling down !');
+    k = 1.02;
   }
+
+  var x = e.pageX ;
+  var y = gl.viewportHeight - e.pageY;
+  //alert(x);
+  //xShift_ = x - (x - xShift_) * fadeOld / fade_;
+  //yShift_ = y - (y - yShift_) * fadeOld / fade_;
+  var fadeOld = e.data.fade;
+  e.data.fade = e.data.fade * k;
+  e.data.xShift = x - (x - e.data.xShift) * fadeOld / e.data.fade;
+  e.data.yShift = y - (y - e.data.yShift) * fadeOld / e.data.fade;
+  
+  //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+  var fadeLoc = gl.getUniformLocation(shader_prog, 'fade');
+  gl.uniform1f(fadeLoc, e.data.fade);
+
+  var xShiftLoc = gl.getUniformLocation(shader_prog, 'xShift');
+  gl.uniform1f(xShiftLoc, e.data.xShift);
+
+  var yShiftLoc = gl.getUniformLocation(shader_prog, 'yShift');
+  gl.uniform1f(yShiftLoc, e.data.yShift);
+
+  console.log("x = ", x, "y = ", y,
+  "viewPortWidth = ", gl.viewportWidth);
+  gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
+  
 }  
+
 
 $(document).ready(function() 
 {
    var canvas = document.getElementById("webgl_canvas");
-   var gl = initGL(canvas);
-   var shader_prog = initShaders(gl);
-   var triangleVertexPositionBuffer = initBuffers(gl);
+   var gl2 = initGL(canvas);
+   var shader_prog = initShaders(gl2);
+   var triangleVertexPositionBuffer = initBuffers(gl2);
 
-   gl.clearColor(0.0, 0.0, 0.0, 1.0);
-   gl.enable(gl.DEPTH_TEST);
+   gl2.clearColor(0.0, 0.0, 0.0, 1.0);
+   gl2.enable(gl2.DEPTH_TEST);
 
-   drawScene(gl, triangleVertexPositionBuffer, shader_prog);
-   
-   $('#webgl_canvas').bind('mousewheel', mouseWheelEvent);
+   drawScene(gl2, triangleVertexPositionBuffer, shader_prog);
+   var fade_ = 0.02; 
+   var xShift_ = 400;
+   var yShift_ = 400;
+
+   $('#webgl_canvas').bind(
+     'mousewheel', 
+     {
+       glObject: gl2, 
+       fade: fade_,
+       xShift: xShift_,
+       yShift: yShift_
+     },
+     mouseWheelEvent);
 
 }
 );
