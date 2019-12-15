@@ -361,7 +361,7 @@ function touchEndEvent(e)
 function setupScene()
 {
    var width = $(window).width();
-   var height = $(window).height();
+   var height = $(window).height() - 40;
    xShift_ = width / 2;
    yShift_ = height / 2;
 

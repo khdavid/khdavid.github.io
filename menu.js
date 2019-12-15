@@ -1,8 +1,8 @@
   $( document ).ready(function() 
   {
     citeLink = 'david.wf';
-	menuName=['About&nbsp;me', 'Fun&nbsp;science', 'Linkage', 'Kalman&nbsp;filter'];
-	menuLink=[citeLink , citeLink+'/funscience', citeLink + '/linkage', citeLink + '/kalmanfilter']
+	menuName=['About&nbsp;me', 'Fun&nbsp;science', 'Linkage', 'Mandelbrot', 'Kalman&nbsp;filter'];
+	menuLink=[citeLink , citeLink+'/funscience', citeLink + '/linkage', citeLink + '/mandelbrot', citeLink + '/kalmanfilter']
 	stringMenuOn=$( "#menu").html();
     stringMenuBeginning=
 		'<table width="100%" height="1" bgcolor="#FFFFFF" cellspacing="0"  border="0">'+
