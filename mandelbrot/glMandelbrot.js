@@ -306,7 +306,7 @@ function mouseWheelEvent(e)
 
 function touchStartEvent(e)
 {
-  $('#log').html("touchStart");
+  $('#log').html("touch start");
   e.preventDefault();
   var touches = e.changedTouches;
   if (touches.length > 0) 
@@ -357,8 +357,12 @@ function touchMoveEvent(e)
 
 function touchEndEvent(e)
 {
-  $('#log').html("touchEndEvent");
-  touchDistancePrev_ = 0;
+  var length = e.touches.length;
+  $('#log').html(length);
+  if (length == 0)
+  {
+    touchDistancePrev_ = 0;
+  }
 }
 
 
