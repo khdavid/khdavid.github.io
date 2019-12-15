@@ -250,6 +250,7 @@ var xShift_ = 400;
 var yShift_ = 400;
 var xPrev_ = 0;
 var yPrev_ = 0;
+var touchDistancePrev_ = 0;
 
 function mouseDownEvent(e)
 {
@@ -281,17 +282,22 @@ function mouseMoveEvent(e)
   }
 }
 
+function doScrolling(pageX, pageY, fadeNew)
+{
+  var x = pageX ;
+  var y = gl_.viewportHeight - pageY;
+
+  xShift_ = x - (x - xShift_) * fade_ / fadeNew;
+  yShift_ = y - (y - yShift_) * fade_ / fadeNew;
+  fade_ = fadeNew;
+  updateScene(gl_, xShift_, yShift_, fade_);
+}
+
+
 function mouseWheelEvent(e)
 {
   var k = e.originalEvent.wheelDelta > 0 ? 0.96 : 1.04;
-  var x = e.pageX ;
-  var y = gl_.viewportHeight - e.pageY;
-  var fadeOld = fade_;
-  fade_ = fade_ * k;
-  xShift_ = x - (x - xShift_) * fadeOld / fade_;
-  yShift_ = y - (y - yShift_) * fadeOld / fade_;
-  
-  updateScene(gl_, xShift_, yShift_, fade_)  
+  doScrolling(e.pageX, e.pageY, k * fade_ )
 }  
 
 function touchStartEvent(e)
@@ -304,6 +310,26 @@ function touchStartEvent(e)
   }
 }
 
+function getDistanceFromTouch(touchEvt1, touchEvt2) 
+{
+  var dist = Math.sqrt(Math.pow(touchEvt1.pageX - touchEvt2.pageX, 2) +
+  Math.pow(touchEvt1.pageY - touchEvt2.pageY, 2));
+  return dist;
+}
+
+function doTouchZooming(touchEvt1, touchEvt1)
+{
+   var dist = getDistanceFromTouch(touchEvt1, touchEvt2);
+   if (touchDistancePrev_ == 0) 
+   {
+     touchDistancePrev_ = dist;
+     return;
+   }
+   
+  var k = dist / touchDistancePrev_;
+  doScrolling(e.pageX, e.pageY, k * fade_);
+}
+
 function touchMoveEvent(e)
 {
   var touches = e.touches;
@@ -313,7 +339,7 @@ function touchMoveEvent(e)
   }
   else if (touches.length == 2) 
   {
-    console.log("Two fingers");
+    doTouchZooming(touches[0], touches[1]);
   }
 
 }
