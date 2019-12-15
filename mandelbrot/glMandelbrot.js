@@ -263,8 +263,6 @@ function doMouseMove(e)
   var x = e.pageX;
   var y = e.pageY;
   
-  console.log(x - xPrev_);
-
   xShift_ += (x - xPrev_);
   yShift_ -= (y - yPrev_);
   
@@ -290,7 +288,6 @@ function doScrolling(pageX, pageY, fadeNew)
   xShift_ = x - (x - xShift_) * fade_ / fadeNew;
   yShift_ = y - (y - yShift_) * fade_ / fadeNew;
   fade_ = fadeNew;
-  console.log(fade_);
   updateScene(gl_, xShift_, yShift_, fade_);
 }
 
@@ -342,10 +339,13 @@ function touchMoveEvent(e)
   }
   else if (touches.length == 2) 
   {
-    console.log("touch zooming");
     doTouchZooming(touches[0], touches[1]);
   }
+}
 
+function touchEndEvent(e)
+{
+  touchDistancePrev_ = 0;
 }
 
 
@@ -380,6 +380,10 @@ $(document).ready(function()
    $('#webgl_canvas').on(
      'touchmove', 
      touchMoveEvent);
+     
+   $('#webgl_canvas').on(
+     'touchend', 
+     touchEndEvent);
      
 }
 );
