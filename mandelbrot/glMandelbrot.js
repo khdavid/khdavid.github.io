@@ -328,6 +328,7 @@ function doTouchZooming(touchEvt1, touchEvt2)
   var xCenter = (touchEvt1.pageX + touchEvt2.pageX) / 2;
   var yCenter = (touchEvt1.pageY + touchEvt2.pageY) / 2;
   doScrolling(xCenter, yCenter, fade_ / k);
+  touchDistancePrev_  = dist;
 }
 
 function touchMoveEvent(e)
