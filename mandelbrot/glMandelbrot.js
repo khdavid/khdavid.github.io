@@ -178,16 +178,6 @@ function initShaders(gl)
 
   shader_prog.positionLocation = gl.getAttribLocation(shader_prog, "Position");
   gl.enableVertexAttribArray(shader_prog.positionLocation);
-  
-  var fadeLoc = gl.getUniformLocation(shader_prog, 'fade');
-  gl.uniform1f(fadeLoc, 0.02);
-
-  var xShiftLoc = gl.getUniformLocation(shader_prog, 'xShift');
-  gl.uniform1f(xShiftLoc, 400);
-
-  var yShiftLoc = gl.getUniformLocation(shader_prog, 'yShift');
-  gl.uniform1f(yShiftLoc, 400);
-  
 
   return shader_prog;
 }
@@ -225,7 +215,7 @@ function drawScene(gl, triangleVertexPositionBuffer, shader_prog)
   gl.vertexAttribPointer(shader_prog.positionLocation, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
   //Draw triangle
-  gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
+  //gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
 }
 
 function updateScene(gl, xShift, yShift, fade)
@@ -246,8 +236,8 @@ function updateScene(gl, xShift, yShift, fade)
 
 var gl_;
 var fade_ = 0.02; 
-var xShift_ = 400;
-var yShift_ = 400;
+var xShift_ = 0;
+var yShift_ = 0;
 var xPrev_ = 0;
 var yPrev_ = 0;
 var touchDistancePrev_ = 0;
@@ -299,6 +289,8 @@ function doScrolling(pageX, pageY, fadeNew)
 
 function mouseWheelEvent(e)
 {
+  e.preventDefault();
+
   var k = e.originalEvent.wheelDelta > 0 ? 0.96 : 1.04;
   [x,y] =  getRelativeCoordinates(e);
   doScrolling(x, y, k * fade_ )
@@ -366,9 +358,18 @@ function touchEndEvent(e)
 }
 
 
-$(document).ready(function() 
+function setupScene()
 {
+   var width = $(window).width();
+   var height = $(window).height();
+   xShift_ = width / 2;
+   yShift_ = height / 2;
+
    var canvas = document.getElementById("webgl_canvas");
+   canvas.width = width;
+   canvas.height = height;
+
+   
    gl_ = initGL(canvas);
    var shader_prog = initShaders(gl_);
    var triangleVertexPositionBuffer = initBuffers(gl_);
@@ -377,16 +378,28 @@ $(document).ready(function()
    gl_.enable(gl_.DEPTH_TEST);
 
    drawScene(gl_, triangleVertexPositionBuffer, shader_prog);
+   updateScene(gl_, xShift_, yShift_, fade_);
+}
 
-   $('#webgl_canvas').bind(
+$(window).resize(function() 
+{
+  setupScene();
+}
+);
+
+$(document).ready(function() 
+{
+   setupScene();
+
+   $('#webgl_canvas').on(
      'mousewheel', 
      mouseWheelEvent);
      
-   $('#webgl_canvas').bind(
+   $('#webgl_canvas').on(
      'mousedown', 
      mouseDownEvent);
 
-   $('#webgl_canvas').bind(
+   $('#webgl_canvas').on(
      'mousemove', 
      mouseMoveEvent);
      
