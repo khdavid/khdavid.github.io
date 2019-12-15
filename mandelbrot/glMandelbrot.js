@@ -343,7 +343,7 @@ function doTouchZooming(touchEvt1, touchEvt2)
 function touchMoveEvent(e)
 {
   var touches = e.touches;
-  if (touches.length == 1) 
+  if ((touches.length == 1) && (touchDistancePrev_ == 0)) 
   {
     doMouseMove(touches[0]);
   }
