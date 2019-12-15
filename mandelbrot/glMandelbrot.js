@@ -306,6 +306,7 @@ function mouseWheelEvent(e)
 
 function touchStartEvent(e)
 {
+  $('#log').html("touchStart");
   e.preventDefault();
   var touches = e.changedTouches;
   if (touches.length > 0) 
@@ -342,6 +343,7 @@ function doTouchZooming(touchEvt1, touchEvt2)
 
 function touchMoveEvent(e)
 {
+  $('#log').html("touchMove");
   var touches = e.touches;
   if ((touches.length == 1) && (touchDistancePrev_ == 0)) 
   {
@@ -355,6 +357,7 @@ function touchMoveEvent(e)
 
 function touchEndEvent(e)
 {
+  $('#log').html("touchEndEvent");
   touchDistancePrev_ = 0;
 }
 
