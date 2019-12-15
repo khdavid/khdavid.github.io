@@ -252,17 +252,22 @@ var xPrev_ = 0;
 var yPrev_ = 0;
 var touchDistancePrev_ = 0;
 
+function getRelativeCoordinates(e)
+{
+  var rect = e.target.getBoundingClientRect();
+  var x = e.clientX - rect.left; 
+  var y = e.clientY - rect.top;  
+  return [x, y];
+}
+
 function mouseDownEvent(e)
 {
-  xPrev_ = e.pageX;
-  yPrev_ = e.pageY;
+  [xPrev_, yPrev_] = getRelativeCoordinates(e);
 }
 
 function doMouseMove(e)
 {
-  var x = e.pageX;
-  var y = e.pageY;
-  
+  [x,y] =  getRelativeCoordinates(e);
   xShift_ += (x - xPrev_);
   yShift_ -= (y - yPrev_);
   
@@ -295,7 +300,8 @@ function doScrolling(pageX, pageY, fadeNew)
 function mouseWheelEvent(e)
 {
   var k = e.originalEvent.wheelDelta > 0 ? 0.96 : 1.04;
-  doScrolling(e.pageX, e.pageY, k * fade_ )
+  [x,y] =  getRelativeCoordinates(e);
+  doScrolling(x, y, k * fade_ )
 }  
 
 function touchStartEvent(e)
@@ -325,8 +331,11 @@ function doTouchZooming(touchEvt1, touchEvt2)
    }
    
   var k = dist / touchDistancePrev_;
-  var xCenter = (touchEvt1.pageX + touchEvt2.pageX) / 2;
-  var yCenter = (touchEvt1.pageY + touchEvt2.pageY) / 2;
+  [x1, y1] = getRelativeCoordinates(touchEvt1);
+  [x2, y2] = getRelativeCoordinates(touchEvt2);
+
+  var xCenter = (x1 + x2) / 2;
+  var yCenter = (y1 + y2) / 2;
   doScrolling(xCenter, yCenter, fade_ / k);
   touchDistancePrev_  = dist;
 }
