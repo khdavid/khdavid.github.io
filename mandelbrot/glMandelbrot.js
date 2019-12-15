@@ -317,7 +317,7 @@ function getDistanceFromTouch(touchEvt1, touchEvt2)
   return dist;
 }
 
-function doTouchZooming(touchEvt1, touchEvt1)
+function doTouchZooming(touchEvt1, touchEvt2)
 {
    var dist = getDistanceFromTouch(touchEvt1, touchEvt2);
    if (touchDistancePrev_ == 0) 
@@ -327,7 +327,9 @@ function doTouchZooming(touchEvt1, touchEvt1)
    }
    
   var k = dist / touchDistancePrev_;
-  doScrolling(e.pageX, e.pageY, k * fade_);
+  var xCenter = touchEvt1.pageX + touchEvt2.pageX;
+  var yCenter = touchEvt1.pageY + touchEvt2.pageY;
+  doScrolling(xCenter, yCenter, k * fade_);
 }
 
 function touchMoveEvent(e)
