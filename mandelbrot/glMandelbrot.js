@@ -290,6 +290,7 @@ function doScrolling(pageX, pageY, fadeNew)
   xShift_ = x - (x - xShift_) * fade_ / fadeNew;
   yShift_ = y - (y - yShift_) * fade_ / fadeNew;
   fade_ = fadeNew;
+  console.log(fade_);
   updateScene(gl_, xShift_, yShift_, fade_);
 }
 
@@ -329,7 +330,7 @@ function doTouchZooming(touchEvt1, touchEvt2)
   var k = dist / touchDistancePrev_;
   var xCenter = touchEvt1.pageX + touchEvt2.pageX;
   var yCenter = touchEvt1.pageY + touchEvt2.pageY;
-  doScrolling(xCenter, yCenter, k * fade_);
+  doScrolling(xCenter, yCenter, fade_ / k);
 }
 
 function touchMoveEvent(e)
@@ -341,6 +342,7 @@ function touchMoveEvent(e)
   }
   else if (touches.length == 2) 
   {
+    console.log("touch zooming");
     doTouchZooming(touches[0], touches[1]);
   }
 
