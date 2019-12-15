@@ -257,20 +257,27 @@ function mouseDownEvent(e)
   yPrev_ = e.pageY;
 }
 
+function doMouseMove(e)
+{
+  var x = e.pageX;
+  var y = e.pageY;
+  
+  console.log(x - xPrev_);
+
+  xShift_ += (x - xPrev_);
+  yShift_ -= (y - yPrev_);
+  
+  xPrev_ = x;
+  yPrev_ = y;
+  
+  updateScene(gl_, xShift_, yShift_, fade_)  
+}
+
 function mouseMoveEvent(e)
 {
   if (event.which == 1)
   {
-    var x = e.pageX;
-    var y = e.pageY;
-
-    xShift_ += (x - xPrev_);
-    yShift_ -= (y - yPrev_);
-    
-    xPrev_ = x;
-    yPrev_ = y;
-    
-    updateScene(gl_, xShift_, yShift_, fade_)  
+    doMouseMove(e);
   }
 }
 
@@ -286,6 +293,30 @@ function mouseWheelEvent(e)
   
   updateScene(gl_, xShift_, yShift_, fade_)  
 }  
+
+function touchStartEvent(e)
+{
+  e.preventDefault();
+  var touches = e.changedTouches;
+  if (touches.length > 0) 
+  {
+    mouseDownEvent(touches[0]);
+  }
+}
+
+function touchMoveEvent(e)
+{
+  var touches = e.touches;
+  if (touches.length == 1) 
+  {
+    doMouseMove(touches[0]);
+  }
+  else if (touches.length == 2) 
+  {
+    console.log("Two fingers");
+  }
+
+}
 
 
 $(document).ready(function() 
@@ -308,10 +339,18 @@ $(document).ready(function()
      'mousedown', 
      mouseDownEvent);
 
-     $('#webgl_canvas').bind(
+   $('#webgl_canvas').bind(
      'mousemove', 
      mouseMoveEvent);
+     
+   $('#webgl_canvas').on(
+     'touchstart', 
+     touchStartEvent);
 
+   $('#webgl_canvas').on(
+     'touchmove', 
+     touchMoveEvent);
+     
 }
 );
 
