@@ -183,10 +183,10 @@ function initShaders(gl)
   gl.uniform1f(fadeLoc, 0.02);
 
   var xShiftLoc = gl.getUniformLocation(shader_prog, 'xShift');
-  gl.uniform1f(xShiftLoc, 200);
+  gl.uniform1f(xShiftLoc, 400);
 
   var yShiftLoc = gl.getUniformLocation(shader_prog, 'yShift');
-  gl.uniform1f(yShiftLoc, 50);
+  gl.uniform1f(yShiftLoc, 400);
   
 
   return shader_prog;
@@ -224,78 +224,93 @@ function drawScene(gl, triangleVertexPositionBuffer, shader_prog)
   gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
   gl.vertexAttribPointer(shader_prog.positionLocation, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-  //Draw our lovely triangle
+  //Draw triangle
   gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
 }
 
+function updateScene(gl, xShift, yShift, fade)
+{
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+  var fadeLoc = gl.getUniformLocation(shader_prog, 'fade');
+  gl.uniform1f(fadeLoc, fade);
+
+  var xShiftLoc = gl.getUniformLocation(shader_prog, 'xShift');
+  gl.uniform1f(xShiftLoc, xShift);
+
+  var yShiftLoc = gl.getUniformLocation(shader_prog, 'yShift');
+  gl.uniform1f(yShiftLoc, yShift);
+
+  gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
+}
+
+var gl_;
+var fade_ = 0.02; 
+var xShift_ = 400;
+var yShift_ = 400;
+var xPrev_ = 0;
+var yPrev_ = 0;
+
+function mouseDownEvent(e)
+{
+  xPrev_ = e.pageX;
+  yPrev_ = e.pageY;
+}
+
+function mouseMoveEvent(e)
+{
+  if (event.which == 1)
+  {
+    var x = e.pageX;
+    var y = e.pageY;
+
+    xShift_ += (x - xPrev_);
+    yShift_ -= (y - yPrev_);
+    
+    xPrev_ = x;
+    yPrev_ = y;
+    
+    updateScene(gl_, xShift_, yShift_, fade_)  
+  }
+}
 
 function mouseWheelEvent(e)
 {
-  var gl = e.data.glObject;
-  
-  var k = 1;
-  if(e.originalEvent.wheelDelta  > 0) 
-  {
-    k = 0.98;
-  }
-  else
-  {
-    k = 1.02;
-  }
-
+  var k = e.originalEvent.wheelDelta > 0 ? 0.96 : 1.04;
   var x = e.pageX ;
-  var y = gl.viewportHeight - e.pageY;
-  //alert(x);
-  //xShift_ = x - (x - xShift_) * fadeOld / fade_;
-  //yShift_ = y - (y - yShift_) * fadeOld / fade_;
-  var fadeOld = e.data.fade;
-  e.data.fade = e.data.fade * k;
-  e.data.xShift = x - (x - e.data.xShift) * fadeOld / e.data.fade;
-  e.data.yShift = y - (y - e.data.yShift) * fadeOld / e.data.fade;
+  var y = gl_.viewportHeight - e.pageY;
+  var fadeOld = fade_;
+  fade_ = fade_ * k;
+  xShift_ = x - (x - xShift_) * fadeOld / fade_;
+  yShift_ = y - (y - yShift_) * fadeOld / fade_;
   
-  //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-  var fadeLoc = gl.getUniformLocation(shader_prog, 'fade');
-  gl.uniform1f(fadeLoc, e.data.fade);
-
-  var xShiftLoc = gl.getUniformLocation(shader_prog, 'xShift');
-  gl.uniform1f(xShiftLoc, e.data.xShift);
-
-  var yShiftLoc = gl.getUniformLocation(shader_prog, 'yShift');
-  gl.uniform1f(yShiftLoc, e.data.yShift);
-
-  console.log("x = ", x, "y = ", y,
-  "viewPortWidth = ", gl.viewportWidth);
-  gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
-  
+  updateScene(gl_, xShift_, yShift_, fade_)  
 }  
 
 
 $(document).ready(function() 
 {
    var canvas = document.getElementById("webgl_canvas");
-   var gl2 = initGL(canvas);
-   var shader_prog = initShaders(gl2);
-   var triangleVertexPositionBuffer = initBuffers(gl2);
+   gl_ = initGL(canvas);
+   var shader_prog = initShaders(gl_);
+   var triangleVertexPositionBuffer = initBuffers(gl_);
 
-   gl2.clearColor(0.0, 0.0, 0.0, 1.0);
-   gl2.enable(gl2.DEPTH_TEST);
+   gl_.clearColor(0.0, 0.0, 0.0, 1.0);
+   gl_.enable(gl_.DEPTH_TEST);
 
-   drawScene(gl2, triangleVertexPositionBuffer, shader_prog);
-   var fade_ = 0.02; 
-   var xShift_ = 400;
-   var yShift_ = 400;
+   drawScene(gl_, triangleVertexPositionBuffer, shader_prog);
 
    $('#webgl_canvas').bind(
      'mousewheel', 
-     {
-       glObject: gl2, 
-       fade: fade_,
-       xShift: xShift_,
-       yShift: yShift_
-     },
      mouseWheelEvent);
+     
+   $('#webgl_canvas').bind(
+     'mousedown', 
+     mouseDownEvent);
+
+     $('#webgl_canvas').bind(
+     'mousemove', 
+     mouseMoveEvent);
 
 }
 );
