@@ -291,7 +291,7 @@ function mouseWheelEvent(e)
 {
   e.preventDefault();
 
-  var k = e.originalEvent.wheelDelta > 0 ? 0.96 : 1.04;
+  var k = e.originalEvent.deltaY > 0 ? 0.96 : 1.04;
   [x,y] =  getRelativeCoordinates(e);
   doScrolling(x, y, k * fade_ )
 }  
@@ -392,7 +392,7 @@ $(document).ready(function()
    setupScene();
 
    $('#webgl_canvas').on(
-     'mousewheel', 
+     'wheel', 
      mouseWheelEvent);
      
    $('#webgl_canvas').on(
