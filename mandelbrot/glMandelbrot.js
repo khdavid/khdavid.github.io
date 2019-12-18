@@ -269,7 +269,7 @@ function doMouseMove(e)
 
 function mouseMoveEvent(e)
 {
-  if (event.which == 1)
+  if (e.buttons == 1)
   {
     doMouseMove(e);
   }
