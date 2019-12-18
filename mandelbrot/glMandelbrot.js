@@ -389,7 +389,6 @@ $(window).resize(function()
 
 $(document).ready(function() 
 {
-   alert("Test");
    setupScene();
 
    $('#webgl_canvas').on(

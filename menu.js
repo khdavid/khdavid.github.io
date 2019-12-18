@@ -1,6 +1,6 @@
   $( document ).ready(function() 
   {
-    citeLink = 'david.wf';
+    citeLink = 'https://david.wf';
 	menuName=['About&nbsp;me', 'Fun&nbsp;science', 'Linkage', 'Mandelbrot', 'Kalman&nbsp;filter'];
 	menuLink=[citeLink , citeLink+'/funscience', citeLink + '/linkage', citeLink + '/mandelbrot', citeLink + '/kalmanfilter']
 	stringMenuOn=$( "#menu").html();
