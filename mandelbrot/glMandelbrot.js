@@ -291,7 +291,7 @@ function mouseWheelEvent(e)
 {
   e.preventDefault();
 
-  var k = e.originalEvent.deltaY > 0 ? 0.96 : 1.04;
+  var k = e.originalEvent.deltaY > 0 ? 0.9 : 1.1;
   [x,y] =  getRelativeCoordinates(e);
   doScrolling(x, y, k * fade_ )
 }  
