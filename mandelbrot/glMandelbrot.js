@@ -387,7 +387,7 @@ $(window).resize(function()
 }
 );
 
-window.onpageshow = function(event) 
+window.onpageshow = function() 
 {
    setupScene();
 
