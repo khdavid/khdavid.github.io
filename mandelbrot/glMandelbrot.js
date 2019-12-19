@@ -387,7 +387,7 @@ $(window).resize(function()
 }
 );
 
-$(document).ready(function() 
+window.onpageshow = function(event) 
 {
    setupScene();
 
@@ -415,6 +415,5 @@ $(document).ready(function()
      'touchend', 
      touchEndEvent);
      
-}
-);
+};
 
