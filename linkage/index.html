@@ -109,7 +109,7 @@
   var pattern;
   var gPrevDistanceBetweenFingers = 0.0;
 
-  document.addEventListener("DOMContentLoaded", initCanvases(), false);
+  
   //initCanvases();
   function initCanvases() {
 
@@ -330,6 +330,12 @@
     canvas.addEventListener('mousedown', onClick, false);
     canvas.addEventListener("touchstart", onTouchStart, false);
   }
+  
+  window.onpageshow = function() 
+  {
+    initCanvases();
+  }
+  
   function shifterDeclick(e) {
     clearInterval(sIntervalPress);
     canvasMenu.removeEventListener('mousemove', movingOverShifter, false);
