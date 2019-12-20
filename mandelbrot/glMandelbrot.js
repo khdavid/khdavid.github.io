@@ -389,7 +389,6 @@ $(window).resize(function()
 
 window.onpageshow = function() 
 {
-   alert("Mandelbrot");
    setupScene();
 
    $('#webgl_canvas').on(
