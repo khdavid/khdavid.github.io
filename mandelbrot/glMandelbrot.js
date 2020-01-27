@@ -28,7 +28,12 @@ var fragmentShaderCode =
 
   vec2 sum(float a, float b)
   {
-    return (abs(a) > b) ? sumStrict(a, b) : sumStrict(b, a);
+    return (abs(a) > abs(b)) ? sumStrict(a, b) : sumStrict(b, a);
+  }
+
+  vec2 minus(float a, float b)
+  {
+    return sum(a, -b);
   }
 
   vec2 sum(vec2 a, vec2 b)
@@ -156,8 +161,8 @@ var fragmentShaderCode =
     z.Imagine = vec2(0, 0);
   
     ComplexNumber64 c;
-    c.Real = vec2(float((gl_FragCoord.x - xShift ) * fade), 0);
-    c.Imagine = vec2(float((gl_FragCoord.y - yShift) * fade), 0); 
+    c.Real = product(minus(float(gl_FragCoord.x), xShift ), vec2(fade, 0));
+    c.Imagine = product(minus(float(gl_FragCoord.y), yShift), vec2(fade,0)); 
 
     for (int i = 0; i < nMax; i++)
     {
