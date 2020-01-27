@@ -45,6 +45,11 @@ var fragmentShaderCode =
     return highSum;
   }
 
+  vec2 minus(vec2 a, vec2 b)
+  {
+    return sum(a, -b);
+  }
+
   vec2 split(float a)
   {
     float split = 4097.0; // 2^12 + 1
@@ -83,12 +88,27 @@ var fragmentShaderCode =
     float Real;
     float Imagine;
   };
+
+  struct ComplexNumber64
+  {
+    vec2 Real;
+    vec2 Imagine;
+  };
+
   
   ComplexNumber Product(in ComplexNumber first, in ComplexNumber second)
   {
     ComplexNumber result;  
     result.Real = first.Real * second.Real - first.Imagine * second.Imagine;
     result.Imagine = first.Real * second.Imagine + first.Imagine * second.Real;
+    return result;
+  }
+
+  ComplexNumber64 Product(in ComplexNumber64 first, in ComplexNumber64 second)
+  {
+    ComplexNumber64 result;  
+    result.Real = minus(product(first.Real, second.Real), product(first.Imagine, second.Imagine));
+    result.Imagine = sum(product(first.Real , second.Imagine), product(first.Imagine, second.Real));
     return result;
   }
   
@@ -100,11 +120,24 @@ var fragmentShaderCode =
     result.Imagine = first.Imagine + second.Imagine;
     return result;
   }
+
+  ComplexNumber64 Add(in ComplexNumber64 first, in ComplexNumber64 second)
+  {
+    ComplexNumber64 result;  
+    result.Real = sum(first.Real, second.Real);
+    result.Imagine = sum(first.Imagine, second.Imagine);
+    return result;
+  }
   
 
   float length2(in ComplexNumber number)
   {
      return number.Real * number.Real + number.Imagine * number.Imagine;
+  }
+
+  vec2 length2(in ComplexNumber64 number)
+  {
+     return sum(product(number.Real, number.Real), product(number.Imagine, number.Imagine));
   }
 
   
@@ -118,18 +151,18 @@ var fragmentShaderCode =
   {
     const int nMax = 400;
 
-    ComplexNumber z;
-    z.Real = 0.;
-    z.Imagine = 0.;
+    ComplexNumber64 z;
+    z.Real = vec2(0, 0);
+    z.Imagine = vec2(0, 0);
   
-    ComplexNumber c;
-    c.Real = float((gl_FragCoord.x - xShift ) * fade);
-    c.Imagine = float((gl_FragCoord.y - yShift) * fade); 
+    ComplexNumber64 c;
+    c.Real = vec2(float((gl_FragCoord.x - xShift ) * fade), 0);
+    c.Imagine = vec2(float((gl_FragCoord.y - yShift) * fade), 0); 
 
     for (int i = 0; i < nMax; i++)
     {
-       z = Add (Product(z,z), c);
-       if (length2(z) > 4.)
+       z = Add (Product(z, z), c);
+       if (length2(z).x > 4.)
        {
          return i;
        }
