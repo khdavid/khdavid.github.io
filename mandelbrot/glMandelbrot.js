@@ -16,12 +16,73 @@ var fragmentShaderCode =
   uniform float yShift;
   uniform float fade;
 
+
+  vec2 sumStrict(float a, float b)
+  {
+    //|a| > |b|
+    vec2 result;
+    result.x = a + b;
+    result.y = b - (result.x - a);
+    return result;
+  }
+
+  vec2 sum(float a, float b)
+  {
+    return (abs(a) > b) ? sumStrict(a, b) : sumStrict(b, a);
+  }
+
+  vec2 sum(vec2 a, vec2 b)
+  {
+    vec2 highSum = sum(a.x, b.x);
+    vec2 lowSum = sum(a.y, b.y);
+    return highSum;
+    highSum.y += lowSum.x;
+    highSum = sum(highSum.x, highSum.y);
+
+    highSum.y += lowSum.y;
+    highSum = sum(highSum.x, highSum.y);
+
+    return highSum;
+  }
+
+  vec2 split(float a)
+  {
+    float split = 4097.0; // 2^12 + 1
+    vec2 result;
+    float t = a * split;
+    result.x = t - (t - a);
+    result.y = a - result.x;
+    return result;
+  }
+
+  vec2 product(float a, float b)
+  {
+    vec2 result;
+    result.x = a * b;
+    vec2 splA = split(a);
+    vec2 splB = split(b);
+    float error = result.x - splA.x * splB.x -
+    splA.x * splB.y - splA.y * splB.x;
+    result.y = splA.y * splB.y - error; 
+    return result;
+  }
+
+  vec2 product(vec2 a, vec2 b)
+  {
+    vec2 result;
+    result = product(a.x, b.x);
+    result.y += a.x * b.y;
+    result.y += a.y * b.x;
+    result = sum(result.x, result.y);
+    return result;
+  }
+
+
   struct ComplexNumber
   {
     float Real;
     float Imagine;
   };
-
   
   ComplexNumber Product(in ComplexNumber first, in ComplexNumber second)
   {
