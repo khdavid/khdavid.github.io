@@ -1,6 +1,6 @@
 var vertexShaderCode = 
-`
- attribute vec3 Position;
+`#version 300 es
+ in vec3 Position;
 
 
  void main(void) {
@@ -10,11 +10,12 @@ var vertexShaderCode =
 
 
 var fragmentShaderCode = 
- `
+ `#version 300 es
   precision highp float;
   uniform float xShift;
   uniform float yShift;
   uniform float fade;
+  out vec4 color;
 
 
   vec2 sumStrict(float a, float b)
@@ -197,7 +198,7 @@ var fragmentShaderCode =
 
     int k = getOutOfBoundsIdx();
 
-    vec4 color;
+
     if (k < kThreshold1)
     {
        color = linearExtrapolation(biruz, blue, kThreshold0, kThreshold1, k);
@@ -219,8 +220,6 @@ var fragmentShaderCode =
     {
        color = black;  
     }
-    
-    gl_FragColor = color;
 
   }
 
@@ -230,10 +229,10 @@ var fragmentShaderCode =
  
 function initGL(canvas)
 {
-  var gl = canvas.getContext("webgl");
+  var gl = canvas.getContext("webgl2");
   if (!gl)
   {
-     alert("Your browser does not support WebGL");
+     alert("Your browser does not support WebGL2");
   }
 
   gl.viewportWidth = canvas.clientWidth;
