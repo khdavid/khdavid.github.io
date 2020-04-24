@@ -1,6 +1,6 @@
   function getLink(path)
   {
-    var menuTag = $("#menu").attr('tag');
+    var menuTag = $(".menu").attr('tag');
     var link = `../` + path;
     if (menuTag == "main")
     {
@@ -15,7 +15,7 @@
     linkToEpos = getLink("epos.html")
 
     var htmlCode = `
-      <div class="menu">
+      <div class="menuInternal">
         <div class="header">
           <a class = "header" href="`+ linkToMain + `">О&nbsp;сайте</a>
         </div>
@@ -25,7 +25,7 @@
      </div>
     `;
 
-    $("#menu").html(htmlCode);
+    $(".menu").html(htmlCode);
   }
   
   function populateCSSSettings()
