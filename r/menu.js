@@ -4,77 +4,28 @@
     var link = `../` + path;
     if (menuTag == "main")
     {
-      link = `/` + path;
+      link = path;
     }
     return link
   }
 
   function populateMenu()
   {
-    linkToMain = getLink("")
-    linkToAbout = getLink("about.html")
-    linkToKnitting = "https://goo.gl/photos/ZNStASHPyEdkYbuK6"
+    linkToMain = getLink("index.html")
+    linkToEpos = getLink("epos.html")
 
     var htmlCode = `
       <div class="menu">
         <div class="header">
-          <a class = "header" href="`+ linkToMain + `">Все&nbsp;рецепты</a>
+          <a class = "header" href="`+ linkToMain + `">О&nbsp;сайте</a>
         </div>
         <div class="header">
-          <a class = "header" href="`+ linkToAbout + `">О&nbsp;сайте</a>
+          <a class = "header" href="`+ linkToEpos + `">Эпос</a>
         </div>
-        <div class="header">
-          <a class = "header" href="`+ linkToKnitting + `">Вязание</a>
-        </div>
-       
-      </div>
+     </div>
     `;
 
     $("#menu").html(htmlCode);
-  }
-  
- 
-
-  
-  function getTDCellCode(imageNumber)
-  {
-    return `<td class="mainTable"><img class="mainTable" src="image`+ imageNumber.toString() +`.jpg"></td>`;
-
-  }
-  function populateTables(idKey)
-  {
-    var idMin = parseInt($(idKey).attr('idMin'));
-    var idMax = parseInt($(idKey).attr('idMax'));
-    var htmlCode = `<table class="mainTable">`;
-
-    for (id = idMin; id <= idMax; id+=2)
-    {
-
-      htmlCode +=`<tr>`;
-      htmlCode += getTDCellCode(id);
-
-      if (id < idMax)
-      {
-        htmlCode += getTDCellCode(id + 1);
-      }
-      else
-      {
-        htmlCode += `<td></td>`;
-      }
-
-      htmlCode += `</tr>`;
-    }
-    htmlCode += `</table>`;
-    $(idKey).html(htmlCode);
-
-  }
-  
-  function populateAllTables()
-  {
-    populateTables("#mainTableId");
-    populateTables("#mainTableId1");
-    populateTables("#mainTableId2");
-    populateTables("#mainTableId3");
   }
   
   function populateCSSSettings()
@@ -112,7 +63,6 @@
     populateTitleName(document);
     populateMenu();
     populateCSSSettings();
-    populateAllTables();
   }
   );
   
