@@ -81,14 +81,14 @@ div.articleLink
 {
   position: relative;
   float: right; 
-  background-color: rgb(27, 116, 232); /*blue*/
+  background-color: rgb(31, 76, 160); /*blue*/
   border-radius: 20px;
 }
 
 .pageLink
 {
   font-weight: bold;
-  color: rgb(66, 133, 244); /*blue*/
+  color: rgb(111, 146, 160); /*blue*/
   text-decoration: none;
 }
 
@@ -97,24 +97,6 @@ a.pageLinkCurrent
   font-weight: bold;
   color: black;
   text-decoration: none;
-}
-
-
-a.mathBlogButton
-{
-  font-weight: bold;
-  color: white;
-  display: block;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);  
-  text-decoration: none;
-  padding: 3px 15px 3px 15px;
-}
-
-div.mathBlogButton
-{
-  display: inline-block;
-  background-color: rgb(234, 67, 53); /*red*/
-  border-radius: 20px
 }
 
 
