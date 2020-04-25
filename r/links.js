@@ -21,3 +21,51 @@ var eposLinks =
   ["epos/epos_pro_ejika.html"],
   ["epos/epos_pro_medvedja.html"]
 ]
+
+var lirikaLinks =
+[
+  ["lirika/lirika_pro_ejika.html"],
+  ["lirika/lirika_pro_medvedja.html"],
+  ["lirika/lirika_pro_ejika.html"],
+  ["lirika/lirika_pro_medvedja.html"],
+  ["lirika/lirika_pro_ejika.html"],
+  ["lirika/lirika_pro_medvedja.html"],
+  ["lirika/lirika_pro_ejika.html"],
+  ["lirika/lirika_pro_medvedja.html"],
+  ["lirika/lirika_pro_ejika.html"],
+  ["lirika/lirika_pro_medvedja.html"],
+  ["lirika/lirika_pro_ejika.html"],
+  ["lirika/lirika_pro_medvedja.html"],
+  ["lirika/lirika_pro_ejika.html"],
+  ["lirika/lirika_pro_medvedja.html"],
+  ["lirika/lirika_pro_ejika.html"],
+  ["lirika/lirika_pro_medvedja.html"],
+  ["lirika/lirika_pro_ejika.html"],
+  ["lirika/lirika_pro_medvedja.html"],
+  ["lirika/lirika_pro_ejika.html"],
+  ["lirika/lirika_pro_medvedja.html"]
+]
+
+var dramaLinks =
+[
+  ["drama/drama_pro_ejika.html"],
+  ["drama/drama_pro_medvedja.html"],
+  ["drama/drama_pro_ejika.html"],
+  ["drama/drama_pro_medvedja.html"],
+  ["drama/drama_pro_ejika.html"],
+  ["drama/drama_pro_medvedja.html"],
+  ["drama/drama_pro_ejika.html"],
+  ["drama/drama_pro_medvedja.html"],
+  ["drama/drama_pro_ejika.html"],
+  ["drama/drama_pro_medvedja.html"],
+  ["drama/drama_pro_ejika.html"],
+  ["drama/drama_pro_medvedja.html"],
+  ["drama/drama_pro_ejika.html"],
+  ["drama/drama_pro_medvedja.html"],
+  ["drama/drama_pro_ejika.html"],
+  ["drama/drama_pro_medvedja.html"],
+  ["drama/drama_pro_ejika.html"],
+  ["drama/drama_pro_medvedja.html"],
+  ["drama/drama_pro_ejika.html"],
+  ["drama/drama_pro_medvedja.html"]
+]

@@ -13,6 +13,8 @@
   {
     linkToMain = getLink("index.html")
     linkToEpos = getLink("epos.html")
+    linkToLirika = getLink("lirika.html")
+    linkToDrama = getLink("drama.html")
 
     var htmlCode = `
       <div class="menuInternal">
@@ -21,6 +23,12 @@
         </div>
         <div class="header">
           <a class = "header" href="`+ linkToEpos + `">Эпос</a>
+        </div>
+        <div class="header">
+          <a class = "header" href="`+ linkToLirika + `">Лирика</a>
+        </div>
+        <div class="header">
+          <a class = "header" href="`+ linkToDrama + `">Драма</a>
         </div>
      </div>
     `;

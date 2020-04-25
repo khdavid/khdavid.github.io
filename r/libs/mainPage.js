@@ -83,7 +83,7 @@ function getMinMaxAdjacentPageIds(pageId)
 
 function generatePageIdLink(pageId)
 {
- return `epos.html?page=` + pageId;
+ return `?page=` + pageId;
 }
 
 function generateNavigationLink(pageId, name, caption)
