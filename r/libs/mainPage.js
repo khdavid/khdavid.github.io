@@ -86,12 +86,12 @@ function generatePageIdLink(pageId)
  return `epos.html?page=` + pageId;
 }
 
-function generateNavigationLink(pageId, name)
+function generateNavigationLink(pageId, name, caption)
 {
   return `
   <div class="`+ name + `">
     <a class="navigation" href="` + generatePageIdLink(pageId) + `">` + 
-    name + `</a> 
+    caption + `</a> 
   </div>
   `;
 }
@@ -134,12 +134,12 @@ function generateNavigationLinks()
 
   if (isValidPageId(prevPageId))
   {
-    result += generateNavigationLink(prevPageId, "Prev");
+    result += generateNavigationLink(prevPageId, "Prev", "Туда");
   }
   result += generateAdjacentPagesLinks(currentPageId, min, max)
   if (isValidPageId(nextPageId))
   {
-    result += generateNavigationLink(nextPageId, "Next");
+    result += generateNavigationLink(nextPageId, "Next", "Сюда");
   }
   result += `<br><br>`
   return result;
