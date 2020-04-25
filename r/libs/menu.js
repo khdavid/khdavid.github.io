@@ -31,6 +31,7 @@
           <a class = "header" href="`+ linkToDrama + `">Драма</a>
         </div>
      </div>
+     <br><br>
     `;
 
     $(".menu").html(htmlCode);
