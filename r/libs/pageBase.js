@@ -1,5 +1,3 @@
-/* 
-
 function getArticleDate(idRef)
 {
   if (idRef=='')
@@ -20,7 +18,7 @@ function getArticleDateHTML(idRef)
   date = getArticleDate(idRef);
   html = `<div class="date"><b>` + date + `</b></div><br>`;
   return html;
-}*/
+}
 
 function populateCSSSettings()
 {
