@@ -1,0 +1,116 @@
+div.article
+{
+  background-color: rgb(255, 255, 250);
+  border-radius: 10px;
+  padding: 5%;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+
+div.Prev
+{
+  display: inline-block;
+  background-color: rgb(234, 67, 53); /*red*/
+  border-radius: 20px 0px 0px 20px;
+}
+
+div.Next
+{
+  display: inline-block;
+  background-color: rgb(234, 67, 53); /*red*/
+  border-radius: 0px 20px 20px 0px;
+}
+
+a.navigation
+{
+  font-weight: bold;
+  color: white;
+  display: block;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);  
+  text-decoration: none;
+  padding: 3px 15px 3px 15px;
+}
+
+a.articleLink
+{
+  font-weight: bold;
+  color: white;
+  display: block;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);  
+  text-decoration: none;
+  padding: 3px 15px 3px 15px;
+}
+
+
+div.articleLink
+{
+  position: relative;
+  float: right; 
+  background-color: rgb(27, 116, 232); /*blue*/
+  border-radius: 20px;
+}
+
+.pageLink
+{
+  font-weight: bold;
+  color: rgb(66, 133, 244); /*blue*/
+  text-decoration: none;
+}
+
+a.pageLinkCurrent
+{
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+}
+
+
+a.mathBlogButton
+{
+  font-weight: bold;
+  color: white;
+  display: block;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);  
+  text-decoration: none;
+  padding: 3px 15px 3px 15px;
+}
+
+div.mathBlogButton
+{
+  display: inline-block;
+  background-color: rgb(234, 67, 53); /*red*/
+  border-radius: 20px
+}
+
+
+div.mainText
+{
+}
+
+
+div.date
+{
+  position: relative;
+  padding-bottom: 10px;
+  color: Grey;
+  display: inline-block;
+}
+
+h1
+{
+  text-align: center;
+}
+
+h2
+{
+  text-align: center;
+}
+
+h3
+{
+  text-align: center;
+}
+
+a:hover
+{
+  text-decoration: underline;
+}

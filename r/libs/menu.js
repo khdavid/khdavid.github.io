@@ -28,46 +28,11 @@
     $(".menu").html(htmlCode);
   }
   
-  function populateCSSSettings()
-  {
-    maxWidth = 800;
-    stretchingCoeff = 0.9;
 
-    var width = $(window).width();
-    
-    if (width > maxWidth)
-    {
-      var textWidth = maxWidth * stretchingCoeff;
-      var padding = (width - textWidth) / 2
-      $(".mainText").css('width', textWidth);
-      $(".mainText").css('padding-left', padding);
-      }
-    else
-    {
-      stretchingCoeffPercent = (stretchingCoeff * 100).toString()+ '%';
-      paddingPercent = ((1 - stretchingCoeff) / 2 * 100).toString()+ '%';
-      $(".mainText").css('width', stretchingCoeffPercent);
-      $(".mainText").css('padding-left', paddingPercent);
-    }
-  }    
-
-  function populateTitleName(document)
-  {
-    stringTitle=$("h1").text();
-    stringTitle += $("div.mainText h2").text();
-    document.title = stringTitle;
-  }
 
   $( document ).ready(function() 
   {
-    populateTitleName(document);
     populateMenu();
-    populateCSSSettings();
   }
   );
   
-  $( window ).resize(function() 
-  {
-    populateCSSSettings();
-  }
-  );
