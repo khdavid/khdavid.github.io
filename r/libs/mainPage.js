@@ -175,7 +175,7 @@ function getArticleLinkHTML(link)
 {
   return `
   <div class="articleLink">
-    <a class="articleLink" href="`+ link +`">link</a>
+    <a class="articleLink" href="`+ link +`">открыть</a>
   </div>  
     `
 }
