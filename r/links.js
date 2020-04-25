@@ -1,27 +1,3 @@
-var eposLinks =
-[
-  ["epos/epos_pro_ejika.html"],
-  ["epos/epos_pro_medvedja.html"],
-  ["epos/epos_pro_ejika.html"],
-  ["epos/epos_pro_medvedja.html"],
-  ["epos/epos_pro_ejika.html"],
-  ["epos/epos_pro_medvedja.html"],
-  ["epos/epos_pro_ejika.html"],
-  ["epos/epos_pro_medvedja.html"],
-  ["epos/epos_pro_ejika.html"],
-  ["epos/epos_pro_medvedja.html"],
-  ["epos/epos_pro_ejika.html"],
-  ["epos/epos_pro_medvedja.html"],
-  ["epos/epos_pro_ejika.html"],
-  ["epos/epos_pro_medvedja.html"],
-  ["epos/epos_pro_ejika.html"],
-  ["epos/epos_pro_medvedja.html"],
-  ["epos/epos_pro_ejika.html"],
-  ["epos/epos_pro_medvedja.html"],
-  ["epos/epos_pro_ejika.html"],
-  ["epos/epos_pro_medvedja.html"]
-]
-
 var lirikaLinks =
 [
   ["lirika/lirika_pro_ejika.html"],

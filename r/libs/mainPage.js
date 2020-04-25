@@ -35,7 +35,7 @@ function mod(a, b)
 
 function calculateMaxPageId()
 {
-  var idxMax = eposLinks.length - 1;
+  var idxMax = links.length - 1;
   return mod(idxMax, cNumArticlesPerPage) + 1
 }
 
@@ -43,7 +43,7 @@ function getMinMaxArticleIds(pageId)
 {
   var minArticleNumber = (pageId - 1) * cNumArticlesPerPage;
   var maxArticleNumber = pageId * cNumArticlesPerPage - 1;
-  maxArticleNumber = Math.min(maxArticleNumber, eposLinks.length - 1);
+  maxArticleNumber = Math.min(maxArticleNumber, links.length - 1);
   return [minArticleNumber, maxArticleNumber];
 }
 
@@ -203,7 +203,7 @@ function generateArticles()
   
   for (var i = minArticleNumber; i <= maxArticleNumber; i++)
   {
-    loadArticle(i, eposLinks[i]);
+    loadArticle(i, links[i]);
   }
 
   
