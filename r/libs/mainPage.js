@@ -99,6 +99,11 @@ function generateNavigationLink(pageId, name, caption)
 function generateAdjacentPagesLinks(pageId, min, max)
 {
    result = '';
+   if (min == max)
+   {
+     return result
+   }
+   
    if (min > 1)
    {
      result += `<span class="pageLink">... </span>`;
