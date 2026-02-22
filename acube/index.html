@@ -3,64 +3,60 @@
 <!doctype html>
 <html>
 <head>
-<script type="text/javascript">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PJ8Z6CFXTF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-27665935-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="kinetic-v4.7.4.js"></script>
-<script src="acube.js" type="text/javascript"></script>
+    gtag('config', 'G-PJ8Z6CFXTF');
+  </script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="kinetic-v4.7.4.js"></script>
+  <script src="acube.js" type="text/javascript"></script>
 </head>
 <body>
-	<!--  <canvas style="position: absolute;left: 10; top: 10; border:1px solid black;"id="myCanvas">
+  <!--  <canvas style="position: absolute;left: 10; top: 10; border:1px solid black;"id="myCanvas">
   hello</canvas>-->
-	<table>
-		<tr>
-			<td><div id="angle"></div></td>
-			<td><input id="inputAngle" type="text" size="60"> parameters</td>
-		</tr>
-	</table>
-<table cellspacing="2" border="3" cellpadding="20">
-<tr>
-	<td >
-		<div>x coordinates of the points:</div>
-		<p id='coord1'></p>
-		<p id='coord2'></p>
-		<p id='ang'></p>
-	</td>
-	<td>
-	    <div>upper rectangle sides:</div>
-	    <p id='upSides'></p>
+  <table>
+    <tr>
+      <td><div id="angle"></div></td>
+      <td><input id="inputAngle" type="text" size="60"> parameters</td>
+    </tr>
+  </table>
+  <table cellspacing="2" border="3" cellpadding="20">
+    <tr>
+      <td>
+        <div>x coordinates of the points:</div>
+        <p id='coord1'></p>
+        <p id='coord2'></p>
+        <p id='ang'></p>
+      </td>
+      <td>
+        <div>upper rectangle sides:</div>
+        <p id='upSides'></p>
         <div>upper rectangle angles:</div>
-	    <p id='upAngles'></p>
+        <p id='upAngles'></p>
 
-	</td>
-		<td>
-	    <div>lower rectangle sides:</div>
-	    <p id='downSides'></p>
+      </td>
+      <td>
+        <div>lower rectangle sides:</div>
+        <p id='downSides'></p>
         <div>lower rectangle angles:</div>
-	    <p id='downAngles'></p>
+        <p id='downAngles'></p>
 
-	</td>
+      </td>
 
-</tr>
-</table>
+    </tr>
+  </table>
 
-	<div id="containerControl">hello world</div>
+  <div id="containerControl">hello world</div>
 
 
-	<div id="container">hello world</div>
+  <div id="container">hello world</div>
 
-	
+
 
 
 
