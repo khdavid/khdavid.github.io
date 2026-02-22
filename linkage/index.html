@@ -109,7 +109,7 @@
   var pattern;
   var gPrevDistanceBetweenFingers = 0.0;
 
-  
+
   //initCanvases();
   function initCanvases() {
 
@@ -330,12 +330,11 @@
     canvas.addEventListener('mousedown', onClick, false);
     canvas.addEventListener("touchstart", onTouchStart, false);
   }
-  
-  window.onpageshow = function() 
-  {
+
+  window.onpageshow = function () {
     initCanvases();
   }
-  
+
   function shifterDeclick(e) {
     clearInterval(sIntervalPress);
     canvasMenu.removeEventListener('mousemove', movingOverShifter, false);
@@ -569,7 +568,7 @@
   }
 
   this.vStraightLine = function (x, y, delta, a, b, phi)//x,y - coordinates of point in line,
-    //a-rhombus side, phi - rhombus angle when delta=0
+  //a-rhombus side, phi - rhombus angle when delta=0
   {
     this.D = [x, y + delta];
     var ax = a * Math.cos(phi);
@@ -779,7 +778,7 @@
 
   function getDistanceFromTouch(touchEvt1, touchEvt2) {
     var dist = Math.sqrt(Math.pow(touchEvt1.pageX - touchEvt2.pageX, 2) +
-    Math.pow(touchEvt1.pageY - touchEvt2.pageY, 2));
+      Math.pow(touchEvt1.pageY - touchEvt2.pageY, 2));
     return dist;
   }
 
@@ -1126,23 +1125,23 @@
 
     if (typeof window.innerWidth != 'undefined') {
       viewportwidth = window.innerWidth,
-      viewportheight = window.innerHeight
+        viewportheight = window.innerHeight
     }
 
-      // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
+    // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
 
     else if (typeof document.documentElement != 'undefined'
-        && typeof document.documentElement.clientWidth !=
-        'undefined' && document.documentElement.clientWidth != 0) {
+      && typeof document.documentElement.clientWidth !=
+      'undefined' && document.documentElement.clientWidth != 0) {
       viewportwidth = document.documentElement.clientWidth,
-      viewportheight = document.documentElement.clientHeight
+        viewportheight = document.documentElement.clientHeight
     }
 
-      // older versions of IE
+    // older versions of IE
 
     else {
       viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
-      viewportheight = document.getElementsByTagName('body')[0].clientHeight
+        viewportheight = document.getElementsByTagName('body')[0].clientHeight
     }
     return [viewportwidth, viewportheight]
   }
@@ -1262,15 +1261,12 @@
   }
 
 </script>
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-27665935-1']);
-  _gaq.push(['_trackPageview']);
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PJ8Z6CFXTF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
 
-  (function () {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
+  gtag('config', 'G-PJ8Z6CFXTF');
 </script>
